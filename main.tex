@@ -240,7 +240,7 @@ P=
     P(i,i-1) &= q
 \end{align*}
 
-De forma mas general:
+De forma más general:
 
 \begin{equation*}
 P(i,j)=
@@ -249,7 +249,6 @@ p, \text{ si } j=i+1,\\
 q, \text{ si } j=i-1,\\
 r, \text{ si } j = i
 \end{cases}
-\qquad q=1-p.
 \end{equation*}
 \begin{center}
 \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.2cm,semithick]
@@ -263,18 +262,18 @@ r, \text{ si } j = i
 \node[state] (E) [right of=D] {2};
 \node[state] (F) [right of=E] {...};
 \path
-(Z) edge[bend left] node{$1-p$} (A)
+(Z) edge[bend left] node{$q$} (A)
 (A) edge[bend left] node{$p$} (Z)
 (A) edge[bend left] node{$p$} (B)
-(B) edge[bend left] node{$1-p$} (A)
+(B) edge[bend left] node{$q$} (A)
 (B) edge[bend left] node{$p$} (C)
-(C) edge[bend left] node{$1-p$} (B)
+(C) edge[bend left] node{$q$} (B)
 (C) edge[bend left] node{$p$} (D)
-(D) edge[bend left] node{$1-p$} (C)
+(D) edge[bend left] node{$q$} (C)
 (D) edge[bend left] node{$p$} (E)
-(E) edge[bend left] node{$1-p$} (D)
+(E) edge[bend left] node{$q$} (D)
 (E) edge[bend left] node{$p$} (F)
-(F) edge[bend left] node{$1-p$} (E);
+(F) edge[bend left] node{$q$} (E);
 \end{tikzpicture}
 \end{center}
 
@@ -497,9 +496,7 @@ En particular:
 \begin{equation*}
 p_{ij}^{(1)} = P_{ij}, \quad p_{ij}^{(0)} = \delta_{ij}
 \end{equation*}
-donde $\delta_{ij}$ es el delta de Kronecker.
-
-Se organiza en la matriz:
+donde $\delta_{ij}$ es el delta de Kronecker. Se organiza en la matriz:
 \begin{equation*}
 P^{(n)} =
 \begin{pmatrix}
