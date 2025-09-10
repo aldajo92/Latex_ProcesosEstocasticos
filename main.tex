@@ -961,9 +961,13 @@ El estado $2$ es \textbf{recurrente}.
 ]
 Recordemos que: $ \forall i \in S$
 
-$f_{ii}^{(n)} = P(X_n=i, X_{n-1} \neq i, \dots, X_1 \neq i \mid X_0=i)$
+\begin{equation}
+f_{ii}^{(n)} = P(X_n=i, X_{n-1} \neq i, \dots, X_1 \neq i \mid X_0=i)
+\end{equation}
 
-$f_i = \sum_{n=1}^{\infty} f_{ii}^{(n)}$
+\begin{equation}
+f_i = \sum_{n=1}^{\infty} f_{ii}^{(n)}
+\end{equation}
 
 \rule{0.4\textwidth}{0.4pt}
 
@@ -1225,7 +1229,9 @@ f_{00}^{(5)} &= P(X_5=0, X_4 \neq 0, X_3 \neq 0, X_2 \neq 0, X_1 \neq 0 \mid X_0
 \end{align*}
 
 
-$f_{00}^{(n)} = \frac{1}{n} \times \frac{1}{n-1}$ para $n \geq 2$
+\begin{equation}
+f_{00}^{(n)} = \frac{1}{n} \times \frac{1}{n-1} \quad \text{para } n \geq 2
+\end{equation}
 
 ¿$f_0 = 1$?
 
@@ -1236,8 +1242,9 @@ f_0 &= \sum_{n=1}^{\infty} f_{00}^{(n)} \\
 \end{align*}
 
 Serie telescópica:
-
-$1/1 - 1/2 + 1/2 - 1/3 + 1/3 - 1/4 + 1/4 - 1/5 + \cdots + 1/(m-1) - 1/m$
+\begin{equation}
+1/1 - 1/2 + 1/2 - 1/3 + 1/3 - 1/4 + 1/4 - 1/5 + \cdots + 1/(m-1) - 1/m
+\end{equation}
 
 \begin{align*}
 &= 1 - 1/m \\
@@ -1300,7 +1307,9 @@ $P^n(0,0) = \begin{cases}
 \section*{Periodicidad de la cadena}
 
 \textbf{Definición}: Se dice que el estado $i$ tiene periodo $d$ si
-$d = \text{mcd} \{n: P_{ii}^{(n)} > 0\}$
+\begin{equation}
+d = \text{mcd} \{n: P_{ii}^{(n)} > 0\}
+\end{equation}
 
 \begin{itemize}
     \item Si $d=1$ entonces el estado $i$ es aperiódico.
@@ -1404,7 +1413,9 @@ d_4 &= d_6 = 1
 \section*{Probabilidades Estacionarias}
 
 \textbf{Definición}: $\pi$ es una medida estacionaria si
-$\pi P = \pi$
+\begin{equation}
+\pi P = \pi
+\end{equation}
 
 donde $\pi P_j = P(X_n = j)$
 
@@ -1456,8 +1467,9 @@ Esto nos da el sistema de ecuaciones:
 \end{align*}
 
 Con la condición de normalización:
-
-$\pi_1 + \pi_2 + \pi_3 = 1$
+\begin{equation}
+\pi_1 + \pi_2 + \pi_3 = 1
+\end{equation}
 
 Resolviendo el sistema:
 
@@ -1550,8 +1562,9 @@ Si $\pi$ es una medida estacionaria, entonces $X_n \sim \pi$. $P_{\pi}(X_n=j) = 
 \end{itemize}
 
 Si $X_0 \sim \pi$ entonces $X_n \sim \pi$.
-
-$P(X_n=j) = \pi(j)$
+\begin{equation}
+P(X_n=j) = \pi(j)
+\end{equation}
 
 \subsection*{Teorema:} 
 
@@ -1656,12 +1669,14 @@ $\frac{1}{n} \sum_{i=1}^{n} X_i \xrightarrow{\text{C.S.}} E(X)$.
 \section*{Ley Fuerte de los Grandes Números}
 
 Suponga que $\{X_n\}_{n \geq 1}$ cumplió con las condiciones del teorema anterior y sea $r(\cdot)$ una función tal que:
-
-$\sum_{x} |r(x)| \pi(x) < \infty$
+\begin{equation}
+\sum_{x} |r(x)| \pi(x) < \infty
+\end{equation}
 
 entonces:
-
-$\frac{1}{n} \sum_{k=1}^{n} r(X_k) \xrightarrow{\text{C.S.}} E_{\pi}(r(X)) = \sum_{x} r(x) \pi(x)$
+\begin{equation}
+\frac{1}{n} \sum_{k=1}^{n} r(X_k) \xrightarrow{\text{C.S.}} E_{\pi}(r(X)) = \sum_{x} r(x) \pi(x)
+\end{equation}
 
 \section*{Ejercicio}
 
