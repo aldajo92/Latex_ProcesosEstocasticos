@@ -1577,68 +1577,10 @@ P(X_n=j) = \pi(j)
 \end{equation*}
 donde $m_i$ es el \textbf{tiempo medio de retorno} al estado $i$, es decir,
 \begin{equation*}
-m_i = E_i[T_i] \quad (\text{esperanza del tiempo hasta regresar a $i$ partiendo de $i$})
+m_i = E(\tau_i \mid X_0=i) = \sum_{n=1}^{\infty} n \cdot f_{ii}^{(n)}
 \end{equation*}
+(esperanza del tiempo hasta regresar a $i$ partiendo de $i$)
 }
-
-\begin{theorem}
-Sea $(X_n)_{n\geq 0}$ una cadena de Markov irreducible en un espacio de estados finito,
-donde todos los estados son recurrentes positivos.  
-Sea $m_i = \mathbb{E}_i[T_i]$ el tiempo medio de retorno al estado $i$, con
-\[
-T_i = \min\{ n \geq 1 : X_n = i \mid X_0 = i \}.
-\]
-Entonces la distribución estacionaria $\pi$ existe, es única, y satisface
-\[
-\pi_i = \frac{1}{m_i}, \qquad i \in S.
-\]
-\end{theorem}
-
-\begin{proof}
-Fijemos un estado $i \in S$. Consideremos los \emph{ciclos de retorno} a $i$, definidos como las trayectorias que comienzan en $i$ y terminan en la siguiente visita a $i$.  
-
-\begin{itemize}
-\item La longitud de un ciclo tiene la misma distribución que $T_i$, por lo que la longitud media es $m_i$.
-\item En cada ciclo, el estado $i$ es visitado exactamente una vez más (la visita de cierre). Por tanto, el número medio de visitas a $i$ en un ciclo es $1$.
-\end{itemize}
-
-Sea $N_j$ el número de visitas al estado $j$ en un ciclo. Definimos
-\[
-\pi_j \;=\; \frac{\mathbb{E}[N_j]}{\mathbb{E}[\text{longitud del ciclo}]} \;=\; \frac{\mathbb{E}[N_j]}{m_i}.
-\]
-
-\begin{enumerate}
-\item Como la suma de visitas a todos los estados en un ciclo es la longitud del ciclo,
-\[
-\sum_j \pi_j = \frac{\sum_j \mathbb{E}[N_j]}{m_i} = \frac{m_i}{m_i} = 1.
-\]
-Así, $\pi$ es una distribución de probabilidad.
-
-\item En particular, para $j=i$ se cumple $\mathbb{E}[N_i]=1$, por lo que
-\[
-\pi_i = \frac{1}{m_i}.
-\]
-
-\item Finalmente, para verificar que $\pi$ es estacionaria, observemos que el número esperado de transiciones $j \to k$ en un ciclo es
-\[
-\mathbb{E}[N_j] \cdot P_{jk}.
-\]
-El número esperado de entradas a $k$ en un ciclo es entonces
-\[
-\sum_j \mathbb{E}[N_j] P_{jk} = \mathbb{E}[N_k].
-\]
-Dividiendo entre $m_i$, se obtiene
-\[
-\pi_k = \sum_j \pi_j P_{jk},
-\]
-es decir, $\pi = \pi P$.
-\end{enumerate}
-
-Con esto se prueba que $\pi$ es la distribución estacionaria única y que satisface la identidad
-\[
-\pi_i = \frac{1}{m_i}.
-\]
-\end{proof}
 
 \begin{mdframed}[
     backgroundcolor=gray!10,

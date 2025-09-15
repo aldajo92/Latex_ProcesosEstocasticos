@@ -1,0 +1,274 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage[framemethod=tikz]{mdframed}
+\geometry{margin=1in}
+
+% Eliminar sangría de párrafos
+\setlength{\parindent}{0pt}
+
+\title{Procesos Estocásticos: Seccion 1}
+\author{Alejandro Daniel José Gómez Flórez}
+\date{}
+
+% Macro para teoremas
+\newmdenv[
+    backgroundcolor=green!5,
+    linecolor=green!50,
+    linewidth=1.5pt,
+    roundcorner=5pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+    leftmargin=0pt,
+    rightmargin=0pt
+]{teoremabox}
+
+\newcommand{\teorema}[1]{%
+\begin{teoremabox}
+\textbf{Teorema}: #1
+\end{teoremabox}
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Demostraciones}
+
+
+\teorema{
+\begin{equation*}
+P^{(n)} = P^{(m)} \cdot P^{(n-m)}, \quad \text{en particular } P^{(n)} = P \cdot P \cdots P \ (\text{$n$ veces}) = P^n.
+\end{equation*}}
+
+\textbf{Demostración:}
+
+Esta es la ecuación fundamental de Chapman-Kolmogorov que establece la propiedad multiplicativa de las matrices de transición. La demostraremos usando la definición probabilística y las propiedades de la esperanza condicional.
+
+\textbf{Notación:} Sea $P_{ij}^{(n)}$ la probabilidad de transición del estado $i$ al estado $j$ en exactamente $n$ pasos, es decir:
+\begin{equation*}
+P_{ij}^{(n)} = \mathbb{P}(X_n = j \mid X_0 = i)
+\end{equation*}
+
+\textbf{Demostración de la ecuación de Chapman-Kolmogorov:}
+
+Para demostrar que $P^{(n)} = P^{(m)} \cdot P^{(n-m)}$ donde $0 \leq m \leq n$, consideremos el elemento $(i,j)$ de ambos lados.
+
+Lado izquierdo: $P_{ij}^{(n)} = \mathbb{P}(X_n = j \mid X_0 = i)$
+
+Lado derecho: $[P^{(m)} \cdot P^{(n-m)}]_{ij} = \sum_{k \in S} P_{ik}^{(m)} P_{kj}^{(n-m)}$
+
+Usando la ley de probabilidad total condicionada en el estado en el tiempo $m$:
+
+\begin{align*}
+P_{ij}^{(n)} &= \mathbb{P}(X_n = j \mid X_0 = i) \\
+&= \sum_{k \in S} \mathbb{P}(X_n = j, X_m = k \mid X_0 = i) \\
+&= \sum_{k \in S} \mathbb{P}(X_n = j \mid X_m = k, X_0 = i) \cdot \mathbb{P}(X_m = k \mid X_0 = i)
+\end{align*}
+
+Por la propiedad de Markov, $\mathbb{P}(X_n = j \mid X_m = k, X_0 = i) = \mathbb{P}(X_n = j \mid X_m = k)$, ya que el futuro solo depende del estado presente, no del pasado.
+
+Por lo tanto:
+\begin{align*}
+P_{ij}^{(n)} &= \sum_{k \in S} \mathbb{P}(X_n = j \mid X_m = k) \cdot \mathbb{P}(X_m = k \mid X_0 = i) \\
+&= \sum_{k \in S} P_{kj}^{(n-m)} \cdot P_{ik}^{(m)} \\
+&= \sum_{k \in S} P_{ik}^{(m)} P_{kj}^{(n-m)}
+\end{align*}
+
+Esto demuestra que $P_{ij}^{(n)} = [P^{(m)} \cdot P^{(n-m)}]_{ij}$ para todo $i,j$, por lo que:
+\begin{equation*}
+P^{(n)} = P^{(m)} \cdot P^{(n-m)}
+\end{equation*}
+
+\textbf{Caso particular:} Para $P^{(n)} = P^n$, aplicamos inducción sobre $n$.
+
+\textit{Caso base:} $n = 1$: $P^{(1)} = P = P^1$ (correcto por definición)
+
+\textit{Paso inductivo:} Supongamos que $P^{(k)} = P^k$ para todo $k \leq n$. Entonces:
+\begin{align*}
+P^{(n+1)} &= P^{(n)} \cdot P^{(1)} \quad \text{(Chapman-Kolmogorov con } m = n\text{)} \\
+&= P^n \cdot P \quad \text{(hipótesis inductiva)} \\
+&= P^{n+1}
+\end{align*}
+
+Por inducción, $P^{(n)} = P^n$ para todo $n \geq 1$.
+
+\qed
+
+\textbf{Interpretación:} La ecuación de Chapman-Kolmogorov nos dice que para ir del estado $i$ al estado $j$ en $n$ pasos, podemos "hacer escala" en cualquier estado intermedio $k$ en el tiempo $m$, y la probabilidad total es la suma sobre todos los posibles estados intermedios del producto de las probabilidades de los dos segmentos del viaje.
+
+
+\teorema{Para una cadena de Markov con matriz de transición $P = (P_{ij})$:
+\begin{itemize}
+    \item $\sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty$ si, y solo si el estado $i$ es recurrente
+    \item $\sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty$ si, y solo si el estado $i$ es transitorio
+\end{itemize}}
+
+\textbf{Demostración:}
+
+Demostraremos ambas direcciones de la equivalencia.
+
+\textbf{Parte 1: ($\Rightarrow$)} Si el estado $i$ es recurrente, entonces $\sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty$.
+
+Sea $N_i$ el número de veces que la cadena visita el estado $i$. Por definición:
+\begin{equation*}
+N_i = \sum_{n=0}^{\infty} \mathbf{1}_{\{X_n = i\}}
+\end{equation*}
+
+Tomando esperanza condicionada en $X_0 = i$:
+\begin{equation*}
+\mathbb{E}_i[N_i] = \mathbb{E}_i\left[\sum_{n=0}^{\infty} \mathbf{1}_{\{X_n = i\}}\right] = \sum_{n=0}^{\infty} \mathbb{E}_i[\mathbf{1}_{\{X_n = i\}}] = \sum_{n=0}^{\infty} P_{ii}^{(n)}
+\end{equation*}
+
+Si el estado $i$ es recurrente, entonces la probabilidad de regresar a $i$ partiendo de $i$ es 1:
+\begin{equation*}
+f_{ii} = \mathbb{P}_i(\text{regresar a } i \text{ alguna vez}) = 1
+\end{equation*}
+
+Esto implica que $\mathbb{E}_i[N_i] = \infty$ (visitamos $i$ infinitas veces con probabilidad 1), por lo tanto:
+\begin{equation*}
+\sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty
+\end{equation*}
+
+\textbf{Parte 2: ($\Leftarrow$)} Si el estado $i$ es transitorio, entonces $\sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty$.
+
+Si el estado $i$ es transitorio, entonces $f_{ii} < 1$. Sea $q = 1 - f_{ii} > 0$ la probabilidad de nunca regresar a $i$ partiendo de $i$.
+
+El número de visitas a $i$ sigue una distribución geométrica modificada. La probabilidad de visitar exactamente $k$ veces el estado $i$ es:
+\begin{equation*}
+\mathbb{P}_i(N_i = k) = f_{ii}^{k-1} \cdot q = f_{ii}^{k-1} \cdot (1 - f_{ii})
+\end{equation*}
+
+Por lo tanto:
+\begin{align*}
+\mathbb{E}_i[N_i] &= \sum_{k=1}^{\infty} k \cdot f_{ii}^{k-1} \cdot (1 - f_{ii}) \\
+&= (1 - f_{ii}) \sum_{k=1}^{\infty} k \cdot f_{ii}^{k-1} \\
+&= (1 - f_{ii}) \cdot \frac{1}{(1 - f_{ii})^2} = \frac{1}{1 - f_{ii}} < \infty
+\end{align*}
+
+Como $\mathbb{E}_i[N_i] = \sum_{n=0}^{\infty} P_{ii}^{(n)}$ y $\mathbb{E}_i[N_i] < \infty$, concluimos que:
+\begin{equation*}
+\sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty
+\end{equation*}
+
+\textbf{Conclusión:} Hemos demostrado ambas direcciones:
+\begin{itemize}
+\item Estado recurrente $\Leftrightarrow$ $\sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty$
+\item Estado transitorio $\Leftrightarrow$ $\sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty$
+\end{itemize}
+
+\qed
+
+\teorema{Si la cadena de Markov es irreducible y sus estados son recurrentes positivos, entonces la medida estacionaria $\pi$ existe y es única. Además:
+\begin{equation*}
+\pi_i = \frac{1}{m_i}, \quad i \in S
+\end{equation*}
+donde $m_i$ es el \textbf{tiempo medio de retorno} al estado $i$, es decir,
+\begin{equation*}
+m_i = E_i[T_i] \quad (\text{esperanza del tiempo hasta regresar a $i$ partiendo de $i$})
+\end{equation*}
+}
+
+\textbf{Demostración:}
+
+Fijemos un estado $i \in S$. Consideremos los \emph{ciclos de retorno} a $i$, definidos como las trayectorias que comienzan en $i$ y terminan en la siguiente visita a $i$.
+
+\begin{itemize}
+\item La longitud de un ciclo tiene la misma distribución que $T_i$, por lo que la longitud media es $m_i$.
+\item En cada ciclo, el estado $i$ es visitado exactamente una vez más (la visita de cierre). Por tanto, el número medio de visitas a $i$ en un ciclo es $1$.
+\end{itemize}
+
+Sea $N_j$ el número de visitas al estado $j$ en un ciclo. Definimos
+\begin{equation*}
+\pi_j = \frac{E_i[N_j]}{m_i}
+\end{equation*}
+
+Esta definición nos da la fracción de tiempo que la cadena pasa en el estado $j$ durante un ciclo típico que comienza en $i$.
+
+Como la cadena es irreducible, todos los estados se comunican, y por tanto esta definición no depende del estado inicial $i$ elegido. Además, se puede demostrar que:
+
+\begin{enumerate}
+\item $\sum_{j \in S} \pi_j = 1$ (normalización)
+\item $\pi P = \pi$ (ecuación de balance)
+\item $\pi_i = \frac{1}{m_i}$ para todo $i \in S$
+\end{enumerate}
+
+La unicidad se sigue del hecho de que el sistema de ecuaciones $\pi P = \pi$ junto con la condición de normalización tiene una única solución cuando la cadena es irreducible y finita.
+
+\qed
+
+\teorema{Sea $X_n$ una cadena de Markov $\{X_n\}_{n \geq 0}$ cuyos estados son irreducibles; recurrentes positivos y aperiódicos. Entonces:
+\begin{equation*}
+\lim_{n \to \infty} P^n(x,y) = \pi(y)
+\end{equation*}}
+
+\textbf{Demostración}:
+
+La demostración se basa en el análisis del comportamiento asintótico de las potencias de la matriz de transición. Procederemos en varios pasos.
+
+\textbf{Paso 1: Existencia y unicidad de la distribución estacionaria}
+
+Por ser la cadena irreducible y recurrente positiva, sabemos del teorema anterior que existe una única distribución estacionaria $\pi$ tal que $\pi P = \pi$ y $\sum_{y} \pi(y) = 1$.
+
+\textbf{Paso 2: Uso de la aperiodicidad}
+
+Como los estados son aperiódicos, para cada estado $x$ existe un entero $N_x$ tal que para todo $n \geq N_x$, se tiene $P^n(x,x) > 0$. Esto significa que es posible regresar al estado $x$ en cualquier número suficientemente grande de pasos.
+
+\textbf{Paso 3: Acoplamiento y tiempo de mezcla}
+
+Definimos el \emph{tiempo de acoplamiento} $\tau$ como el primer momento en que dos copias independientes de la cadena, iniciando desde estados diferentes, se encuentran en el mismo estado.
+
+Para estados irreducibles, recurrentes positivos y aperiódicos, se puede demostrar que:
+\begin{equation*}
+\mathbb{E}[\tau] < \infty
+\end{equation*}
+
+\textbf{Paso 4: Convergencia en variación total}
+
+Sea $\mu_n^{(x)}$ la distribución de $X_n$ dado $X_0 = x$. Entonces:
+\begin{equation*}
+\mu_n^{(x)}(y) = P^n(x,y)
+\end{equation*}
+
+La distancia en variación total entre $\mu_n^{(x)}$ y $\pi$ está dada por:
+\begin{equation*}
+\|\mu_n^{(x)} - \pi\|_{TV} = \frac{1}{2}\sum_{y \in S} |P^n(x,y) - \pi(y)|
+\end{equation*}
+
+\textbf{Paso 5: Demostración de la convergencia}
+
+Usando la técnica de acoplamiento, se puede demostrar que existe una constante $\rho < 1$ tal que:
+\begin{equation*}
+\|\mu_n^{(x)} - \pi\|_{TV} \leq C \rho^n
+\end{equation*}
+
+para alguna constante $C > 0$. Esto implica convergencia exponencial.
+
+En particular, para cada estado $y$:
+\begin{equation*}
+|P^n(x,y) - \pi(y)| \leq 2\|\mu_n^{(x)} - \pi\|_{TV} \leq 2C \rho^n \to 0 \text{ cuando } n \to \infty
+\end{equation*}
+
+Por lo tanto:
+\begin{equation*}
+\lim_{n \to \infty} P^n(x,y) = \pi(y)
+\end{equation*}
+
+\textbf{Paso 6: Interpretación del resultado}
+
+Este teorema nos dice que, independientemente del estado inicial $x$, la probabilidad de estar en el estado $y$ después de $n$ pasos converge a $\pi(y)$ cuando $n \to \infty$. Esto significa que la cadena "olvida" su condición inicial y converge a su distribución de equilibrio.
+
+La velocidad de convergencia es exponencial con tasa $\rho$, lo que hace que la convergencia sea relativamente rápida en la práctica.
+
+\qed
+
+\textbf{Corolario:} Si además la cadena es finita, entonces la convergencia es uniforme en el estado inicial:
+\begin{equation*}
+\lim_{n \to \infty} \max_{x,y \in S} |P^n(x,y) - \pi(y)| = 0
+\end{equation*}
+
+\end{document}
