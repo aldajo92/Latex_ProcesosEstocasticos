@@ -1,8 +1,14 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amssymb, amsthm}
 \usepackage{geometry}
+
+% Definir entornos de teoremas
+\newtheorem{theorem}{Teorema}
+\newtheorem{lemma}{Lema}
+\newtheorem{corollary}{Corolario}
+\newtheorem{proposition}{Proposición}
 \usepackage{tikz}
 \usetikzlibrary{automata,positioning}
 \geometry{margin=1in}
@@ -11,6 +17,46 @@
 
 % Eliminar sangría de párrafos
 \setlength{\parindent}{0pt}
+
+% Macro para definiciones
+\newmdenv[
+    backgroundcolor=blue!5,
+    linecolor=blue!40,
+    linewidth=1.5pt,
+    roundcorner=5pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+    leftmargin=0pt,
+    rightmargin=0pt
+]{definicionbox}
+
+\newcommand{\definicion}[1]{%
+\begin{definicionbox}
+\textbf{Definición}: #1
+\end{definicionbox}
+}
+
+% Macro para teoremas
+\newmdenv[
+    backgroundcolor=green!5,
+    linecolor=green!50,
+    linewidth=1.5pt,
+    roundcorner=5pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+    leftmargin=0pt,
+    rightmargin=0pt
+]{teoremabox}
+
+\newcommand{\teorema}[1]{%
+\begin{teoremabox}
+\textbf{Teorema}: #1
+\end{teoremabox}
+}
 
 \title{Apuntes de Procesos Estocásticos}
 \author{}
@@ -58,7 +104,7 @@
 
 % ===================== Procesos estocásticos =====================
 \section{¿Qué es un proceso estocástico?}
-\textbf{Definición}: Un \textbf{proceso estocástico} es una colección de variables aleatorias
+\definicion{Un \textbf{proceso estocástico} es una colección de variables aleatorias
 \begin{equation*}
 \{X_t\}_{t\in T},
 \end{equation*}
@@ -67,9 +113,9 @@ donde $T$ puede ser finito, numerable o no numerable.
     \item Si $T$ es finito o numerable, el proceso es \textbf{discreto}.
     \item Si $T$ es no numerable, el proceso es \textbf{continuo}.
 \end{itemize}
-El conjunto de posibles valores de $X_t$ se denota por $S$ y se llama \textbf{espacio de estados}. Al igual que $T$, $S$ puede ser discreto o continuo.
+El conjunto de posibles valores de $X_t$ se denota por $S$ y se llama \textbf{espacio de estados}. Al igual que $T$, $S$ puede ser discreto o continuo.}
 
-\textbf{Ejemplo}: Articulos defectuosos
+\textbf{Ejemplo}: Artículos defectuosos
 \begin{enumerate}
     \item Número de artículos defectuosos producidos por una máquina cada hora:
     \begin{equation*}
@@ -94,14 +140,14 @@ El conjunto de posibles valores de $X_t$ se denota por $S$ y se llama \textbf{es
     \end{equation*}
 \end{enumerate}
 
-\textbf{Definición}: Un proceso estocástico puede verse como una función
+\definicion{Un proceso estocástico puede verse como una función
 \begin{equation*}
 X:\ \Omega \times T \longrightarrow \mathbb{R},\qquad (\omega,t)\mapsto X(\omega,t).
 \end{equation*}
 \begin{itemize}
     \item Si $t$ es fijo, $\omega \mapsto X(\omega,t)$ es una variable aleatoria.
     \item Si $\omega$ es fijo, $t \mapsto X(\omega,t)$ es una trayectoria.
-\end{itemize}
+\end{itemize}}
 
 \textbf{1. Espacio de probabilidad:}
 \begin{itemize}
@@ -150,12 +196,12 @@ donde:
 
 % ===================== Cadenas de Markov =====================
 \section{Cadenas de Markov en tiempo discreto}
-\textbf{Definición}: Un proceso $\{X_n\}_{n\ge 0}$ con espacio de estados $S$ es una \textbf{cadena de Markov} si para todo
+\definicion{Un proceso $\{X_n\}_{n\ge 0}$ con espacio de estados $S$ es una \textbf{cadena de Markov} si para todo
 $i,j,i_0,\ldots,i_{n-1}\in S$ y $n=0,1,2,\ldots$,
 \begin{equation*}
 P(X_{n+1}=j \mid X_n=i, X_{n-1}=i_{n-1},\ldots,X_0=i_0)
 = P(X_{n+1}=j \mid X_n=i).
-\end{equation*}
+\end{equation*}}
 
 \subsection*{Probabilidad de transición}
 La probabilidad
@@ -249,6 +295,7 @@ p, \text{ si } j=i+1,\\
 q, \text{ si } j=i-1,\\
 r, \text{ si } j = i
 \end{cases}
+\qquad p + q + r = 1.
 \end{equation*}
 \begin{center}
 \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.2cm,semithick]
@@ -487,7 +534,7 @@ P(X_2 = 1, \, X_1 = 3 \mid X_0 = 2) = 0.3 \times 0.1 = 0.03.
 
 \subsection*{Probabilidades de transición en $n$ pasos}
 
-\textbf{Definición}: Las probabilidades de transición en $n$ pasos del estado $i$ al estado $j$ se denotan por:
+\definicion{Las probabilidades de transición en $n$ pasos del estado $i$ al estado $j$ se denotan por:
 \begin{equation*}
 p_{ij}^{(n)} = P(X_n = j \mid X_0 = i), \quad n \geq 0, \ i, j \in S.
 \end{equation*}
@@ -506,16 +553,18 @@ p_{31}^{(n)} & p_{32}^{(n)} & p_{33}^{(n)}
 \end{pmatrix}
 \end{equation*}
 
+}
+
 \textbf{Propiedades}:
 \begin{itemize}
     \item $P^{(0)} = I$ (matriz identidad).
     \item $P^{(1)} = P$ (matriz de transición de un paso).
 \end{itemize}
 
-\textbf{Teorema}: 
+\teorema{
 \begin{equation*}
 P^{(n)} = P^{(m)} \cdot P^{(n-m)}, \quad \text{en particular } P^{(n)} = P \cdot P \cdots P \ (\text{$n$ veces}) = P^n.
-\end{equation*}
+\end{equation*}}
 
 \section*{Ecuaciones de Chapman--Kolmogorov}
 
@@ -628,7 +677,7 @@ P^n(i,k) = P(X_n=k \mid X_0=i), \quad P^m(k,j) = P(X_m=j \mid X_0=k)
 \end{tikzpicture}
 \end{center}
 
-\textbf{Definición}: La medida $q(i) = P(X_0 = i)$ definida para todo $i \in S$ se conoce como \textbf{distribución inicial} de la cadena.
+\definicion{La medida $q(i) = P(X_0 = i)$ definida para todo $i \in S$ se conoce como \textbf{distribución inicial} de la cadena.}
 
 \textbf{Propiedades}:
 
@@ -687,20 +736,16 @@ $q = (0.2, 0.8)$ donde $q(0) = P(X_0 = 0)$
 \end{tikzpicture}
 \end{center}
 
-\textbf{1)} $P(X_2 = 0, X_1 = 1, X_0 = 0) = \frac{P(X_2 = 0, X_1 = 1 \mid X_0 = 0)}{1} \times \frac{P(X_1 = 1, X_0 = 0)}{P(X_1 = 1, X_0 = 0)} \times \frac{q(0)}{q(0)}$
+\textbf{1)} $P(X_2 = 0, X_1 = 1, X_0 = 0)$:
 
+Por la propiedad de Markov:
 \begin{align*}
-&= P(X_2 = 0 \mid X_1 = 1, X_0 = 0) P(X_1 = 1 \mid X_0 = 0) P(X_0 = 0) \\
-&= P(X_2 = 0 \mid X_1 = 1) P(X_1 = 1 \mid X_0 = 0) P(X_0 = 0) \\
-&= q(0) \times P(0,1) \times P(1,0) \\
-&= 0.2 \times 0.7 \times 0.4 = 0.056
+P(X_2 = 0, X_1 = 1, X_0 = 0) &= P(X_2 = 0 \mid X_1 = 1) P(X_1 = 1 \mid X_0 = 0) P(X_0 = 0) \\
+&= P(1,0) \times P(0,1) \times q(0) \\
+&= 0.4 \times 0.7 \times 0.2 = 0.056
 \end{align*}
 
-\textbf{2)} $P(X_1 = 0) = q(0) P(0,0) + q(1) P(1,0)$
-
-\begin{align*}
-&= 0.2 \times 0.3 + 0.8 \times 0.4 = 0.38
-\end{align*}
+\textbf{2)} $P(X_1 = 0) = q(0) P(0,0) + q(1) P(1,0) = 0.2 \times 0.3 + 0.8 \times 0.4 = 0.38$
 
 \textbf{3)} $P(X_2 = 0) = P(X_2 = 0, X_1 = 0) + P(X_2 = 0, X_1 = 1)$
 
@@ -713,20 +758,21 @@ $q = (0.2, 0.8)$ donde $q(0) = P(X_0 = 0)$
 
 \section*{Clasificación de estados de una cadena de Markov}
 
-\textbf{Definición}: Un estado $j$ es \textbf{accesible} desde un estado $i$ si existe $n \geq 0$ tal que
-
+\definicion{Un estado $j$ es \textbf{accesible} desde un estado $i$ si existe $n \geq 0$ tal que
 \begin{equation*}
 P_{ij}^{(n)} > 0
 \end{equation*}
-y lo denotamos por $i \to j$.
+y lo denotamos por $i \to j$.}
 
-\textbf{Definición}: Si $i \to j$ y $j \to i$ entonces se dice que $i$ y $j$ se comunican, y denotamos por $i \leftrightarrow j$.
+\definicion{Si $i \to j$ y $j \to i$ entonces se dice que $i$ y $j$ se comunican, y denotamos por $i \leftrightarrow j$.
 
 \begin{itemize}
     \item \textbf{Reflexiva:} Para todo $i \in S$, $i \to i$. $P_{ii}^{(0)} = 1 > 0$.
     \item \textbf{Simétrica:} Si $i \leftrightarrow j$ entonces $j \leftrightarrow i$.
     \item \textbf{Transitiva:} Si $i \leftrightarrow k$ y $k \leftrightarrow j$ entonces $i \leftrightarrow j$.
 \end{itemize}
+
+}
 
 \textbf{Observación}: La relación $\leftrightarrow$ es de equivalencia.
 
@@ -792,11 +838,11 @@ En resumen:
     \item Cubren todo el espacio de estados: $\{1, 2\} \cup \{0\} = \{0, 1, 2\}$
 \end{itemize}
 
-\textbf{Definición}: Se dice que una cadena de Markov es irreducible si existe una única clase, es decir, todos los estados se comunican entre sí.
+\definicion{Se dice que una cadena de Markov es irreducible si existe una única clase, es decir, todos los estados se comunican entre sí.}
 
 \subsection*{Estados transitorios y recurrentes.}
 
-\textbf{Definición}: Sea
+\definicion{Sea
 \begin{equation*}
 f_{ii}^{(n)} = P(X_n=i, X_{n-1} \neq i, \dots, X_1 \neq i | X_0=i)
 \end{equation*}
@@ -805,13 +851,11 @@ La probabilidad de primer retorno al estado $i$ en $n$ pasos, dado que se inici�
 f_i = \sum_{n=1}^{\infty} f_{ii}^{(n)} \quad \text{probabilidad de que regrese al estado i eventualmente}
 \end{equation*}
 
-
 Diremos que el estado $i$ es:
-
 \begin{itemize}
     \item \textbf{Recurrente:} si $f_i = 1 \iff 1 - f_i = 0$
     \item \textbf{Transitorio:} si $f_i < 1 \iff 1 - f_i > 0$
-\end{itemize}
+\end{itemize}}
 
 \textbf{Ejemplo}: Sea la cadena de Markov con matriz de transición:
 
@@ -962,14 +1006,11 @@ $f_i = 1$ - $i$ recurrente
 \end{mdframed}
 
 
-\subsection*{Teorema}
-
-Para una cadena de Markov con matriz de transición $P = (P_{ij})$:
-
+\teorema{Para una cadena de Markov con matriz de transición $P = (P_{ij})$:
 \begin{itemize}
     \item $\sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty$ si, y solo si el estado $i$ es recurrente
     \item $\sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty$ si, y solo si el estado $i$ es transitorio
-\end{itemize}
+\end{itemize}}
 
 \textbf{Demostración:} Tarea.
 
@@ -995,9 +1036,9 @@ P_{kk}^{n+m+t} \geq P_{kj}^{(m)} P_{jj}^{(t)} P_{jk}^{(n)}
 \sum_{t=0}^{\infty} P_{kk}^{n+m+t} \geq P_{kj}^{(m)} P_{jk}^{(n)} \sum_{t=0}^{\infty} P_{jj}^{(t)} = \infty
 \end{equation*}
 
-Por teorema (*) $k$ es recurrente.
+Por teorema presentado anteriormente $k$ es recurrente.
 
-Tarea!
+\textbf{Nota}: La demostración del caso transitorio es análoga.
 
 \textbf{Propiedad}: Sea $X_n$ una cadena de Markov y $j$ uno de sus estados. El estado $j$ es recurrente, si y solo si el número esperado de visitas al estado $j$ es infinito, comenzando en $j$.
 
@@ -1034,7 +1075,7 @@ $P(X_2=j \mid X_0=j)$
 \end{tikzpicture}
 \end{center}
 
-$\sum_{n=0}^{\infty} I_n :=$ \# de visitas al estado $j$
+$\sum_{n=0}^{\infty} I_n :=$ número de visitas al estado $j$
 
 \begin{align*}
 E\left(\sum_{n=0}^{\infty} I_n \mid X_0=j\right) &= \sum_{n=0}^{\infty} E(I_n \mid X_0=j) \\
@@ -1070,37 +1111,28 @@ E\left(\sum_{n=0}^{\infty} I_n \mid X_0=j\right) &= \sum_{n=0}^{\infty} E(I_n \m
 \end{tikzpicture}
 \end{center}
 
-\subsection*{Clasificación de estados recurrentes}
-
-\textbf{Definición}: Sea
+\definicion{Sea
 \begin{equation*}
 \tau_i = \min\{n \geq 1: X_n=i\}
 \end{equation*}
-
 el tiempo de retorno al estado $i$.
 
 \begin{equation*}
 E(\tau_i \mid X_0=i)
 \end{equation*}
-
 es el tiempo esperado de retorno al estado $i$.
 
 \begin{equation*}
 m_i = E(\tau_i \mid X_0=i) = \sum_{n=1}^{\infty} n \cdot f_{ii}^{(n)}
-\end{equation*}
+\end{equation*}}
 
-\textbf{Definición}: Se dice que un estado recurrente es:
+\definicion{Se dice que un estado recurrente es:
 \begin{enumerate}
     \item recurrente positivo si $m_i < \infty$.
     \item recurrente nulo si $m_i = \infty$.
-\end{enumerate}
+\end{enumerate}}
 
-\subsection*{Observación:}
-Si $\mathcal{S}$ es finito todo estado recurrente es recurrente positivo.
-
-\begin{itemize}
-    \item Si $j$ es recurrente positivo (nulo) y $j \leftrightarrow k$ entonces $k$ es recurrente positivo (nulo).
-\end{itemize}
+\textbf{Observación}: Si el espacio de estados $S$ es finito todo estado recurrente es recurrente positivo. Si además $j$ es recurrente positivo (nulo) y $j \leftrightarrow k$ entonces $k$ es recurrente positivo (nulo).
 
 \textbf{Ejemplo}:
 
@@ -1277,13 +1309,13 @@ El estado 0 es recurrente nulo y como $j \leftrightarrow 0$; $j \in S$ entonces 
 \end{center}
 
 $P^n(0,0) = \begin{cases}
-\infty & \text{si } n \text{ es par} \\
+> 0 & \text{si } n \text{ es par} \\
 0 & \text{si } n \text{ es impar}
 \end{cases}$
 
 \section*{Periodicidad de la cadena}
 
-\textbf{Definición}: Se dice que el estado $i$ tiene periodo $d$ si
+\definicion{Se dice que el estado $i$ tiene periodo $d$ si
 \begin{equation}
 d = \text{mcd} \{n: P_{ii}^{(n)} > 0\}
 \end{equation}
@@ -1295,7 +1327,9 @@ d = \text{mcd} \{n: P_{ii}^{(n)} > 0\}
 
 Diremos que la cadena es aperiódica si todos sus estados son aperiódicos.
 
-\textbf{Propiedades de periodicidad}:
+}
+
+\textbf{Propiedades}:
 
 \begin{enumerate}
     \item Si $i$ tiene periodo $d$ y $i \leftrightarrow j$ entonces $j$ tiene periodo $d$.
@@ -1387,12 +1421,12 @@ d_4 &= d_6 = 1
 
 \section*{Probabilidades Estacionarias}
 
-\textbf{Definición}: $\pi$ es una medida estacionaria si
+\definicion{$\pi$ es una medida estacionaria si
 \begin{equation}
 \pi P = \pi
 \end{equation}
-
 donde $\pi P_j = P(X_n = j)$
+}
 
 \textbf{Ejemplo}: Considere la distribución inicial $\pi_0 = (0.2, 0.8)$ y la matriz de transición:
 
@@ -1537,11 +1571,74 @@ Si $X_0 \sim \pi$ entonces $X_n \sim \pi$.
 P(X_n=j) = \pi(j)
 \end{equation}
 
-\textbf{Teorema}: Si la cadena de Markov es irreducible y sus estados son recurrentes positivos, entonces la medida estacionaria $\pi$ existe y es única. Además:
-
+\teorema{Si la cadena de Markov es irreducible y sus estados son recurrentes positivos, entonces la medida estacionaria $\pi$ existe y es única. Además:
 \begin{equation*}
 \pi_i = \frac{1}{m_i}, \quad i \in S
 \end{equation*}
+donde $m_i$ es el \textbf{tiempo medio de retorno} al estado $i$, es decir,
+\begin{equation*}
+m_i = E_i[T_i] \quad (\text{esperanza del tiempo hasta regresar a $i$ partiendo de $i$})
+\end{equation*}
+}
+
+\begin{theorem}
+Sea $(X_n)_{n\geq 0}$ una cadena de Markov irreducible en un espacio de estados finito,
+donde todos los estados son recurrentes positivos.  
+Sea $m_i = \mathbb{E}_i[T_i]$ el tiempo medio de retorno al estado $i$, con
+\[
+T_i = \min\{ n \geq 1 : X_n = i \mid X_0 = i \}.
+\]
+Entonces la distribución estacionaria $\pi$ existe, es única, y satisface
+\[
+\pi_i = \frac{1}{m_i}, \qquad i \in S.
+\]
+\end{theorem}
+
+\begin{proof}
+Fijemos un estado $i \in S$. Consideremos los \emph{ciclos de retorno} a $i$, definidos como las trayectorias que comienzan en $i$ y terminan en la siguiente visita a $i$.  
+
+\begin{itemize}
+\item La longitud de un ciclo tiene la misma distribución que $T_i$, por lo que la longitud media es $m_i$.
+\item En cada ciclo, el estado $i$ es visitado exactamente una vez más (la visita de cierre). Por tanto, el número medio de visitas a $i$ en un ciclo es $1$.
+\end{itemize}
+
+Sea $N_j$ el número de visitas al estado $j$ en un ciclo. Definimos
+\[
+\pi_j \;=\; \frac{\mathbb{E}[N_j]}{\mathbb{E}[\text{longitud del ciclo}]} \;=\; \frac{\mathbb{E}[N_j]}{m_i}.
+\]
+
+\begin{enumerate}
+\item Como la suma de visitas a todos los estados en un ciclo es la longitud del ciclo,
+\[
+\sum_j \pi_j = \frac{\sum_j \mathbb{E}[N_j]}{m_i} = \frac{m_i}{m_i} = 1.
+\]
+Así, $\pi$ es una distribución de probabilidad.
+
+\item En particular, para $j=i$ se cumple $\mathbb{E}[N_i]=1$, por lo que
+\[
+\pi_i = \frac{1}{m_i}.
+\]
+
+\item Finalmente, para verificar que $\pi$ es estacionaria, observemos que el número esperado de transiciones $j \to k$ en un ciclo es
+\[
+\mathbb{E}[N_j] \cdot P_{jk}.
+\]
+El número esperado de entradas a $k$ en un ciclo es entonces
+\[
+\sum_j \mathbb{E}[N_j] P_{jk} = \mathbb{E}[N_k].
+\]
+Dividiendo entre $m_i$, se obtiene
+\[
+\pi_k = \sum_j \pi_j P_{jk},
+\]
+es decir, $\pi = \pi P$.
+\end{enumerate}
+
+Con esto se prueba que $\pi$ es la distribución estacionaria única y que satisface la identidad
+\[
+\pi_i = \frac{1}{m_i}.
+\]
+\end{proof}
 
 \begin{mdframed}[
     backgroundcolor=gray!10,
@@ -1599,15 +1696,14 @@ $\lim_{n \to \infty} P^{dn}(0,0)$ sí existe.
 
 \end{mdframed}
 
-\textbf{Teorema}: Sea $X_n$ una cadena de Markov $\{X_n\}_{n \geq 0}$ cuyos estados son irreducibles; recurrentes positivos y aperiódicos. Entonces:
-
+\teorema{Sea $X_n$ una cadena de Markov $\{X_n\}_{n \geq 0}$ cuyos estados son irreducibles; recurrentes positivos y aperiódicos. Entonces:
 \begin{equation*}
 \lim_{n \to \infty} P^n(x,y) = \pi(y)
-\end{equation*}
+\end{equation*}}
 
 \textbf{Demostración}: Estudio personal.
 
-\textbf{Observación}
+\textbf{Observación}:
 
 \begin{itemize}
     \item Si $S$ es finito todos los estados recurrentes son recurrentes positivos
