@@ -1,0 +1,951 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
+
+% Eliminar sangría de párrafos
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\section*{Procesos de Poisson}
+
+Consideremos, para cada $t \geq 0$, el número de eventos que ocurren hasta el tiempo $t$, y lo denotamos por $N(t)$.
+
+\textbf{Definición}: Un incremento es 
+\begin{equation*}
+N(t) - N(s)
+\end{equation*}
+donde $t > s$.
+
+\textbf{Definición}: $N(t)$ tiene incrementos estacionarios si para todo $h \geq 0$; $t_1, t_2, s \in \mathbb{R}_{0}^+$ y $t_1 \leq t_{2}$.
+\begin{equation*}
+\mathbb{P}\big(N(t_{2}) - N(t_{1}) = n\big) 
+= \mathbb{P}\big(N(t_{2}+s) - N(t_{1}+s) = n\big)
+\end{equation*}
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[->] (0,0) -- (8,0);
+  \draw (1,0) node[below] {$t_{1}$} -- +(0,0.2);
+  \draw (3,0) node[below] {$t_{2}$} -- +(0,0.2);
+  \draw (5,0) node[below] {$t_{1}+s$} -- +(0,0.2);
+  \draw (7,0) node[below] {$t_{2}+s$} -- +(0,0.2);
+  \node at (2,0.4) {$n$};
+\end{tikzpicture}
+\end{center}
+
+\textbf{Definición}: $N(t)$ tiene incrementos independientes. Si $t_{0} < t_{1} < \dots < t_{n}$ entonces las variables aleatorias
+\begin{equation*}
+N(t_{1}) - N(t_{0}), \quad 
+N(t_{2}) - N(t_{1}), \quad \dots, \quad 
+N(t_{n}) - N(t_{n-1})
+\end{equation*}
+son independientes.
+
+\textbf{Definición}: Un proceso $\{N(t)\}_{t \geq 0}$ es un \textbf{proceso de Poisson} de tasa $\lambda > 0$ si cumple:
+
+\begin{enumerate}
+    \item $N(0) = 0$.
+    \item El proceso $N(t)$ tiene incrementos independientes.
+    \item El proceso $N(t)$ tiene incrementos estacionarios con distribución Poisson:
+    \begin{equation*}
+    \mathbb{P}\big(N(t+s) - N(s) = n\big) 
+    = e^{-\lambda t} \, \frac{(\lambda t)^n}{n!}, 
+    \quad n = 0,1,2,\dots
+    \end{equation*}
+\end{enumerate}
+
+\textbf{Ejemplo}: En cierto cruce, el número de infracciones que ocurren sigue un proceso de Poisson con tasa de $5$ accidentes/día.  
+Determine la probabilidad de que haya al menos $2$ infracciones en las siguientes $6$ horas.
+
+\textbf{Solución}:
+
+Sea $N(t)$: número de accidentes hasta el tiempo $t$. Como obtener
+
+\begin{equation*}
+\mathbb{P}\big(N(1/4) \geq 2\big)\; ?
+\end{equation*}
+
+
+\begin{equation*}
+N(1/4) = N(1/4) - N(0) \sim \text{Poisson}\!\left( 5 \cdot \tfrac{1}{4} \right) 
+= \text{Poisson}\!\left(\tfrac{5}{4}\right),
+\end{equation*}
+
+entonces
+\begin{equation*}
+\mathbb{P}\big(N(1/4) \geq 2\big) 
+= 1 - \mathbb{P}\big(N(1/4) < 2\big)
+= 1 - \mathbb{P}\big(N(1/4) = 1\big) - \mathbb{P}\big(N(1/4) = 0\big).
+\end{equation*}
+
+\begin{equation*}
+\mathbb{P}\big(N(1/4) \geq 2\big) 
+= 1 - e^{-5/4}\frac{(5/4)^1}{1!} - e^{-5/4}\frac{(5/4)^0}{0!}
+\end{equation*}
+
+\begin{equation*}
+= 1 - e^{-5/4}\cdot \tfrac{5}{4} - e^{-5/4}
+\end{equation*}
+
+\begin{equation*}
+= 0.36
+\end{equation*}
+
+\textbf{Ejemplo}: Los clientes llegan a una taquilla de acuerdo a un proceso de Poisson (PP) con tasa $0.1$ clientes/seg.  
+
+Determine la probabilidad de que, después de que la taquilla abre, $5$ clientes lleguen durante el primer minuto y otros $5$ clientes lleguen durante el segundo minuto.
+
+\textbf{Solución}:
+
+Sea $N(t)$: número de clientes que llegan a la taquilla hasta el tiempo $t$.
+
+\begin{equation*}
+\mathbb{P}\big(N(60) = 5,\; N(120) - N(60) = 5\big)\; ?
+\end{equation*}
+
+\begin{equation*}
+\mathbb{P}\big(N(60) - N(0) = 5,\; N(120) - N(60) = 5\big)
+\end{equation*}
+
+Por independencia de incrementos:
+
+\begin{align*}
+&= \mathbb{P}\big(N(60) - N(0) = 5\big) \times \mathbb{P}\big(N(120) - N(60) = 5\big) \\
+&= \mathbb{P}\big(N(60) - N(0) = 5\big) \times \mathbb{P}\big(N(60) - N(0) = 5\big)
+\end{align*}
+
+\begin{equation*}
+= \mathbb{P}\big(N(60) - N(0) = 5\big)^2
+\end{equation*}
+
+Además,
+\begin{equation*}
+N(60) - N(0) \sim \text{Poisson}(0.1 \times 60) = \text{Poisson}(6).
+\end{equation*}
+
+\begin{equation*}
+= \left( \frac{e^{-6} \, 6^5}{5!} \right)^2 = 0.026
+\end{equation*}
+
+\textbf{Ejemplo}: Suponga que por un punto de una autopista pasan en promedio $50$ carros cada $5$ minutos.  
+
+¿Cuál es la probabilidad de que pasen $20$ carros en el primer minuto y $30$ en los siguientes $4$ minutos?
+
+\textbf{Solución}:
+
+Sea $N(t) := \#$ de carros que pasan por un punto hasta el tiempo $t$.
+
+\begin{equation*}
+\lambda = 10 \; \text{carros/minuto}.
+\end{equation*}
+
+\begin{equation*}
+\mathbb{P}\big(N(1)=20,\; N(5)-N(1)=30\big)\; ?
+\end{equation*}
+
+Por independencia de incrementos:
+
+\begin{equation*}
+\mathbb{P}\big(N(1)=20,\; N(5)-N(1)=30\big)
+= \mathbb{P}\big(N(1)=20\big)\cdot \mathbb{P}\big(N(5)-N(1)=30\big).
+\end{equation*}
+
+\begin{equation*}
+= \frac{e^{-10}\,10^{20}}{20!} \; \times \; \frac{e^{-40}\,40^{30}}{30!}
+= 3.4 \times 10^{-5}.
+\end{equation*}
+
+\textbf{Definición 1}:
+
+\begin{enumerate}
+    \item $N(0)$
+    \item Incrementos independientes y estacionarios
+    \item Los incrementos tienen distribución Poisson
+\end{enumerate}
+
+\textbf{Procesos de Conteo}
+
+\textbf{Definición}: Se dice que $\{N(t)\}_{t \geq 0}$ es un proceso de conteo si $N(t)$ representa el número de eventos que han ocurrido hasta el tiempo $t$.
+
+\textbf{Propiedades}:
+
+\begin{enumerate}
+    \item $N(t) \geq 0$.
+    \item $N(t) \in \mathbb{Z}_{0}^{+}$.
+    \item Si $s < t$ entonces $N(t) \geq N(s)$.
+    \item $N(t) - N(s)$ es el número de eventos en el intervalo $(s,t]$.
+\end{enumerate}
+
+\textbf{Definición}: Una función $f : \mathbb{R} \to \mathbb{R}$ es $o(h)$ si 
+\begin{equation*}
+\lim_{h \to 0} \frac{f(h)}{h} = 0.
+\end{equation*}
+
+Si una función $f$ es $o(h)$, se escribe
+\begin{equation*}
+f(h) = o(h).
+\end{equation*}
+
+\textbf{Ejemplo}: Para $r > 1$, $f(x) = x^r$.  
+¿Es $f = o(h)$?
+
+\begin{equation*}
+\lim_{h \to 0} \frac{h^r}{h} = \lim_{h \to 0} h^{r-1} = 0.
+\end{equation*}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+  \draw[->] (-0.2,0) -- (6,0);
+  \draw[->] (0,-0.2) -- (0,3);
+  \draw[domain=0:2.5,smooth,variable=\x,blue] plot ({\x},{\x*\x/3}) node[right] {$f$};
+  \draw[domain=0:2.5,smooth,variable=\x,red] plot ({\x},{\x*1.2}) node[right] {$h$};
+\end{tikzpicture}
+\end{center}
+
+\textbf{Ejemplo}: Para $r \leq 1$, $f(x) = x^r$.  
+¿Es $f = o(h)$?
+
+\textbf{Definición 2}:
+
+Se dice que un proceso de conteo $\{N(t)\}_{t \geq 0}$ es un \textbf{proceso de Poisson} con tasa $\lambda > 0$, si cumple:
+
+\begin{enumerate}
+    \item $N(0) = 0$,
+    \item El proceso tiene incrementos estacionarios e independientes,
+    \item $\mathbb{P}(N(h) = 1) = \lambda h + o(h)$,
+    \item $\mathbb{P}(N(h) \geq 2) = o(h)$.
+\end{enumerate}
+
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+  % Línea horizontal del intervalo [0,1]
+  \draw[thick] (0,0) -- (6,0);
+  
+  % Marcas de división
+  \draw[thick] (0,0.1) -- (0,-0.1) node[below] {$0$};
+  \draw[thick] (1,0.1) -- (1,-0.1) node[below] {$\frac{1}{n}$};
+  \draw[thick] (2,0.1) -- (2,-0.1) node[below] {$\frac{2}{n}$};
+  \draw[thick] (3,0.1) -- (3,-0.1) node[below] {$\cdots$};
+  \draw[thick] (4,0.1) -- (4,-0.1) node[below] {$\frac{x}{n}$};
+  \draw[thick] (6,0.1) -- (6,-0.1) node[below] {$1$};
+  
+  % Flecha desde 1/n hacia abajo
+  \draw[->, thick, blue] (1,0.2) -- (1,1.5);
+  
+  % Caja con la ecuación λ⋅1/n = P
+  \draw[thick, blue, rounded corners] (0.5,1.8) rectangle (2.5,2.8);
+  \node[blue] at (1.5,2.3) {$\lambda \cdot \frac{1}{n} = p$};
+  
+  % Flecha desde x/n hacia la derecha
+  \draw[->, thick] (4.2,0.2) -- (5.8,0.2);
+\end{tikzpicture}
+\end{center}
+
+\begin{equation*}
+\mathbb{P}(X = x) = \text{Bin}(n, p = \tfrac{\lambda}{n})
+\end{equation*}
+
+\textbf{Teorema}:
+
+\begin{center}
+\begin{tikzpicture}
+  % Ovalo irregular alrededor del teorema
+  \draw[thick, blue, rounded corners] (-1,-0.5) rectangle (8,1.5);
+  \node at (3.5,0.5) {$\text{Bin}(n, p(n)) \;\;\longrightarrow\;\; \text{Poisson}(\lambda)$};
+\end{tikzpicture}
+\end{center}
+
+cuando 
+
+\begin{equation*}
+n \, p(n) \;\;\longrightarrow\;\; \lambda.
+\end{equation*}
+
+\textbf{Teorema}: Las definiciones (1) y (2) son equivalentes:
+
+\begin{itemize}
+    \item $N(0) = 0$
+    \item Incrementos estacionarios e independientes; los incrementos tienen distribución Poisson
+\end{itemize}
+
+Demostración:
+
+empezamos por demostrar que (2) $= >$ (1)
+
+\begin{equation*}
+P_n(t) = \mathbb{P}(N(t) = n) \quad \longleftarrow \quad \text{distribución Poisson}(t\lambda)
+\end{equation*}
+
+\begin{equation*}
+P'_n(t) = \lim_{\varepsilon \to 0} \frac{P_n(t+\varepsilon) - P_n(t)}{\varepsilon}
+\end{equation*}
+
+\begin{equation*}
+\frac{P_n(t+\varepsilon) - P_n(t)}{\varepsilon}
+= \frac{\mathbb{P}(N(t+\varepsilon)=n) - \mathbb{P}(N(t)=n)}{\varepsilon}\; ?
+\end{equation*}
+
+\begin{align*}
+\mathbb{P}(N(t+\varepsilon) = n) 
+&= \mathbb{P}(N(t)=n,\; N(t+\varepsilon)-N(t)=0) \\
+&\quad + \mathbb{P}(N(t)=n-1,\; N(t+\varepsilon)-N(t)=1) \\
+&\quad + \mathbb{P}(N(t)\leq n-2,\; N(t+\varepsilon)-N(t)\geq 2) \\
+&= \mathbb{P}(N(t)=n)\cdot \mathbb{P}(N(t+\varepsilon)-N(t)=0) \\
+&\quad + \mathbb{P}(N(t)=n-1)\cdot \mathbb{P}(N(t+\varepsilon)-N(t)=1) \\
+&\quad + \mathbb{P}(N(t)\leq n-2)\cdot \mathbb{P}(N(t+\varepsilon)-N(t)\geq 2) \\
+&= P_n(t)P_0(\varepsilon) + P_{n-1}(t)P_1(\varepsilon) + o(\varepsilon).
+\end{align*}
+
+
+\begin{align*}
+P_0(\varepsilon) &= \mathbb{P}(N(\varepsilon)=0) 
+= 1 - \mathbb{P}(N(\varepsilon)\geq 1) \\
+&= 1 - \mathbb{P}(N(\varepsilon)=1) - \mathbb{P}(N(\varepsilon)\geq 2) \\
+&= 1 - \lambda \varepsilon + o(\varepsilon) + o(\varepsilon) \\
+&= 1 - \lambda \varepsilon + o(\varepsilon)
+\end{align*}
+
+\begin{align*}
+P_1(\varepsilon) &= \mathbb{P}(N(\varepsilon)=1) \\
+&= \lambda \varepsilon + o(\varepsilon)
+\end{align*}
+
+\begin{align*}
+P_n(t+\varepsilon) 
+&= P_n(t)\,(1 - \lambda \varepsilon + o(\varepsilon)) 
+   + P_{n-1}(t)\,(\lambda \varepsilon + o(\varepsilon)) 
+   + o(\varepsilon) \\
+&= P_n(t) - \lambda \varepsilon P_n(t) + o(\varepsilon)P_n(t) \\
+&\quad + \lambda \varepsilon P_{n-1}(t) + o(\varepsilon)P_{n-1}(t) 
+   + o(\varepsilon)
+\end{align*}
+
+\begin{align*}
+P_n(t+\varepsilon) &= P_n(t) + \lambda \varepsilon (P_{n-1}(t) - P_n(t)) + o(\varepsilon)
+\end{align*}
+
+Así:
+
+\begin{align*}
+\frac{P_n(t+\varepsilon) - P_n(t)}{\varepsilon} 
+&= \frac{P_n(t) + \lambda \varepsilon (P_{n-1}(t) - P_n(t)) + o(\varepsilon) - P_n(t)}{\varepsilon} \\
+&= \lambda (P_{n-1}(t) - P_n(t)) + \frac{o(\varepsilon)}{\varepsilon}
+\end{align*}
+
+Tomando el límite cuando $\varepsilon \to 0$:
+
+\begin{align*}
+P'_n(t) &= \lambda (P_{n-1}(t) - P_n(t))
+\end{align*}
+
+\begin{align*}
+P_n'(t) + \lambda P_n(t) &= \lambda P_{n-1}(t) \\
+e^{\lambda t} P_n'(t) + e^{\lambda t} \lambda P_n(t) &= e^{\lambda t} \lambda P_{n-1}(t) \\
+\left(e^{\lambda t} P_n(t)\right)' &= \lambda e^{\lambda t} P_{n-1}(t)
+\end{align*}
+
+\textbf{Inducción en $n$}:
+
+Para $n=1$:
+
+\begin{align*}
+\left(e^{\lambda t} P_1(t)\right)' &= \lambda e^{\lambda t} P_0(t) \\
+                                   &= \lambda e^{\lambda t} e^{-\lambda t} \\
+                                   &= \lambda
+\end{align*}
+
+\begin{align*}
+P_0(t) &= e^{-\lambda t} \\
+\left(e^{\lambda t} P_1(t)\right)' &= \lambda \\
+e^{\lambda t} P_1(t) - e^{\lambda \cdot 0} P_1(0) &= \lambda t \\
+e^{\lambda t} P_1(t) &= \lambda t \\
+P_1(t) &= e^{-\lambda t} \lambda t
+\end{align*}
+
+\textbf{Hipótesis de inducción:}
+\begin{align*}
+P_{n-1}(t) = e^{-\lambda t} \frac{(\lambda t)^{n-1}}{(n-1)!}
+\end{align*}
+
+\textbf{Por demostrar:}
+\begin{align*}
+P_n(t) = e^{-\lambda t} \frac{(\lambda t)^n}{n!}
+\end{align*}
+
+Ahora se va a demostrar que (1) $= >$ (2)
+
+Si $N(t) \sim \text{Poisson}(\lambda t)$ entonces:
+
+\begin{enumerate}
+    \item $P(N(h)=1) = e^{-\lambda h} \lambda h$
+    \item $P(N(h) \geq 2) = o(h)$
+\end{enumerate}
+
+\textbf{Demostración de 1)}:
+
+\begin{align*}
+P(N(h)=1) &= e^{-\lambda h} \lambda h \\
+&= (1 - \lambda h + o(h)) \lambda h \\
+&= \lambda h - \lambda^2 h^2 + o(h) \lambda h \\
+&= \lambda h + o(h)
+\end{align*}
+
+\textbf{Demostración de 2)}:
+
+\begin{align*}
+P(N(h) \geq 2) &= 1 - P(N(h)=0) - P(N(h)=1) \\
+&= 1 - e^{-\lambda h} - e^{-\lambda h} \lambda h \\
+&= 1 - (1 - \lambda h + o(h)) - (\lambda h + o(h)) \\
+&= 1 - 1 + \lambda h - o(h) - \lambda h - o(h) \\
+&= o(h)
+\end{align*}
+
+Por lo tanto, se ha demostrado que las definiciones (1) y (2) son equivalentes.
+
+% Continuacion de la clase 02 septiembre 01 2025
+
+\subsection*{Lema}
+
+$N(s)$ tiene distribución Poisson$(\lambda s)$.
+
+\subsubsection*{Idea de la demostración:}
+
+Nota: $\int_0^{\infty} \lambda (\lambda x)^{n-1} \frac{e^{-\lambda x}}{(n-1)!} dx = 1 - \sum_{k=0}^{n-1} \frac{(\lambda t)^k}{k!} e^{-\lambda t}$
+
+\begin{equation*}
+\{N(t) < n\} \Leftrightarrow \{T_n \geq t\}
+\end{equation*}
+\begin{equation*}
+\mathbb{P}(N(t) < n) = \mathbb{P}(T_n \geq t), \quad T_n \sim \text{Gamma}(n, \lambda)
+\end{equation*}
+
+\begin{equation*}
+= \int_t^{\infty} \frac{\lambda (\lambda x)^{n-1} e^{-\lambda x}}{(n-1)!} dx = 1 - \int_0^t \frac{\lambda (\lambda x)^{n-1} e^{-\lambda x}}{(n-1)!} dx
+\end{equation*}
+
+\begin{equation*}
+= 1 - 1 + \sum_{k=0}^{n-1} \frac{(\lambda t)^k}{k!} e^{-\lambda t}
+\end{equation*}
+
+\begin{equation*}
+= \sum_{k=0}^{n-1} \frac{(\lambda t)^k}{k!} e^{-\lambda t}
+\end{equation*}
+
+Luego:
+\begin{equation*}
+\mathbb{P}(N(t) = n) = \sum_{k=0}^{n} \frac{(\lambda t)^k}{k!} e^{-\lambda t} - \sum_{k=0}^{n-1} \frac{(\lambda t)^k}{k!} e^{-\lambda t}
+\end{equation*}
+
+\begin{equation*}
+\Rightarrow N(t) \sim \text{Poisson}(\lambda t).
+\end{equation*}
+
+\subsection*{Lema}
+
+$N(t+c) - N(c)$, $t \geq 0$ es un proceso de Poisson con tasa $\lambda$ e independiente de $N(r)$; $0 \leq r \leq s$.
+
+\subsubsection*{Idea de la demostración}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \draw[->] (0,0) -- (8,0);
+  \draw (0,0) node[below] {$0$} -- +(0,0.2);
+  \draw (1.5,0) node[below] {$t_1$} -- +(0,0.2);
+  \draw (2.5,0) node[below] {$t_2$} -- +(0,0.2);
+  \draw (3.5,0) node[below] {$t_3$} -- +(0,0.2);
+  \draw (4.5,0) node[below] {$t_4$} -- +(0,0.2);
+  \draw (5.5,0) node[below] {$s$} -- +(0,0.2);
+  \draw (7,0) node[below] {$t_5$} -- +(0,0.2);
+  
+  % Curva sobre t_5
+  \draw[thick] (6.5,0.3) arc (180:0:0.25);
+  \node at (6.75,0.6) {$t_0$};
+\end{tikzpicture}
+\end{center}
+
+\begin{equation*}
+\mathbb{P}(t_5 > x+t \mid t_5 > x) = \mathbb{P}(t_5 > t) = \exp(\lambda)
+\end{equation*}
+
+\textbf{Tarea: Definición (1) $\longrightarrow$ Definición (3)}
+
+\subsection*{Características de un Proceso de Poisson}
+
+\textbf{Teorema}: Sea $\{N(t)\}_{t \geq 0}$ un PP$(\lambda)$.
+
+Suponga que para un $t > 0$ fijo, $N(t) = n$.
+
+Entonces para $0 \leq u < t$, el número de eventos que han ocurrido antes de $u$ es una v.a. Bin$(n, \frac{u}{t})$, es decir:
+
+\begin{equation*}
+\mathbb{P}(N(u) = x \mid N(t) = n) = \binom{n}{x} \left(\frac{u}{t}\right)^x \left(1 - \frac{u}{t}\right)^{n-x}
+\end{equation*}
+
+\subsubsection*{Demostración:}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+  % Línea temporal
+  \draw[thick] (0,0) -- (6,0);
+  \draw (0,0) node[below] {$0$} -- +(0,0.2);
+  \draw (3,0) node[below] {$u$} -- +(0,0.2);
+  \draw (6,0) node[below] {$t$} -- +(0,0.2);
+  
+  % Llaves
+  % Llave superior para n (cubre todo de 0 a t)
+  \draw[decorate,decoration={brace,amplitude=10pt}] (0,0.5) -- (6,0.5);
+  \node at (3,1) {$n$};
+  
+  % Llave inferior para x (cubre de 0 a u)
+  \draw[decorate,decoration={brace,amplitude=10pt,mirror}] (0,-0.5) -- (3,-0.5);
+  \node at (1.5,-1) {$x$};
+\end{tikzpicture}
+\end{center}
+
+\begin{align*}
+\mathbb{P}(N(u) = x \mid N(t) = n) &= \frac{\mathbb{P}(N(u) = x, N(t) = n)}{\mathbb{P}(N(t) = n)} \\
+&= \frac{\mathbb{P}(N(u) = x, N(t) - N(u) = n - x)}{\mathbb{P}(N(t) = n)}
+\end{align*}
+
+Por independencia de incrementos:
+
+\begin{equation*}
+= \frac{\mathbb{P}(N(u) = x) \cdot \mathbb{P}(N(t) - N(u) = n - x)}{\mathbb{P}(N(t) = n)}
+\end{equation*}
+
+\begin{equation*}
+= \frac{\frac{e^{-\lambda u} (\lambda u)^x}{x!} \cdot \frac{e^{-\lambda(t-u)} (\lambda(t-u))^{n-x}}{(n-x)!}}{\frac{e^{-\lambda t} (\lambda t)^n}{n!}}
+\end{equation*}
+
+\begin{equation*}
+= \frac{n!}{x!(n-x)!} \cdot \frac{(\lambda u)^x (\lambda(t-u))^{n-x}}{(\lambda t)^n (\lambda t)^{n-x}}
+\end{equation*}
+
+\begin{equation*}
+= \binom{n}{x} \frac{(\lambda u)^x (\lambda(t-u))^{n-x}}{(\lambda t)^x (\lambda t)^{n-x}}
+\end{equation*}
+
+\begin{equation*}
+= \binom{n}{x} \left(\frac{\lambda u}{\lambda t}\right)^x \left(\frac{\lambda(t-u)}{\lambda t}\right)^{n-x}
+\end{equation*}
+
+\begin{equation*}
+= \binom{n}{x} \left(\frac{u}{t}\right)^x \left(\frac{t-u}{t}\right)^{n-x}
+\end{equation*}
+
+\begin{equation*}
+= \binom{n}{x} \left(\frac{u}{t}\right)^x \left(1 - \frac{u}{t}\right)^{n-x}
+\end{equation*}
+
+\textbf{Teorema}: Sean $N_1, N_2, \ldots, N_k$ procesos de Poisson independientes con intensidades $\lambda_1, \lambda_2, \ldots, \lambda_k$ entonces:
+
+\begin{equation*}
+N = N_1 + N_2 + \cdots + N_k
+\end{equation*}
+
+es un proceso de Poisson con tasa $\lambda_1 + \lambda_2 + \cdots + \lambda_k$.
+
+\textbf{Demostración}: $k = 2$
+
+\begin{itemize}
+    \item $N(0) = 0$
+    
+    Porque: $N_1(0) = 0$, $N_2(0) = 0$
+    
+    \item $t_1 < t_2 < t_3$
+    
+    $* N_1(t_3) - N_1(t_2)$ ind $N_1(t_2) - N_1(t_1)$
+    
+    $* N_2(t_3) - N_2(t_2)$ ind $N_2(t_2) - N_2(t_1)$
+    
+    $N(t_3) - N(t_2) = N_1(t_3) + N_2(t_3) - N_1(t_2) - N_2(t_2)$
+    
+    $= N_1(t_3) - N_1(t_2) + N_2(t_3) - N_2(t_2)$
+    
+    es independiente de
+    
+    $N_1(t_2) - N_1(t_1) + N_2(t_2) - N_2(t_1)$
+    
+    $= N(t_2) - N(t_1)$.
+    
+    \item $N(t+s) - N(s) = N_1(t+s) + N_2(t+s) - N_1(s) - N_2(s)$
+    
+    $= N_1(t+s) - N_1(s) + N_2(t+s) - N_2(s)$
+    
+    $\sim \text{Poisson}(\lambda_1 t)$ ind $\text{Poisson}(\lambda_2 t)$
+    
+    $\sim \text{Poisson}((\lambda_1 + \lambda_2)t)$.
+\end{itemize}
+
+\begin{equation*}
+= \frac{\mathbb{P}(N(u) = x) \cdot \mathbb{P}(N(t) - N(u) = n - x)}{\frac{e^{-\lambda t} (\lambda t)^n}{n!}}
+\end{equation*}
+
+\begin{equation*}
+= \frac{\frac{e^{-\lambda u} (\lambda u)^x}{x!} \cdot \frac{e^{-\lambda(t-u)} (\lambda(t-u))^{n-x}}{(n-x)!}}{\frac{e^{-\lambda t} (\lambda t)^n}{n!}}
+\end{equation*}
+
+\begin{equation*}
+= \frac{n!}{x!(n-x)!} \cdot \frac{(\lambda u)^x (\lambda(t-u))^{n-x}}{(\lambda t)^x (\lambda t)^{n-x}}
+\end{equation*}
+
+\begin{equation*}
+= \binom{n}{x} \left(\frac{\lambda u}{\lambda t}\right)^x \left(\frac{\lambda(t-u)}{\lambda t}\right)^{n-x}
+\end{equation*}
+
+\textbf{Teorema}: Sea $N$ un PP$(\lambda)$ y $N_j$ número de eventos de tipo $j$. tal que $\mathbb{P}(\text{tipo } j) = P_j$, $j = 1, \ldots, k$, entonces $N_j$ es un PP$(\lambda P_j)$.
+
+\textbf{Demostración}: $k = 2$.
+
+$\mathbb{P}(\text{tipo } 1) = p$, $\mathbb{P}(\text{tipo } 2) = 1 - p$.
+
+1) $N_1(0) = 0$, $N_2(0) = 0$.
+
+2) $N_1$ y $N_2$ tienen incrementos independientes y estacionarios, por que $N$ los tiene.
+
+3) Sea $X_1 = N_1(t+s) - N_1(s)$
+
+$X_2 = N_2(t+s) - N_2(s)$.
+
+$\mathbb{P}(X_1 = n, X_2 = k) =$
+
+$= \mathbb{P}(X_1 = n, X_2 = k) \cdot \frac{\mathbb{P}(X_1 + X_2 = n+k)}{\mathbb{P}(X_1 + X_2 = n+k)}$
+
+$= \mathbb{P}(X_1 = n, X_2 = k \mid X_1 + X_2 = n+k) \mathbb{P}(X_1 + X_2 = n+k)$.
+
+$= \mathbb{P}(X_1 = n, X_2 = k \mid X_1 + X_2 = n+k) \mathbb{P}(X_1 + X_2 = n+k)$.
+
+$= \frac{e^{-\lambda t} (\lambda t)^{n+k}}{(n+k)!} \binom{n+k}{n} p^n (1-p)^k$
+
+\begin{center}
+\fbox{\begin{minipage}{0.8\textwidth}
+\begin{equation*}
+\frac{\mathbb{P}(\overbrace{(X_1 = n, X_2 = k)}^{A}, \overbrace{X_1 + X_2 = n+k}^{B})}{\mathbb{P}(X_1 + X_2 = n+k)}
+\end{equation*}
+
+$A \subseteq B$
+
+$A \cap B = A$
+
+\begin{equation*}
+= \frac{\mathbb{P}(X_1 = n, X_2 = k)}{\mathbb{P}(X_1 + X_2 = n+k)}.
+\end{equation*}
+\end{minipage}}
+\end{center}
+
+$= e^{-\lambda t p} e^{-\lambda t(1-p)} (\lambda t)^n (\lambda t)^k p^n (1-p)^k \frac{(n+k)!}{n! \cdot k!}$
+
+$= e^{-\lambda t p} \frac{(\lambda t p)^n}{n!} e^{-\lambda t(1-p)} \frac{(\lambda t(1-p))^k}{k!}$
+
+$= \text{Poisson}(\lambda t p) \cdot \text{Poisson}(\lambda t(1-p))$
+
+$\mathbb{P}(X_1 = n, X_2 = k) = \text{Poisson}(\lambda t p) \cdot \mathbb{P}(\lambda t(1-p))$
+
+\vspace{1cm}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+  % Línea temporal
+  \draw[thick] (0,0) -- (6,0);
+  \draw (0,0) node[below] {$0$} -- +(0,0.2);
+  \draw (3,0) node[below] {$u$} -- +(0,0.2);
+  \draw (6,0) node[below] {$t$} -- +(0,0.2);
+  
+  % Llaves
+  % Llave superior para n (cubre todo de 0 a t)
+  \draw[decorate,decoration={brace,amplitude=10pt}] (0,0.5) -- (6,0.5);
+  \node at (3,1) {$n$};
+  
+  % Llave inferior para x (cubre de 0 a u)
+  \draw[decorate,decoration={brace,amplitude=10pt,mirror}] (0,-0.5) -- (3,-0.5);
+  \node at (1.5,-1) {$x$};
+\end{tikzpicture}
+\end{center}
+
+Bin$(n, \frac{u}{t})$
+
+\textbf{Teorema}: Sea $N(t)$ un proceso de Poisson con tasa $\lambda$, y suponga que para $t > 0$ fijo, se sabe que $N(t) = n$. Entonces
+
+$T_1, T_2, \ldots, T_n$ dado $N(t) = n$ tiene densidad
+
+$f(t_1, t_2, \ldots, t_n \mid N(t) = n) = \frac{n!}{t^n}, 0 < t_1 < t_2 < \ldots < t_n$
+
+\textbf{Demostración}: $0 < t_1 < t_2 < t_3 < \ldots < t_n < t$.
+
+$F(t_1, \ldots, t_n \mid N(t) = n) =$
+
+$= \mathbb{P}(T_1 \leq t_1, T_2 \leq t_2, \ldots, T_n \leq t_n \mid N(t) = n)$.
+
+$= \frac{\mathbb{P}(T_1 \leq t_1, \ldots, T_n \leq t_n, N(t) = n)}{\mathbb{P}(N(t) = n)}$.
+
+Nota que: $\{T_1 \leq t_1, \ldots, T_n \leq t_n, N(t) = n\}$ es equivalente al evento "un y solo un cliente llega en los intervalos $[0, t_1], [t_1, t_2], \ldots, [t_{n-1}, t_n]$ y ningún cliente llega en $(t_n, t]$.
+
+$P(t_1, \ldots, t_n \mid n) = \frac{e^{-\lambda t_1} \lambda t_1 \cdot e^{-\lambda(t_2-t_1)} \lambda(t_2-t_1) \cdots \times e^{-\lambda(t_n-t_{n-1})} \lambda(t_n-t_{n-1}) e^{-\lambda(t-t_n)}}{\frac{e^{-\lambda t} (\lambda t)^n}{n!}}$
+
+$= \frac{e^{-\lambda t} \lambda^n (t_1(t_2-t_1)\cdots(t_n-t_{n-1}))}{\frac{e^{-\lambda t} \lambda^n t^n}{n!}}$
+
+$= \frac{n! (t_1(t_2-t_1)\cdots(t_n-t_{n-1}))}{t^n}$
+
+Luego: $\frac{\partial^n F}{\partial t_1 \partial t_2 \cdots \partial t_n} = \frac{n!}{t^n}$.
+
+% el profesor aca menciona algo sobre la base de datos
+
+
+%% fin de la clase 02 septiembre 01 2025
+
+%% Clase 8 de septiembre
+
+\section*{Proceso de Poisson compuesto}
+
+Sea $X_1, X_2, \ldots$ i.i.d., $N$ entera no negativa.
+
+\begin{equation*}
+S_N = \sum_{i=1}^{N} X_i, \quad S_t = \sum_{i=1}^{0} X_i
+\end{equation*}
+
+\begin{equation*}
+E(S_N) = \sum_{i=1}^{N} E(X_i) = NE(X_i)
+\end{equation*}
+
+Var$(S_N) = N$ Var$(X_1)$
+
+\begin{equation*}
+E(X|Y=y) = \sum_{x} x P(X=x|Y=y)
+\end{equation*}
+
+\begin{equation*}
+E(Y) = \sum_{y} y P(y)
+\end{equation*}
+
+\subsection*{Lema esperanza total}
+
+\begin{equation*}
+E(X) = E_Y(E(X|Y))
+\end{equation*}
+
+\textbf{Demostración:}
+
+\begin{align*}
+E_Y(E(X|Y)) &= E\left(\sum_x x \cdot P(X=x|Y)\right) \\
+&= \sum_y \sum_x x \cdot P(X=x|Y=y) P(Y=y) \\
+&= \sum_y \sum_x x \cdot \frac{P(X=x, Y=y)}{P(Y=y)} P(Y=y) \\
+&= \sum_y \sum_x x \cdot P(X=x, Y=y) \\
+&= \sum_x x \sum_y P(X=x, Y=y) \\
+&= \sum_x x \cdot P(X=x) \\
+&= E(X)
+\end{align*}
+
+\textbf{Lema:} Sean $X_1, X_2, \ldots$ i.i.d. con primer y segundo momento finito. Sea $N$ una v.a. independiente y discreta. Consideremos $S_N = \sum_{i=1}^{N} X_i$ con $S_0 = 0$.
+
+1) Si $E(N) < \infty$ entonces $E(S_N) = E(N) \cdot E(X_1)$.
+
+2) Si $E(N^2) < \infty$ entonces 
+\begin{equation*}
+\text{Var}(S_N) = E(N) \text{Var}(X_1) + \text{Var}(N) [E(X_1)]^2
+\end{equation*}
+
+\textbf{Demostración:}
+
+1) $E(S_N) = E_N(E(S_N|N))$
+
+\begin{align*}
+&= \sum_n E(S_n|N=n) P(N=n) \\
+&= \sum_n E(S_n|N=n) \cdot P(N=n) \\
+&= \sum_n E(S_n) \cdot P(N=n) \\
+&= \sum_n n E(X_1) \cdot P(N=n) \\
+&= E(X_1) \sum_n n P(N=n) \\
+&= E(N) \cdot E(X_1)
+\end{align*}
+
+2) $\text{Var}(S_N) = E(S_N^2) - [E(S_N)]^2$
+
+Calculamos $E(S_N^2)$:
+
+\begin{align*}
+E(S_N^2) &= E_N(E(S_N^2|N)) \\
+&= \sum_n E(S_n^2|N=n) P(N=n) \\
+&= \sum_n E(S_n^2) P(N=n)
+\end{align*}
+
+Donde:
+\begin{align*}
+\text{Var}(S_n) &= E(S_n^2) - [E(S_n)]^2 \\
+n\text{Var}(X_1) &= E(S_n^2) - n^2[E(X_1)]^2 \\
+E(S_n^2) &= n\text{Var}(X_1) + n^2[E(X_1)]^2
+\end{align*}
+
+Entonces:
+\begin{align*}
+E(S_N^2) &= \sum_n \left(n\text{Var}(X_1) + n^2[E(X_1)]^2\right) P(N=n) \\
+&= \text{Var}(X_1) \sum_n n P(N=n) + [E(X_1)]^2 \sum_n n^2 P(N=n) \\
+&= E(N)\text{Var}(X_1) + [E(X_1)]^2 E(N^2)
+\end{align*}
+
+Finalmente:
+\begin{align*}
+\text{Var}(S_N) &= E(N)\text{Var}(X_1) + [E(X_1)]^2 E(N^2) - [E(N)]^2[E(X_1)]^2 \\
+&= E(N)\text{Var}(X_1) + [E(X_1)]^2\left(E(N^2) - [E(N)]^2\right) \\
+&= E(N)\text{Var}(X_1) + [E(X_1)]^2\text{Var}(N)
+\end{align*}
+
+\textbf{Obs:} Sea $N(t)$ un proceso de Poisson($\lambda$), entonces:
+
+Definimos $S_t = \sum_{i=1}^{N(t)} X_i$
+
+que es llamado un proceso de Poisson compuesto.
+
+\begin{align*}
+E(S_t) &= E(N(t)) E(X_1) \\
+&= \lambda t E(X_1)
+\end{align*}
+
+\begin{align*}
+\text{Var}(S_t) &= E(N(t))\text{Var}(X_1) + [E(X_1)]^2\text{Var}(N(t)) \\
+&= \lambda t \text{Var}(X_1) + \lambda t [E(X_1)]^2 \\
+&= \lambda t \left(\text{Var}(X_1) + [E(X_1)]^2\right) \\
+&= \lambda t E(Y_1^2)
+\end{align*}
+
+\textbf{Problema:} Un pescador captura truchas siguiendo un proceso de Poisson con una intensidad de 3 pescados por hora. Supongamos que las truchas pesan un promedio de 4 libras con una desviación estándar de 2 libras.
+
+Determinar la media y varianza del peso total de los peces que captura en 2 horas.
+
+\textbf{Solución:}
+
+$N(t)$ = \# truchas que salen hasta el tiempo $t$.
+
+$X_i$ = el peso de la trucha $i$-ésima.
+
+$S_t = \sum_{i=1}^{N(t)} X_i$ = peso total de las truchas sacadas hasta el tiempo $t$ (horas).
+
+\begin{align*}
+E(S_2) &= E(N(2)) \cdot E(X_1) \\
+&= 6 \times 4 = 24 \text{ libras}
+\end{align*}
+
+\begin{align*}
+\text{Var}(S_t) &= \lambda t E(X_1^2) = \lambda t \left(\text{Var}(X_1) + [E(X_1)]^2\right) \\
+&= 6(4 + 16) = 120 \text{ libras}^2
+\end{align*}
+
+\section*{Cadenas de Markov en tiempo continuo}
+
+\textbf{Definición:} Un proceso en tiempo continuo $\{X_t\}_{t \geq 0}$ es una cadena de Markov. Si para cualquier $0 \leq S_0 \leq S_1 \leq S_n \leq S$ y estados $i_0, \ldots, i_n, i, j$ se tiene:
+
+\begin{equation*}
+P\left(X_{t+s} = j \mid X_s = i, X_{s_n} = i_n, \ldots, X_{s_0} = i_0\right) = P(X_{t+s} = j \mid X_s = i)
+\end{equation*}
+
+\textbf{Ejemplo:} Transformación de una cadena de Markov a tiempo continuo:
+
+Sea $N(t)$ un proceso de Poisson con intensidad $\lambda$ y sea $Y_n$ una C.M. con matriz de transición $U(i,j)$, $i \neq j$.
+
+Entonces $X_t = Y_{N(t)}$ es una cadena de Markov en tiempo continuo.
+
+\begin{center}
+\begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=3cm,
+    semithick,state/.style={circle,draw,font=\bfseries\Large}]
+
+  \node[state] (1) [above]        {1};
+  \node[state] (2) [below left]   {2};
+  \node[state] (3) [below right]  {3};
+
+  \path (1) edge [loop above] node {} (1)
+            edge [bend left] node {} (2)
+            edge [bend right] node {} (3);
+  \path (2) edge [bend left] node {} (1)
+            edge [loop below] node {} (2)
+            edge [bend left] node {} (3);
+  \path (3) edge [bend right] node {} (1)
+            edge [bend right] node {} (2)
+            edge [loop below] node {} (3);
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}
+\draw[->] (0,0) -- (8,0);
+\node[below] at (0,0) {0};
+\node[below] at (2,0) {$y$};
+\node[below] at (4,0) {$x$};
+\node[above] at (1,0) {$N(t)$};
+\end{tikzpicture}
+\end{center}
+
+\textbf{Definición:} Para $t > 0$ la probabilidad de transición es definida por:
+
+\begin{equation*}
+P_t(i,j) = P(X_t = j | X_0 = i)
+\end{equation*}
+
+\textbf{Problema:} Calcule la probabilidad de transición del proceso $X_t = Y_{N(t)}$.
+
+\textbf{Sol:}
+
+\begin{align*}
+P_t(i,j) &= P(X_t = j | X_0 = i) \\
+&= P\left(Y_{N(t)} = j \mid Y_0 = i\right) \\
+&= \sum_{n=1}^{\infty} P\left(Y_{N(t)} = j, N(t) = n \mid Y_0 = i\right) \\
+&= \sum_{n=0}^{\infty} P\left(Y_n = j \mid Y_0 = i\right) P(N(t) = n) \\
+&= \sum_{n=0}^{\infty} U^n(i,j) \frac{e^{-\lambda t}(\lambda t)^n}{n!}
+\end{align*}
+
+\textbf{Definición:} La tasa de saltos de una cadena de Markov con probabilidades de transición $P_t(i,j)$ está dada por:
+
+\begin{equation*}
+q(i,j) = \lim_{\varepsilon \to 0} \frac{P_\varepsilon(i,j)}{\varepsilon}
+\end{equation*}
+
+Para $i \neq j$.
+
+\textbf{Problema:} Tasa de saltos de un proceso de Poisson
+
+Nota que:
+
+• $P_\varepsilon(i,j) = 0$ para $j \neq i$
+
+• $P_\varepsilon(i,j) = P(N(\varepsilon) \geq 1) = j > i+1$
+  $= O(\varepsilon)$
+
+• $P_\varepsilon(i, i+1) = P(N(\varepsilon) = 1)$
+  $= \lambda\varepsilon + O(\varepsilon)$
+
+Si $j \neq i$:
+\begin{equation*}
+q(i,j) = \lim_{\varepsilon \to 0} \frac{P_\varepsilon(i,j)}{\varepsilon} = 0
+\end{equation*}
+
+Si $j > i+1$:
+\begin{equation*}
+q(i,j) = \lim_{\varepsilon \to 0} \frac{P_\varepsilon(i,j)}{\varepsilon} = \lim_{\varepsilon \to 0} \frac{O(\varepsilon)}{\varepsilon} = 0
+\end{equation*}
+
+Si $j = i+1$:
+\begin{equation*}
+q(i,j) = \lim_{\varepsilon \to 0} \frac{P_\varepsilon(i,j)}{\varepsilon} = \lim_{\varepsilon \to 0} \frac{\lambda\varepsilon + O(\varepsilon)}{\varepsilon} = \lambda
+\end{equation*}
+
+Por lo tanto:
+\begin{equation*}
+q(i,j) = \begin{cases}
+0 & \text{si } j \neq i+1 \\
+\lambda & \text{si } j = i+1
+\end{cases}
+\end{equation*}
+
+\textbf{Problema:} Tasa de saltos del proceso $Y_{N(t)} = X_t$
+
+\begin{equation*}
+P_\varepsilon(i,j) = \sum_{n=1}^{\infty} \frac{e^{-\lambda\varepsilon}(\lambda\varepsilon)^n}{n!} U^n(i,j)
+\end{equation*}
+
+¿Cuál es $q(i,j)$, $i \neq j$?
+
+\begin{equation*}
+\frac{P_\varepsilon(i,j)}{\varepsilon} = \frac{e^{-\lambda\varepsilon} \lambda\varepsilon U(i,j)}{\varepsilon} + \sum_{n=2}^{\infty} \frac{e^{-\lambda\varepsilon}(\lambda\varepsilon)^n}{n!} \frac{U^n(i,j)}{\varepsilon}
+\end{equation*}
+
+\end{document}
