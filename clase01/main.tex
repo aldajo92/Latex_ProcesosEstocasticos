@@ -1,8 +1,14 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amssymb, amsthm}
 \usepackage{geometry}
+
+% Definir entornos de teoremas
+\newtheorem{theorem}{Teorema}
+\newtheorem{lemma}{Lema}
+\newtheorem{corollary}{Corolario}
+\newtheorem{proposition}{Proposición}
 \usepackage{tikz}
 \usetikzlibrary{automata,positioning}
 \geometry{margin=1in}
@@ -11,6 +17,46 @@
 
 % Eliminar sangría de párrafos
 \setlength{\parindent}{0pt}
+
+% Macro para definiciones
+\newmdenv[
+    backgroundcolor=blue!5,
+    linecolor=blue!40,
+    linewidth=1.5pt,
+    roundcorner=5pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+    leftmargin=0pt,
+    rightmargin=0pt
+]{definicionbox}
+
+\newcommand{\definicion}[1]{%
+\begin{definicionbox}
+\textbf{Definición}: #1
+\end{definicionbox}
+}
+
+% Macro para teoremas
+\newmdenv[
+    backgroundcolor=green!5,
+    linecolor=green!50,
+    linewidth=1.5pt,
+    roundcorner=5pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+    leftmargin=0pt,
+    rightmargin=0pt
+]{teoremabox}
+
+\newcommand{\teorema}[1]{%
+\begin{teoremabox}
+\textbf{Teorema}: #1
+\end{teoremabox}
+}
 
 \title{Apuntes de Procesos Estocásticos}
 \author{}
@@ -58,8 +104,7 @@
 
 % ===================== Procesos estocásticos =====================
 \section{¿Qué es un proceso estocástico?}
-\subsection*{Definición}
-Un \textbf{proceso estocástico} es una colección de variables aleatorias
+\definicion{Un \textbf{proceso estocástico} es una colección de variables aleatorias
 \begin{equation*}
 \{X_t\}_{t\in T},
 \end{equation*}
@@ -68,9 +113,9 @@ donde $T$ puede ser finito, numerable o no numerable.
     \item Si $T$ es finito o numerable, el proceso es \textbf{discreto}.
     \item Si $T$ es no numerable, el proceso es \textbf{continuo}.
 \end{itemize}
-El conjunto de posibles valores de $X_t$ se denota por $S$ y se llama \textbf{espacio de estados}. Al igual que $T$, $S$ puede ser discreto o continuo.
+El conjunto de posibles valores de $X_t$ se denota por $S$ y se llama \textbf{espacio de estados}. Al igual que $T$, $S$ puede ser discreto o continuo.}
 
-\subsection*{Ejemplo: Articulos defectuosos}
+\textbf{Ejemplo}: Artículos defectuosos
 \begin{enumerate}
     \item Número de artículos defectuosos producidos por una máquina cada hora:
     \begin{equation*}
@@ -95,15 +140,14 @@ El conjunto de posibles valores de $X_t$ se denota por $S$ y se llama \textbf{es
     \end{equation*}
 \end{enumerate}
 
-\subsection*{Definición formal}
-Un proceso estocástico puede verse como una función
+\definicion{Un proceso estocástico puede verse como una función
 \begin{equation*}
 X:\ \Omega \times T \longrightarrow \mathbb{R},\qquad (\omega,t)\mapsto X(\omega,t).
 \end{equation*}
 \begin{itemize}
     \item Si $t$ es fijo, $\omega \mapsto X(\omega,t)$ es una variable aleatoria.
     \item Si $\omega$ es fijo, $t \mapsto X(\omega,t)$ es una trayectoria.
-\end{itemize}
+\end{itemize}}
 
 \textbf{1. Espacio de probabilidad:}
 \begin{itemize}
@@ -131,7 +175,7 @@ donde:
     \item Fija un $t$: obtienes una \textbf{variable aleatoria} $X_t(\omega) = X(\omega, t)$ que describe el estado en ese instante, pero depende del azar.
 \end{itemize}
 
-\subsection*{Ejemplo: clientes en fila}
+\textbf{Ejemplo}: Clientes en fila
 \begin{center}
 \begin{tikzpicture}[scale=1]
     \draw[->] (0,0) -- (5.2,0) node[right] {$t$};
@@ -152,13 +196,12 @@ donde:
 
 % ===================== Cadenas de Markov =====================
 \section{Cadenas de Markov en tiempo discreto}
-\subsection*{Definición}
-Un proceso $\{X_n\}_{n\ge 0}$ con espacio de estados $S$ es una \textbf{cadena de Markov} si para todo
+\definicion{Un proceso $\{X_n\}_{n\ge 0}$ con espacio de estados $S$ es una \textbf{cadena de Markov} si para todo
 $i,j,i_0,\ldots,i_{n-1}\in S$ y $n=0,1,2,\ldots$,
 \begin{equation*}
 P(X_{n+1}=j \mid X_n=i, X_{n-1}=i_{n-1},\ldots,X_0=i_0)
 = P(X_{n+1}=j \mid X_n=i).
-\end{equation*}
+\end{equation*}}
 
 \subsection*{Probabilidad de transición}
 La probabilidad
@@ -175,7 +218,7 @@ P(X_{n+1}=j \mid X_n=i)=P_{ij}.
 Las probabilidades $P_{ij}$ se organizan en la \textbf{matriz de transición} $P=(P_{ij})$, cuyas filas verifican
 $\sum_j P_{ij}=1$ y $P_{ij}\ge 0$.
 
-\subsection*{Ejemplo: Matriz $2\times 2$ y grafo}
+\textbf{Ejemplo}: Matriz $2\times 2$ y grafo
 \begin{equation*}
 P=\begin{pmatrix}
 \alpha & 1-\alpha\\
@@ -195,15 +238,14 @@ P=\begin{pmatrix}
 \end{tikzpicture}
 \end{center}
 
-\subsection*{Ejemplo: Modelo de lluvia}
+\textbf{Ejemplo (modelo de lluvia)}:
 Estados $0=$lluvia, $1=$no lluvia. Con parámetros $\alpha,\beta$:
 \begin{equation*}
 P(X_{n+1}=0 \mid X_n=0)=\alpha, \qquad
 P(X_{n+1}=0 \mid X_n=1)=\beta.
 \end{equation*}
 
-\subsection*{Juego de apuestas con absorción}
-En cada juego se gana $1$ con probabilidad $0.6$ y se pierde $1$ con probabilidad $0.4$.
+\textbf{Ejemplo (juego de apuestas)}: En cada juego se gana $1$ con probabilidad $0.6$ y se pierde $1$ con probabilidad $0.4$.
 El jugador se retira al llegar a $0$ o $4$. Sea $X_n$ la cantidad de dinero al tiempo $n$.
 \begin{equation*}
 P=
@@ -237,15 +279,14 @@ P=
 \end{tikzpicture}
 \end{center}
 
-\subsection*{Ejemplo:}
-Paseo aleatorio: Considere un proceso $\{X_n\}_{n\ge 0}$ con espacio de estados $S=\mathbb{Z}$ y sus probabilidades de transición están dadas por:
+\textbf{Ejemplo (paseo aleatorio)}: Considere un proceso $\{X_n\}_{n\ge 0}$ con espacio de estados $S=\mathbb{Z}$ y sus probabilidades de transición están dadas por:
 
 \begin{align*}
     P(i,i+1) &= p \\
     P(i,i-1) &= q
 \end{align*}
 
-De forma mas general:
+De forma más general:
 
 \begin{equation*}
 P(i,j)=
@@ -254,7 +295,7 @@ p, \text{ si } j=i+1,\\
 q, \text{ si } j=i-1,\\
 r, \text{ si } j = i
 \end{cases}
-\qquad q=1-p.
+\qquad p + q + r = 1.
 \end{equation*}
 \begin{center}
 \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.2cm,semithick]
@@ -268,37 +309,35 @@ r, \text{ si } j = i
 \node[state] (E) [right of=D] {2};
 \node[state] (F) [right of=E] {...};
 \path
-(Z) edge[bend left] node{$1-p$} (A)
+(Z) edge[bend left] node{$q$} (A)
 (A) edge[bend left] node{$p$} (Z)
 (A) edge[bend left] node{$p$} (B)
-(B) edge[bend left] node{$1-p$} (A)
+(B) edge[bend left] node{$q$} (A)
 (B) edge[bend left] node{$p$} (C)
-(C) edge[bend left] node{$1-p$} (B)
+(C) edge[bend left] node{$q$} (B)
 (C) edge[bend left] node{$p$} (D)
-(D) edge[bend left] node{$1-p$} (C)
+(D) edge[bend left] node{$q$} (C)
 (D) edge[bend left] node{$p$} (E)
-(E) edge[bend left] node{$1-p$} (D)
+(E) edge[bend left] node{$q$} (D)
 (E) edge[bend left] node{$p$} (F)
-(F) edge[bend left] node{$1-p$} (E);
+(F) edge[bend left] node{$q$} (E);
 \end{tikzpicture}
 \end{center}
 
 % ===================== Ramificación =====================
-\section{Proceso de ramificación}
-Supóngase que un organismo tiene $j$ hijos con probabilidad $\alpha_j$:
+\textbf{Ejemplo (ramificación)}: Supóngase que un organismo tiene $j$ hijos con probabilidad $\alpha_j$:
 \begin{equation*}
-P(Z=j)=\alpha_j,
+    P(Z=j)=\alpha_j
 \end{equation*}
+
 donde $Z$ es el número de hijos de un individuo.
 
-\subsection*{Variables por generación}
 \begin{itemize}
     \item $X_0$: número de individuos en la generación 0.
     \item $X_1$: número de individuos en la generación 1.
     \item $X_2$: número de individuos en la generación 2, etc.
 \end{itemize}
 
-\subsection*{Transiciones}
 \begin{equation*}
 P(X_{n+1}=j \mid X_n=i)=
 \begin{cases}
@@ -352,9 +391,7 @@ donde $Z_k$ son independientes con la misma ley que $Z$.
 \end{tikzpicture}
 \end{center}
 
-\textbf{Ejemplo}: La urna de Ehrenfest
-
-Suponga que hay $N$ bolas numeradas de $1$ a $N$ y distribuidas en 2 urnas.  
+\textbf{Ejemplo (urna de Ehrenfest)}: Suponga que hay $N$ bolas numeradas de $1$ a $N$ y distribuidas en 2 urnas.  
 En el tiempo $n$ se selecciona al azar una bola del conjunto $\{1, 2, \ldots, N\}$.
 
 \begin{itemize}
@@ -417,9 +454,7 @@ P(X_{n+1} = j \mid X_n = i) =
 \end{cases}
 \end{equation*}
 
-\textbf{Problema:} El clima
-
-Sea $X_n$ el clima en el día $n$. Suponga que un modelo para este proceso es una 
+\textbf{Problema:} Sea $X_n$ el clima en el día $n$. Suponga que un modelo para este proceso es una 
 \textbf{cadena de Markov} con matriz de transición dada por
 
 \begin{equation*}
@@ -438,18 +473,16 @@ donde los estados son:
 3 = \text{Sol}.
 \end{equation*}
 
-\subsubsection*{Pregunta}
 Hoy es lunes y está nublado. ¿Cuál es la probabilidad de que el martes esté soleado 
 y el miércoles esté lloviendo?
 
-\subsubsection*{Notación del proceso}
 Un proceso estocástico $\{X_n\}$ cumple que:
 \begin{equation*}
 P(X_n = j \mid X_{n-1} = i, X_{n-2} = i_{n-2}, \ldots, X_0 = i_0) 
 = P(X_n = j \mid X_{n-1} = i) = P_{ij}.
 \end{equation*}
 
-\subsubsection*{Resolución}
+\textbf{Solución}:
 
 Se busca:
 \begin{equation*}
@@ -470,8 +503,6 @@ entonces:
 \begin{equation*}
 P(X_2 = 1, \, X_1 = 3 \mid X_0 = 2) = 0.3 \times 0.1 = 0.03.
 \end{equation*}
-
-\subsubsection*{Diagrama de transición}
 
 \tikzset{state/.style={circle,draw,minimum size=22pt,inner sep=0pt}}
 
@@ -503,8 +534,7 @@ P(X_2 = 1, \, X_1 = 3 \mid X_0 = 2) = 0.3 \times 0.1 = 0.03.
 
 \subsection*{Probabilidades de transición en $n$ pasos}
 
-\textbf{Definición:}  
-Las probabilidades de transición en $n$ pasos del estado $i$ al estado $j$ se denotan por:
+\definicion{Las probabilidades de transición en $n$ pasos del estado $i$ al estado $j$ se denotan por:
 \begin{equation*}
 p_{ij}^{(n)} = P(X_n = j \mid X_0 = i), \quad n \geq 0, \ i, j \in S.
 \end{equation*}
@@ -513,10 +543,7 @@ En particular:
 \begin{equation*}
 p_{ij}^{(1)} = P_{ij}, \quad p_{ij}^{(0)} = \delta_{ij}
 \end{equation*}
-donde $\delta_{ij}$ es el delta de Kronecker.
-
-\subsubsection*{Matriz de transición en $n$ pasos}
-Se organiza en la matriz:
+donde $\delta_{ij}$ es el delta de Kronecker. Se organiza en la matriz:
 \begin{equation*}
 P^{(n)} =
 \begin{pmatrix}
@@ -526,15 +553,18 @@ p_{31}^{(n)} & p_{32}^{(n)} & p_{33}^{(n)}
 \end{pmatrix}
 \end{equation*}
 
-\subsubsection*{Propiedades}
+}
+
+\textbf{Propiedades}:
 \begin{itemize}
     \item $P^{(0)} = I$ (matriz identidad).
     \item $P^{(1)} = P$ (matriz de transición de un paso).
-    \item \textbf{Teorema:}  
-    \begin{equation*}
-    P^{(n)} = P^{(m)} \cdot P^{(n-m)}, \quad \text{en particular } P^{(n)} = P \cdot P \cdots P \ (\text{$n$ veces}) = P^n.
-    \end{equation*}
 \end{itemize}
+
+\teorema{
+\begin{equation*}
+P^{(n)} = P^{(m)} \cdot P^{(n-m)}, \quad \text{en particular } P^{(n)} = P \cdot P \cdots P \ (\text{$n$ veces}) = P^n.
+\end{equation*}}
 
 \section*{Ecuaciones de Chapman--Kolmogorov}
 
@@ -593,7 +623,7 @@ Las \textbf{ecuaciones de Chapman--Kolmogorov} calculan las probabilidades de tr
 P_{ij}^{\,n+m} = \sum_{k \in S} P_{ik}^{\,n} \, P_{kj}^{\,m}
 \end{equation*}
 
-\subsection*{Demostración:}
+\textbf{Demostración}:
 
 \begin{align*}
 P_{ij}^{n+m} &= P(X_{n+m}=j \mid X_0=i) \\
@@ -607,7 +637,7 @@ P_{ij}^{n+m} &= P(X_{n+m}=j \mid X_0=i) \\
 &= \sum_{k \in S} P^n(i,k) \cdot P^m(k,j)
 \end{align*}
 
-\textbf{Propiedad de Markov:}
+\textbf{Propiedad de Markov}:
 \begin{equation*}
 P(X_{n+m}=j \mid X_n=k, X_0=i) = P(X_{n+m}=j \mid X_n=k)
 \end{equation*}
@@ -647,11 +677,9 @@ P^n(i,k) = P(X_n=k \mid X_0=i), \quad P^m(k,j) = P(X_m=j \mid X_0=k)
 \end{tikzpicture}
 \end{center}
 
-\subsection*{Definición}
+\definicion{La medida $q(i) = P(X_0 = i)$ definida para todo $i \in S$ se conoce como \textbf{distribución inicial} de la cadena.}
 
-La \textbf{medida} $q(i) = P(X_0 = i)$ definida para todo $i \in S$ se conoce como \textbf{distribución inicial} de la cadena.
-
-\subsection*{Propiedades}
+\textbf{Propiedades}:
 
 \begin{enumerate}
     \item $0 \leq q(i)$ para $i \in S$.
@@ -668,8 +696,7 @@ La \textbf{medida} $q(i) = P(X_0 = i)$ definida para todo $i \in S$ se conoce co
 
 \textbf{Nota:} $P(X_n = j)$ es la multiplicación del vector $q$ con la columna $j$ de la matriz $P^{(n)}$.
 
-\subsection*{Problema:}
-Considere una máquina que al inicio del día está funcionando o está dañada.
+\textbf{Problema}: Considere una máquina que al inicio del día está funcionando o está dañada.
 
 \begin{itemize}
     \item Estado 0 = Dañada
@@ -685,14 +712,14 @@ P = \begin{pmatrix}
 \end{pmatrix}
 \end{equation*}
 
-\textbf{Determinar:}
+Determinar:
 \begin{enumerate}
     \item $P(X_2 = 0, X_1 = 1, X_0 = 0) = q(0) P(0,1) P(1,0)$
     \item $P(X_1 = 0)$
     \item $P(X_2 = 0)$
 \end{enumerate}
 
-\textbf{Solución:}
+\textbf{Solución}:
 
 $q = (0.2, 0.8)$ donde $q(0) = P(X_0 = 0)$
 
@@ -709,20 +736,16 @@ $q = (0.2, 0.8)$ donde $q(0) = P(X_0 = 0)$
 \end{tikzpicture}
 \end{center}
 
-\textbf{1)} $P(X_2 = 0, X_1 = 1, X_0 = 0) = \frac{P(X_2 = 0, X_1 = 1 \mid X_0 = 0)}{1} \times \frac{P(X_1 = 1, X_0 = 0)}{P(X_1 = 1, X_0 = 0)} \times \frac{q(0)}{q(0)}$
+\textbf{1)} $P(X_2 = 0, X_1 = 1, X_0 = 0)$:
 
+Por la propiedad de Markov:
 \begin{align*}
-&= P(X_2 = 0 \mid X_1 = 1, X_0 = 0) P(X_1 = 1 \mid X_0 = 0) P(X_0 = 0) \\
-&= P(X_2 = 0 \mid X_1 = 1) P(X_1 = 1 \mid X_0 = 0) P(X_0 = 0) \\
-&= q(0) \times P(0,1) \times P(1,0) \\
-&= 0.2 \times 0.7 \times 0.4 = 0.056
+P(X_2 = 0, X_1 = 1, X_0 = 0) &= P(X_2 = 0 \mid X_1 = 1) P(X_1 = 1 \mid X_0 = 0) P(X_0 = 0) \\
+&= P(1,0) \times P(0,1) \times q(0) \\
+&= 0.4 \times 0.7 \times 0.2 = 0.056
 \end{align*}
 
-\textbf{2)} $P(X_1 = 0) = q(0) P(0,0) + q(1) P(1,0)$
-
-\begin{align*}
-&= 0.2 \times 0.3 + 0.8 \times 0.4 = 0.38
-\end{align*}
+\textbf{2)} $P(X_1 = 0) = q(0) P(0,0) + q(1) P(1,0) = 0.2 \times 0.3 + 0.8 \times 0.4 = 0.38$
 
 \textbf{3)} $P(X_2 = 0) = P(X_2 = 0, X_1 = 0) + P(X_2 = 0, X_1 = 1)$
 
@@ -735,25 +758,23 @@ $q = (0.2, 0.8)$ donde $q(0) = P(X_0 = 0)$
 
 \section*{Clasificación de estados de una cadena de Markov}
 
-\subsection*{Definición}
-
-Un estado $j$ es \textbf{accesible} desde un estado $i$ si existe $n \geq 0$ tal que
-
+\definicion{Un estado $j$ es \textbf{accesible} desde un estado $i$ si existe $n \geq 0$ tal que
 \begin{equation*}
 P_{ij}^{(n)} > 0
 \end{equation*}
-y lo denotamos por $i \to j$.
+y lo denotamos por $i \to j$.}
 
-\subsection*{Definición}
-
-Si $i \to j$ y $j \to i$ entonces se dice que $i$ y $j$ se comunican, y denotamos por $i \leftrightarrow j$.
+\definicion{Si $i \to j$ y $j \to i$ entonces se dice que $i$ y $j$ se comunican, y denotamos por $i \leftrightarrow j$.
 
 \begin{itemize}
     \item \textbf{Reflexiva:} Para todo $i \in S$, $i \to i$. $P_{ii}^{(0)} = 1 > 0$.
     \item \textbf{Simétrica:} Si $i \leftrightarrow j$ entonces $j \leftrightarrow i$.
     \item \textbf{Transitiva:} Si $i \leftrightarrow k$ y $k \leftrightarrow j$ entonces $i \leftrightarrow j$.
-    \item Observación: La relación $\leftrightarrow$ es de equivalencia.
 \end{itemize}
+
+}
+
+\textbf{Observación}: La relación $\leftrightarrow$ es de equivalencia.
 
 \textbf{Demostración:} $i \leftrightarrow k$; existe $n \geq 0$ tal que $P_{ik}^{(n)} > 0$
 
@@ -773,8 +794,7 @@ Las clases de equivalencia en una cadena de Markov (o en cualquier relación de 
 \end{itemize}
 
 
-\subsection*{Problema:}
-Determine las clases de Equivalencia
+\textbf{Problema}: Determine las clases de Equivalencia
 
 \begin{equation*}
 P = \begin{pmatrix}
@@ -818,13 +838,11 @@ En resumen:
     \item Cubren todo el espacio de estados: $\{1, 2\} \cup \{0\} = \{0, 1, 2\}$
 \end{itemize}
 
-\subsection*{Definición:}
-Se dice que una cadena de Markov es irreducible si existe una única clase, es decir, todos los estados se comunican entre sí.
+\definicion{Se dice que una cadena de Markov es irreducible si existe una única clase, es decir, todos los estados se comunican entre sí.}
 
 \subsection*{Estados transitorios y recurrentes.}
 
-\subsubsection*{Definición:}
-Sea
+\definicion{Sea
 \begin{equation*}
 f_{ii}^{(n)} = P(X_n=i, X_{n-1} \neq i, \dots, X_1 \neq i | X_0=i)
 \end{equation*}
@@ -833,15 +851,13 @@ La probabilidad de primer retorno al estado $i$ en $n$ pasos, dado que se inici�
 f_i = \sum_{n=1}^{\infty} f_{ii}^{(n)} \quad \text{probabilidad de que regrese al estado i eventualmente}
 \end{equation*}
 
-
 Diremos que el estado $i$ es:
-
 \begin{itemize}
     \item \textbf{Recurrente:} si $f_i = 1 \iff 1 - f_i = 0$
     \item \textbf{Transitorio:} si $f_i < 1 \iff 1 - f_i > 0$
-\end{itemize}
+\end{itemize}}
 
-\textbf{Ejemplo:}
+\textbf{Ejemplo}: Sea la cadena de Markov con matriz de transición:
 
 \begin{equation*}
 P = \begin{pmatrix}
@@ -974,9 +990,13 @@ El estado $2$ es \textbf{recurrente}.
 ]
 Recordemos que: $ \forall i \in S$
 
-$f_{ii}^{(n)} = P(X_n=i, X_{n-1} \neq i, \dots, X_1 \neq i \mid X_0=i)$
+\begin{equation}
+f_{ii}^{(n)} = P(X_n=i, X_{n-1} \neq i, \dots, X_1 \neq i \mid X_0=i)
+\end{equation}
 
-$f_i = \sum_{n=1}^{\infty} f_{ii}^{(n)}$
+\begin{equation}
+f_i = \sum_{n=1}^{\infty} f_{ii}^{(n)}
+\end{equation}
 
 \rule{0.4\textwidth}{0.4pt}
 
@@ -986,29 +1006,22 @@ $f_i = 1$ - $i$ recurrente
 \end{mdframed}
 
 
-\subsection*{Teorema}
-
-Para una cadena de Markov con matriz de transición $P = (P_{ij})$:
-
+\teorema{Para una cadena de Markov con matriz de transición $P = (P_{ij})$:
 \begin{itemize}
     \item $\sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty$ si, y solo si el estado $i$ es recurrente
     \item $\sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty$ si, y solo si el estado $i$ es transitorio
-\end{itemize}
+\end{itemize}}
 
 \textbf{Demostración:} Tarea.
 
-\subsection*{Propiedad.}
-
-Sean $j$ y $k$ estados de una cadena de Markov entonces:
+\textbf{Propiedad}: Sean $j$ y $k$ estados de una cadena de Markov entonces:
 
 \begin{enumerate}
     \item Si $j$ es recurrente y $j \leftrightarrow k$ entonces $k$ es recurrente
     \item Si $j$ es transitorio y $j \leftrightarrow k$ entonces $k$ es transitorio
 \end{enumerate}
 
-\textbf{Demostración.}
-
-Sea $j$ recurrente y $j \leftrightarrow k$.
+\textbf{Demostración}: Sea $j$ recurrente y $j \leftrightarrow k$.
 
 \begin{itemize}
     \item $j$ recurrente $\leftrightarrow \sum_{t=0}^{\infty} P_{jj}^{(t)} = \infty$
@@ -1023,17 +1036,13 @@ P_{kk}^{n+m+t} \geq P_{kj}^{(m)} P_{jj}^{(t)} P_{jk}^{(n)}
 \sum_{t=0}^{\infty} P_{kk}^{n+m+t} \geq P_{kj}^{(m)} P_{jk}^{(n)} \sum_{t=0}^{\infty} P_{jj}^{(t)} = \infty
 \end{equation*}
 
-Por teorema (*) $k$ es recurrente.
+Por teorema presentado anteriormente $k$ es recurrente.
 
-Tarea!
+\textbf{Nota}: La demostración del caso transitorio es análoga.
 
-\subsection*{Propiedad}
+\textbf{Propiedad}: Sea $X_n$ una cadena de Markov y $j$ uno de sus estados. El estado $j$ es recurrente, si y solo si el número esperado de visitas al estado $j$ es infinito, comenzando en $j$.
 
-Sea $X_n$ una cadena de Markov y $j$ uno de sus estados. El estado $j$ es recurrente, si y solo si el número esperado de visitas al estado $j$ es infinito, comenzando en $j$.
-
-\subsection*{Demostración:}
-
-Iniciamos por:
+\textbf{Demostración}: Iniciamos por:
 
 \begin{equation*}
 E(I_n) = P(X_n = j)
@@ -1066,7 +1075,7 @@ $P(X_2=j \mid X_0=j)$
 \end{tikzpicture}
 \end{center}
 
-$\sum_{n=0}^{\infty} I_n :=$ \# de visitas al estado $j$
+$\sum_{n=0}^{\infty} I_n :=$ número de visitas al estado $j$
 
 \begin{align*}
 E\left(\sum_{n=0}^{\infty} I_n \mid X_0=j\right) &= \sum_{n=0}^{\infty} E(I_n \mid X_0=j) \\
@@ -1102,41 +1111,30 @@ E\left(\sum_{n=0}^{\infty} I_n \mid X_0=j\right) &= \sum_{n=0}^{\infty} E(I_n \m
 \end{tikzpicture}
 \end{center}
 
-\subsection*{Clasificación de estados recurrentes}
-
-\textbf{Definición:} Sea
-
+\definicion{Sea
 \begin{equation*}
 \tau_i = \min\{n \geq 1: X_n=i\}
 \end{equation*}
-
 el tiempo de retorno al estado $i$.
 
 \begin{equation*}
 E(\tau_i \mid X_0=i)
 \end{equation*}
-
 es el tiempo esperado de retorno al estado $i$.
 
 \begin{equation*}
 m_i = E(\tau_i \mid X_0=i) = \sum_{n=1}^{\infty} n \cdot f_{ii}^{(n)}
-\end{equation*}
+\end{equation*}}
 
-\subsection*{Definición:}
-Se dice que un estado recurrente es:
+\definicion{Se dice que un estado recurrente es:
 \begin{enumerate}
     \item recurrente positivo si $m_i < \infty$.
     \item recurrente nulo si $m_i = \infty$.
-\end{enumerate}
+\end{enumerate}}
 
-\subsection*{Observación:}
-Si $\mathcal{S}$ es finito todo estado recurrente es recurrente positivo.
+\textbf{Observación}: Si el espacio de estados $S$ es finito todo estado recurrente es recurrente positivo. Si además $j$ es recurrente positivo (nulo) y $j \leftrightarrow k$ entonces $k$ es recurrente positivo (nulo).
 
-\begin{itemize}
-    \item Si $j$ es recurrente positivo (nulo) y $j \leftrightarrow k$ entonces $k$ es recurrente positivo (nulo).
-\end{itemize}
-
-\subsection*{Ejemplo:}
+\textbf{Ejemplo}:
 
 \begin{center}
 \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.5cm,
@@ -1181,9 +1179,7 @@ El 1 es recurrente positivo; pues $m_1 = \frac{11}{6} < \infty$.
 
 Y como $1 \leftrightarrow 2$ entonces 2 es recurrente positivo.
 
-\subsection*{Ejemplo:}
-
-Consideremos la siguiente cadena de Markov.
+\textbf{Ejemplo}: Consideremos la siguiente cadena de Markov.
 
 \begin{equation*}
 P_{ij} = \begin{cases}
@@ -1242,7 +1238,9 @@ f_{00}^{(5)} &= P(X_5=0, X_4 \neq 0, X_3 \neq 0, X_2 \neq 0, X_1 \neq 0 \mid X_0
 \end{align*}
 
 
-$f_{00}^{(n)} = \frac{1}{n} \times \frac{1}{n-1}$ para $n \geq 2$
+\begin{equation}
+f_{00}^{(n)} = \frac{1}{n} \times \frac{1}{n-1} \quad \text{para } n \geq 2
+\end{equation}
 
 ¿$f_0 = 1$?
 
@@ -1253,8 +1251,9 @@ f_0 &= \sum_{n=1}^{\infty} f_{00}^{(n)} \\
 \end{align*}
 
 Serie telescópica:
-
-$1/1 - 1/2 + 1/2 - 1/3 + 1/3 - 1/4 + 1/4 - 1/5 + \cdots + 1/(m-1) - 1/m$
+\begin{equation}
+1/1 - 1/2 + 1/2 - 1/3 + 1/3 - 1/4 + 1/4 - 1/5 + \cdots + 1/(m-1) - 1/m
+\end{equation}
 
 \begin{align*}
 &= 1 - 1/m \\
@@ -1279,7 +1278,7 @@ m_0 &= \sum_{n=1}^{\infty} n f_{00}^{(n)} \\
 &= \infty
 \end{align*}
 
-0 es recurrente nulo y como $j \leftrightarrow 0$; $j \in S$ entonces todos los estados son recurrentes nulos.
+El estado 0 es recurrente nulo y como $j \leftrightarrow 0$; $j \in S$ entonces todos los estados son recurrentes nulos.
 
 \begin{center}
 \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2cm,
@@ -1310,15 +1309,16 @@ m_0 &= \sum_{n=1}^{\infty} n f_{00}^{(n)} \\
 \end{center}
 
 $P^n(0,0) = \begin{cases}
-\infty & \text{si } n \text{ es par} \\
+> 0 & \text{si } n \text{ es par} \\
 0 & \text{si } n \text{ es impar}
 \end{cases}$
 
 \section*{Periodicidad de la cadena}
 
-\textbf{Definición:} Se dice que el estado $i$ tiene periodo $d$ si
-
-$d = \text{mcd} \{n: P_{ii}^{(n)} > 0\}$
+\definicion{Se dice que el estado $i$ tiene periodo $d$ si
+\begin{equation}
+d = \text{mcd} \{n: P_{ii}^{(n)} > 0\}
+\end{equation}
 
 \begin{itemize}
     \item Si $d=1$ entonces el estado $i$ es aperiódico.
@@ -1327,14 +1327,16 @@ $d = \text{mcd} \{n: P_{ii}^{(n)} > 0\}$
 
 Diremos que la cadena es aperiódica si todos sus estados son aperiódicos.
 
-\subsection*{Propiedades de Periodicidad}
+}
+
+\textbf{Propiedades}:
 
 \begin{enumerate}
     \item Si $i$ tiene periodo $d$ y $i \leftrightarrow j$ entonces $j$ tiene periodo $d$.
     \item Si $P_{ii} > 0$ entonces $i$ es aperiódico ($d=1$).
 \end{enumerate}
 
-\subsection*{Ejemplo: Considere}
+\textbf{Ejemplo}: Considere
 
 \begin{equation*}
 P = \begin{pmatrix}
@@ -1398,15 +1400,13 @@ P = \begin{pmatrix}
 \end{tikzpicture}
 \end{center}
 
-\subsection*{Clases de Equivalencia}
+Las siguientes son las clases de equivalencia identificadas:
 
 \begin{align*}
 C_1 &= \{5, 1\} \\
 C_2 &= \{3, 2\} \\
 C_3 &= \{4, 6, 7\}
 \end{align*}
-
-\subsection*{Cálculo de Periodicidad}
 
 Para cada estado $i$, calculamos $d_i = \text{mcd} \{n: P^n(i,i) > 0\}$:
 
@@ -1421,15 +1421,14 @@ d_4 &= d_6 = 1
 
 \section*{Probabilidades Estacionarias}
 
-\textbf{Definición:} $\pi$ es una medida estacionaria si
-
-$\pi P = \pi$
-
+\definicion{$\pi$ es una medida estacionaria si
+\begin{equation}
+\pi P = \pi
+\end{equation}
 donde $\pi P_j = P(X_n = j)$
+}
 
-\subsection*{Ejemplo}
-
-Considere la distribución inicial $\pi_0 = (0.2, 0.8)$ y la matriz de transición:
+\textbf{Ejemplo}: Considere la distribución inicial $\pi_0 = (0.2, 0.8)$ y la matriz de transición:
 
 \begin{equation*}
 P = \begin{pmatrix}
@@ -1446,9 +1445,7 @@ P(X_1 = 0) &= 0.3 \times 0.2 + 0.8 \times 0.1 \\
 &= 0.14
 \end{align*}
 
-\subsection*{Ejemplo:}
-
-Considere la matriz de transición:
+\textbf{Ejemplo}: Considere la matriz de transición:
 
 \begin{equation*}
 P = \begin{pmatrix}
@@ -1479,22 +1476,19 @@ Esto nos da el sistema de ecuaciones:
 \end{align*}
 
 Con la condición de normalización:
-
-$\pi_1 + \pi_2 + \pi_3 = 1$
+\begin{equation}
+\pi_1 + \pi_2 + \pi_3 = 1
+\end{equation}
 
 Resolviendo el sistema:
 
 \begin{align*}
-\pi_1 &= \frac{8}{19} \\
-\pi_2 &= \frac{6}{19} \\
-\pi_3 &= \frac{5}{19}
+\pi_1 &= \frac{8}{19}, \quad \pi_2 = \frac{6}{19}, \quad \pi_3 = \frac{5}{19}
 \end{align*}
 
 Por lo tanto, $P(X_{m-1} = 1) = \frac{8}{19}$.
 
-\subsection*{Ejemplo:}
-
-Considere la matriz de transición:
+\textbf{Ejemplo}: Considere la matriz de transición:
 
 \begin{equation*}
 P = \begin{pmatrix}
@@ -1556,13 +1550,11 @@ Como $\pi_2 = 0$, tenemos: $\pi_1 + \pi_3 = 1$
 
 Por lo tanto, $\pi = (\alpha, 0, 1-\alpha)$ donde $\alpha \in (0,1)$.
 
-\subsection*{Propiedad:} 
-La cadena de Markov tiene una única medida estacionaria si es irreducible (recurrencia positiva).
+\textbf{Propiedad}: La cadena de Markov tiene una única medida estacionaria si es irreducible (recurrencia positiva).
 
-\subsection*{Propiedad:} 
-Si $\pi$ es una medida estacionaria, entonces $X_n \sim \pi$. $P_{\pi}(X_n=j) = \pi(j)$.
+\textbf{Propiedad}: Si $\pi$ es una medida estacionaria, entonces $X_n \sim \pi$. $P_{\pi}(X_n=j) = \pi(j)$.
 
-\subsection*{Demostración:}
+\textbf{Demostración}:
 
 \begin{itemize}
     \item $\pi P = \pi$
@@ -1575,16 +1567,20 @@ Si $\pi$ es una medida estacionaria, entonces $X_n \sim \pi$. $P_{\pi}(X_n=j) = 
 \end{itemize}
 
 Si $X_0 \sim \pi$ entonces $X_n \sim \pi$.
+\begin{equation}
+P(X_n=j) = \pi(j)
+\end{equation}
 
-$P(X_n=j) = \pi(j)$
-
-\subsection*{Teorema:} 
-
-Si la cadena de Markov es irreducible y sus estados son recurrentes positivos, entonces la medida estacionaria $\pi$ existe y es única. Además:
-
+\teorema{Si la cadena de Markov es irreducible y sus estados son recurrentes positivos, entonces la medida estacionaria $\pi$ existe y es única. Además:
 \begin{equation*}
 \pi_i = \frac{1}{m_i}, \quad i \in S
 \end{equation*}
+donde $m_i$ es el \textbf{tiempo medio de retorno} al estado $i$, es decir,
+\begin{equation*}
+m_i = E(\tau_i \mid X_0=i) = \sum_{n=1}^{\infty} n \cdot f_{ii}^{(n)}
+\end{equation*}
+(esperanza del tiempo hasta regresar a $i$ partiendo de $i$)
+}
 
 \begin{mdframed}[
     backgroundcolor=gray!10,
@@ -1642,19 +1638,14 @@ $\lim_{n \to \infty} P^{dn}(0,0)$ sí existe.
 
 \end{mdframed}
 
-\subsection*{Teorema}
-
-Sea $X_n$ una cadena de Markov $\{X_n\}_{n \geq 0}$ cuyos estados son irreducibles; recurrentes positivos y aperiódicos. Entonces:
-
+\teorema{Sea $X_n$ una cadena de Markov $\{X_n\}_{n \geq 0}$ cuyos estados son irreducibles; recurrentes positivos y aperiódicos. Entonces:
 \begin{equation*}
 \lim_{n \to \infty} P^n(x,y) = \pi(y)
-\end{equation*}
+\end{equation*}}
 
-\subsection*{Demostración}
+\textbf{Demostración}: Estudio personal.
 
-Estudio personal.
-
-\subsection*{Observación}
+\textbf{Observación}:
 
 \begin{itemize}
     \item Si $S$ es finito todos los estados recurrentes son recurrentes positivos
@@ -1681,16 +1672,16 @@ $\frac{1}{n} \sum_{i=1}^{n} X_i \xrightarrow{\text{C.S.}} E(X)$.
 \section*{Ley Fuerte de los Grandes Números}
 
 Suponga que $\{X_n\}_{n \geq 1}$ cumplió con las condiciones del teorema anterior y sea $r(\cdot)$ una función tal que:
-
-$\sum_{x} |r(x)| \pi(x) < \infty$
+\begin{equation}
+\sum_{x} |r(x)| \pi(x) < \infty
+\end{equation}
 
 entonces:
+\begin{equation}
+\frac{1}{n} \sum_{k=1}^{n} r(X_k) \xrightarrow{\text{C.S.}} E_{\pi}(r(X)) = \sum_{x} r(x) \pi(x)
+\end{equation}
 
-$\frac{1}{n} \sum_{k=1}^{n} r(X_k) \xrightarrow{\text{C.S.}} E_{\pi}(r(X)) = \sum_{x} r(x) \pi(x)$
-
-\section*{Ejercicio}
-
-Sea $X_n$ la cantidad de stock de un determinado producto en una tienda al final del día $n$ y $D_{n+1}$ la demanda del producto en el día $n+1$.
+\textbf{Ejercicio}: Sea $X_n$ la cantidad de stock de un determinado producto en una tienda al final del día $n$ y $D_{n+1}$ la demanda del producto en el día $n+1$.
 
 Cuando el stock al final del día es menor o igual a 1 unidad, ordenamos la cantidad necesaria para volver a tener 5 unidades.
 
@@ -1713,7 +1704,7 @@ $P(D_{n+1}=k)$ & 0.3 & 0.4 & 0.2 & 0.1 \\
 \end{tabular}
 \end{center}
 
-\textbf{Problema 1.} Determina la matriz de transición.
+\textbf{Problema 1}: Determina la matriz de transición.
 
 \begin{align*}
 P(0,0) &= 0 \\
@@ -1742,7 +1733,7 @@ P = \begin{pmatrix}
 \end{pmatrix}
 \end{equation*}
 
-\textbf{Problema 2:} Suponga que ganamos \$12 mil pesos por cada unidad vendida y tiene un costo de \$2 mil pesos almacenar. ¿Cuál es la ganancia a largo plazo por día?
+\textbf{Problema 2}: Suponga que ganamos \$12 mil pesos por cada unidad vendida y tiene un costo de \$2 mil pesos almacenar. ¿Cuál es la ganancia a largo plazo por día?
 
 Calculamos el período de la cadena:
 \begin{equation*}

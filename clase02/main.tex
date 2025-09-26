@@ -1,28 +1,99 @@
-\documentclass[12pt]{article}
-\usepackage{amsmath, amssymb}
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
 \usepackage{tikz}
-\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.pathreplacing,automata,positioning}
+\geometry{margin=1in}
+\usepackage{enumitem}
+\usepackage[framemethod=tikz]{mdframed}
 
 % Eliminar sangría de párrafos
 \setlength{\parindent}{0pt}
 
-\begin{document}
+% Macro para definiciones
+\newmdenv[
+    backgroundcolor=blue!5,
+    linecolor=blue!40,
+    linewidth=1.5pt,
+    roundcorner=5pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+    leftmargin=0pt,
+    rightmargin=0pt
+]{definicionbox}
 
-\section*{Procesos de Poisson}
+\newcommand{\definicion}[1]{%
+\begin{definicionbox}
+\textbf{Definición}: #1
+\end{definicionbox}
+}
+
+% Macro para teoremas
+\newmdenv[
+    backgroundcolor=green!5,
+    linecolor=green!50,
+    linewidth=1.5pt,
+    roundcorner=5pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+    leftmargin=0pt,
+    rightmargin=0pt
+]{teoremabox}
+
+\newcommand{\teorema}[1]{%
+\begin{teoremabox}
+\textbf{Teorema}: #1
+\end{teoremabox}
+}
+
+% Macro para lemas
+\newmdenv[
+    backgroundcolor=green!5,
+    linecolor=green!50,
+    linewidth=1.5pt,
+    roundcorner=5pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+    leftmargin=0pt,
+    rightmargin=0pt
+]{lemabox}
+
+\newcommand{\lema}[1]{%
+\begin{lemabox}
+\textbf{Lema}: #1
+\end{lemabox}
+}
+
+\title{Procesos de Poisson y Cadenas de Markov en Tiempo Continuo}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Procesos de Poisson}
 
 Consideremos, para cada $t \geq 0$, el número de eventos que ocurren hasta el tiempo $t$, y lo denotamos por $N(t)$.
 
-\textbf{Definición}: Un incremento es 
+\definicion{Un incremento es 
 \begin{equation*}
 N(t) - N(s)
 \end{equation*}
-donde $t > s$.
+donde $t > s$.}
 
-\textbf{Definición}: $N(t)$ tiene incrementos estacionarios si para todo $h \geq 0$; $t_1, t_2, s \in \mathbb{R}_{0}^+$ y $t_1 \leq t_{2}$.
+\definicion{$N(t)$ tiene incrementos estacionarios si para todo $h \geq 0$; $t_1, t_2, s \in \mathbb{R}_{0}^+$ y $t_1 \leq t_{2}$.
 \begin{equation*}
 \mathbb{P}\big(N(t_{2}) - N(t_{1}) = n\big) 
 = \mathbb{P}\big(N(t_{2}+s) - N(t_{1}+s) = n\big)
-\end{equation*}
+\end{equation*}}
 
 \begin{center}
 \begin{tikzpicture}
@@ -35,16 +106,15 @@ donde $t > s$.
 \end{tikzpicture}
 \end{center}
 
-\textbf{Definición}: $N(t)$ tiene incrementos independientes. Si $t_{0} < t_{1} < \dots < t_{n}$ entonces las variables aleatorias
+\definicion{$N(t)$ tiene incrementos independientes. Si $t_{0} < t_{1} < \dots < t_{n}$ entonces las variables aleatorias
 \begin{equation*}
 N(t_{1}) - N(t_{0}), \quad 
 N(t_{2}) - N(t_{1}), \quad \dots, \quad 
 N(t_{n}) - N(t_{n-1})
 \end{equation*}
-son independientes.
+son independientes.}
 
-\textbf{Definición}: Un proceso $\{N(t)\}_{t \geq 0}$ es un \textbf{proceso de Poisson} de tasa $\lambda > 0$ si cumple:
-
+\definicion{Un proceso $\{N(t)\}_{t \geq 0}$ es un \textbf{proceso de Poisson} de tasa $\lambda > 0$ si cumple:
 \begin{enumerate}
     \item $N(0) = 0$.
     \item El proceso $N(t)$ tiene incrementos independientes.
@@ -54,18 +124,14 @@ son independientes.
     = e^{-\lambda t} \, \frac{(\lambda t)^n}{n!}, 
     \quad n = 0,1,2,\dots
     \end{equation*}
-\end{enumerate}
+\end{enumerate}}
 
 \textbf{Ejemplo}: En cierto cruce, el número de infracciones que ocurren sigue un proceso de Poisson con tasa de $5$ accidentes/día.  
 Determine la probabilidad de que haya al menos $2$ infracciones en las siguientes $6$ horas.
 
 \textbf{Solución}:
 
-Sea $N(t)$: número de accidentes hasta el tiempo $t$. Como obtener
-
-\begin{equation*}
-\mathbb{P}\big(N(1/4) \geq 2\big)\; ?
-\end{equation*}
+Sea $N(t)$: número de accidentes hasta el tiempo $t$. ¿Cómo obtener $\mathbb{P}\big(N(1/4) \geq 2\big)$?
 
 
 \begin{equation*}
@@ -80,6 +146,13 @@ entonces
 = 1 - \mathbb{P}\big(N(1/4) = 1\big) - \mathbb{P}\big(N(1/4) = 0\big).
 \end{equation*}
 
+Como $N(1/4) \sim \text{Poisson}(5/4)$, tenemos:
+\begin{align*}
+\mathbb{P}\big(N(1/4) = 0\big) &= e^{-5/4} \frac{(5/4)^0}{0!} = e^{-5/4} \\
+\mathbb{P}\big(N(1/4) = 1\big) &= e^{-5/4} \frac{(5/4)^1}{1!} = e^{-5/4} \cdot \tfrac{5}{4}
+\end{align*}
+
+Por lo tanto,
 \begin{equation*}
 \mathbb{P}\big(N(1/4) \geq 2\big) 
 = 1 - e^{-5/4}\frac{(5/4)^1}{1!} - e^{-5/4}\frac{(5/4)^0}{0!}
@@ -157,17 +230,16 @@ Por independencia de incrementos:
 = 3.4 \times 10^{-5}.
 \end{equation*}
 
-\textbf{Definición 1}:
+\subsection{Procesos de Conteo}
 
-\begin{enumerate}
+\definicion{(1):
+\begin{itemize}
     \item $N(0)$
-    \item Incrementos independientes y estacionarios
+    \item El proceso tiene incrementos independientes y estacionarios
     \item Los incrementos tienen distribución Poisson
-\end{enumerate}
+\end{itemize}}
 
-\textbf{Procesos de Conteo}
-
-\textbf{Definición}: Se dice que $\{N(t)\}_{t \geq 0}$ es un proceso de conteo si $N(t)$ representa el número de eventos que han ocurrido hasta el tiempo $t$.
+\definicion{Se dice que $\{N(t)\}_{t \geq 0}$ es un proceso de conteo si $N(t)$ representa el número de eventos que han ocurrido hasta el tiempo $t$.}
 
 \textbf{Propiedades}:
 
@@ -178,10 +250,10 @@ Por independencia de incrementos:
     \item $N(t) - N(s)$ es el número de eventos en el intervalo $(s,t]$.
 \end{enumerate}
 
-\textbf{Definición}: Una función $f : \mathbb{R} \to \mathbb{R}$ es $o(h)$ si 
+\definicion{Una función $f : \mathbb{R} \to \mathbb{R}$ es $o(h)$ si 
 \begin{equation*}
 \lim_{h \to 0} \frac{f(h)}{h} = 0.
-\end{equation*}
+\end{equation*}}
 
 Si una función $f$ es $o(h)$, se escribe
 \begin{equation*}
@@ -207,16 +279,13 @@ f(h) = o(h).
 \textbf{Ejemplo}: Para $r \leq 1$, $f(x) = x^r$.  
 ¿Es $f = o(h)$?
 
-\textbf{Definición 2}:
-
-Se dice que un proceso de conteo $\{N(t)\}_{t \geq 0}$ es un \textbf{proceso de Poisson} con tasa $\lambda > 0$, si cumple:
-
+\definicion{(2) Se dice que un proceso de conteo $\{N(t)\}_{t \geq 0}$ es un \textbf{proceso de Poisson} con tasa $\lambda > 0$, si cumple:
 \begin{enumerate}
     \item $N(0) = 0$,
     \item El proceso tiene incrementos estacionarios e independientes,
     \item $\mathbb{P}(N(h) = 1) = \lambda h + o(h)$,
     \item $\mathbb{P}(N(h) \geq 2) = o(h)$.
-\end{enumerate}
+\end{enumerate}}
 
 
 \begin{center}
@@ -248,28 +317,16 @@ Se dice que un proceso de conteo $\{N(t)\}_{t \geq 0}$ es un \textbf{proceso de 
 \mathbb{P}(X = x) = \text{Bin}(n, p = \tfrac{\lambda}{n})
 \end{equation*}
 
-\textbf{Teorema}:
-
-\begin{center}
-\begin{tikzpicture}
-  % Ovalo irregular alrededor del teorema
-  \draw[thick, blue, rounded corners] (-1,-0.5) rectangle (8,1.5);
-  \node at (3.5,0.5) {$\text{Bin}(n, p(n)) \;\;\longrightarrow\;\; \text{Poisson}(\lambda)$};
-\end{tikzpicture}
-\end{center}
-
-cuando 
-
+\teorema{Si $X_n \sim \text{Bin}(n, p(n))$ y $n \, p(n) \to \lambda$ cuando $n \to \infty$, entonces
 \begin{equation*}
-n \, p(n) \;\;\longrightarrow\;\; \lambda.
-\end{equation*}
+X_n \xrightarrow{d} \text{Poisson}(\lambda)
+\end{equation*}}
 
-\textbf{Teorema}: Las definiciones (1) y (2) son equivalentes:
-
+\teorema{Las definiciones (1) y (2) son equivalentes:
 \begin{itemize}
     \item $N(0) = 0$
     \item Incrementos estacionarios e independientes; los incrementos tienen distribución Poisson
-\end{itemize}
+\end{itemize}}
 
 Demostración:
 
@@ -406,12 +463,36 @@ P(N(h) \geq 2) &= 1 - P(N(h)=0) - P(N(h)=1) \\
 Por lo tanto, se ha demostrado que las definiciones (1) y (2) son equivalentes.
 
 % Continuacion de la clase 02 septiembre 01 2025
+% ===================== Contenido del pizarrón =====================
 
-\subsection*{Lema}
+\textbf{Proceso de Poisson}
 
-$N(s)$ tiene distribución Poisson$(\lambda s)$.
+\definicion{
+(1) Un proceso de Poisson cumple:
+\begin{enumerate}
+    \item $N(0) = 0$
+    \item Tiene incrementos independientes
+    \item Tiene incrementos estacionarios
+    \begin{equation*}
+    N(t+s) - N(s) \sim \text{Poisson}(\lambda s)
+    \end{equation*}
+\end{enumerate}
+}
 
-\subsubsection*{Idea de la demostración:}
+\textbf{Definición 2}:
+\begin{enumerate}
+    \item $N(0) = 0$
+    \item Incrementos independientes y estacionarios
+    \item $\mathbb{P}(N(h) = 1) = \lambda h + o(h)$
+    \item $\mathbb{P}(N(h) \geq 2) = o(h)$
+\end{enumerate}
+
+\definicion{(3) Sean $t_1, t_2, t_3, (iid) \sim \text{exp}(\lambda)$. Y sea $T_n = \sum_{i=1}^{n} t_i$ con $T_0 = 0$, el proceso $N(s) = \max\{n : T_n \leq s\}$ es un proceso de Poisson.}
+
+
+\lema{$N(s)$ tiene distribución Poisson$(\lambda s)$.}
+
+\textbf{Idea de la demostración:}
 
 Nota: $\int_0^{\infty} \lambda (\lambda x)^{n-1} \frac{e^{-\lambda x}}{(n-1)!} dx = 1 - \sum_{k=0}^{n-1} \frac{(\lambda t)^k}{k!} e^{-\lambda t}$
 
@@ -443,11 +524,9 @@ Luego:
 \Rightarrow N(t) \sim \text{Poisson}(\lambda t).
 \end{equation*}
 
-\subsection*{Lema}
+\lema{$N(t+c) - N(c)$, $t \geq 0$ es un proceso de Poisson con tasa $\lambda$ e independiente de $N(r)$; $0 \leq r \leq s$.}
 
-$N(t+c) - N(c)$, $t \geq 0$ es un proceso de Poisson con tasa $\lambda$ e independiente de $N(r)$; $0 \leq r \leq s$.
-
-\subsubsection*{Idea de la demostración}
+\textbf{Idea de la demostración}
 
 \begin{center}
 \begin{tikzpicture}[scale=0.8]
@@ -472,17 +551,12 @@ $N(t+c) - N(c)$, $t \geq 0$ es un proceso de Poisson con tasa $\lambda$ e indepe
 
 \textbf{Tarea: Definición (1) $\longrightarrow$ Definición (3)}
 
-\subsection*{Características de un Proceso de Poisson}
+\subsection{Características de un Proceso de Poisson}
 
-\textbf{Teorema}: Sea $\{N(t)\}_{t \geq 0}$ un PP$(\lambda)$.
-
-Suponga que para un $t > 0$ fijo, $N(t) = n$.
-
-Entonces para $0 \leq u < t$, el número de eventos que han ocurrido antes de $u$ es una v.a. Bin$(n, \frac{u}{t})$, es decir:
-
+\teorema{Sea $\{N(t)\}_{t \geq 0}$ un PP$(\lambda)$. Suponga que para un $t > 0$ fijo, $N(t) = n$. Entonces para $0 \leq u < t$, el número de eventos que han ocurrido antes de $u$ es una v.a. Bin$(n, \frac{u}{t})$, es decir:
 \begin{equation*}
 \mathbb{P}(N(u) = x \mid N(t) = n) = \binom{n}{x} \left(\frac{u}{t}\right)^x \left(1 - \frac{u}{t}\right)^{n-x}
-\end{equation*}
+\end{equation*}}
 
 \subsubsection*{Demostración:}
 
@@ -540,13 +614,11 @@ Por independencia de incrementos:
 = \binom{n}{x} \left(\frac{u}{t}\right)^x \left(1 - \frac{u}{t}\right)^{n-x}
 \end{equation*}
 
-\textbf{Teorema}: Sean $N_1, N_2, \ldots, N_k$ procesos de Poisson independientes con intensidades $\lambda_1, \lambda_2, \ldots, \lambda_k$ entonces:
-
+\teorema{Sean $N_1, N_2, \ldots, N_k$ procesos de Poisson independientes con intensidades $\lambda_1, \lambda_2, \ldots, \lambda_k$ entonces:
 \begin{equation*}
 N = N_1 + N_2 + \cdots + N_k
 \end{equation*}
-
-es un proceso de Poisson con tasa $\lambda_1 + \lambda_2 + \cdots + \lambda_k$.
+es un proceso de Poisson con tasa $\lambda_1 + \lambda_2 + \cdots + \lambda_k$.}
 
 \textbf{Demostración}: $k = 2$
 
@@ -596,7 +668,7 @@ es un proceso de Poisson con tasa $\lambda_1 + \lambda_2 + \cdots + \lambda_k$.
 = \binom{n}{x} \left(\frac{\lambda u}{\lambda t}\right)^x \left(\frac{\lambda(t-u)}{\lambda t}\right)^{n-x}
 \end{equation*}
 
-\textbf{Teorema}: Sea $N$ un PP$(\lambda)$ y $N_j$ número de eventos de tipo $j$. tal que $\mathbb{P}(\text{tipo } j) = P_j$, $j = 1, \ldots, k$, entonces $N_j$ es un PP$(\lambda P_j)$.
+\teorema{Sea $N$ un PP$(\lambda)$ y $N_j$ número de eventos de tipo $j$ tal que $\mathbb{P}(\text{tipo } j) = P_j$, $j = 1, \ldots, k$, entonces $N_j$ es un PP$(\lambda P_j)$.}
 
 \textbf{Demostración}: $k = 2$.
 
@@ -667,29 +739,39 @@ $\mathbb{P}(X_1 = n, X_2 = k) = \text{Poisson}(\lambda t p) \cdot \mathbb{P}(\la
 
 Bin$(n, \frac{u}{t})$
 
-\textbf{Teorema}: Sea $N(t)$ un proceso de Poisson con tasa $\lambda$, y suponga que para $t > 0$ fijo, se sabe que $N(t) = n$. Entonces
-
-$T_1, T_2, \ldots, T_n$ dado $N(t) = n$ tiene densidad
-
-$f(t_1, t_2, \ldots, t_n \mid N(t) = n) = \frac{n!}{t^n}, 0 < t_1 < t_2 < \ldots < t_n$
+\teorema{Sea $N(t)$ un proceso de Poisson con tasa $\lambda$, y suponga que para $t > 0$ fijo, se sabe que $N(t) = n$. Entonces $T_1, T_2, \ldots, T_n$ dado $N(t) = n$ tiene densidad
+\begin{equation*}
+f(t_1, t_2, \ldots, t_n \mid N(t) = n) = \frac{n!}{t^n}, \quad 0 < t_1 < t_2 < \ldots < t_n
+\end{equation*}}
 
 \textbf{Demostración}: $0 < t_1 < t_2 < t_3 < \ldots < t_n < t$.
 
-$F(t_1, \ldots, t_n \mid N(t) = n) =$
+\begin{equation*}
+F(t_1, \ldots, t_n \mid N(t) = n) = \mathbb{P}(T_1 \leq t_1, T_2 \leq t_2, \ldots, T_n \leq t_n \mid N(t) = n)
+\end{equation*}
 
-$= \mathbb{P}(T_1 \leq t_1, T_2 \leq t_2, \ldots, T_n \leq t_n \mid N(t) = n)$.
-
-$= \frac{\mathbb{P}(T_1 \leq t_1, \ldots, T_n \leq t_n, N(t) = n)}{\mathbb{P}(N(t) = n)}$.
+\begin{equation*}
+= \frac{\mathbb{P}(T_1 \leq t_1, \ldots, T_n \leq t_n, N(t) = n)}{\mathbb{P}(N(t) = n)}
+\end{equation*}
 
 Nota que: $\{T_1 \leq t_1, \ldots, T_n \leq t_n, N(t) = n\}$ es equivalente al evento "un y solo un cliente llega en los intervalos $[0, t_1], [t_1, t_2], \ldots, [t_{n-1}, t_n]$ y ningún cliente llega en $(t_n, t]$.
 
-$P(t_1, \ldots, t_n \mid n) = \frac{e^{-\lambda t_1} \lambda t_1 \cdot e^{-\lambda(t_2-t_1)} \lambda(t_2-t_1) \cdots \times e^{-\lambda(t_n-t_{n-1})} \lambda(t_n-t_{n-1}) e^{-\lambda(t-t_n)}}{\frac{e^{-\lambda t} (\lambda t)^n}{n!}}$
+\begin{equation*}
+P(t_1, \ldots, t_n \mid n) = \frac{e^{-\lambda t_1} \lambda t_1 \cdot e^{-\lambda(t_2-t_1)} \lambda(t_2-t_1) \cdots e^{-\lambda(t_n-t_{n-1})} \lambda(t_n-t_{n-1}) e^{-\lambda(t-t_n)}}{\frac{e^{-\lambda t} (\lambda t)^n}{n!}}
+\end{equation*}
 
-$= \frac{e^{-\lambda t} \lambda^n (t_1(t_2-t_1)\cdots(t_n-t_{n-1}))}{\frac{e^{-\lambda t} \lambda^n t^n}{n!}}$
+\begin{equation*}
+= \frac{e^{-\lambda t} \lambda^n (t_1(t_2-t_1)\cdots(t_n-t_{n-1}))}{\frac{e^{-\lambda t} \lambda^n t^n}{n!}}
+\end{equation*}
 
-$= \frac{n! (t_1(t_2-t_1)\cdots(t_n-t_{n-1}))}{t^n}$
+\begin{equation*}
+= \frac{n! (t_1(t_2-t_1)\cdots(t_n-t_{n-1}))}{t^n}
+\end{equation*}
 
-Luego: $\frac{\partial^n F}{\partial t_1 \partial t_2 \cdots \partial t_n} = \frac{n!}{t^n}$.
+Luego:
+\begin{equation*}
+\frac{\partial^n F}{\partial t_1 \partial t_2 \cdots \partial t_n} = \frac{n!}{t^n}
+\end{equation*}
 
 % el profesor aca menciona algo sobre la base de datos
 
@@ -698,33 +780,27 @@ Luego: $\frac{\partial^n F}{\partial t_1 \partial t_2 \cdots \partial t_n} = \fr
 
 %% Clase 8 de septiembre
 
-\section*{Proceso de Poisson compuesto}
+\section{Proceso de Poisson compuesto}
 
-Sea $X_1, X_2, \ldots$ i.i.d., $N$ entera no negativa.
-
-\begin{equation*}
-S_N = \sum_{i=1}^{N} X_i, \quad S_t = \sum_{i=1}^{0} X_i
-\end{equation*}
+Sea $X_1, X_2, \ldots$ i.i.d., $N$ variable aleatoria entera no negativa.
 
 \begin{equation*}
-E(S_N) = \sum_{i=1}^{N} E(X_i) = NE(X_i)
+  S_N = \sum_{i=1}^{N} X_i, \quad S_t = \sum_{i=1}^{0} X_i
 \end{equation*}
 
-Var$(S_N) = N$ Var$(X_1)$
+\begin{align*}
+E(S_N) &= \sum_{i=1}^{N} E(X_i) = N E(X_i), \\
+\mathrm{Var}(S_N) &= N\, \mathrm{Var}(X_i), \\
+E(X|Y=y) &= \sum_{x} x\, P(X=x|Y=y), \\
+E(Y) &= \sum_{y} y\, P(y)
+\end{align*}
 
+
+\teorema{(Esperanza total) Para variables aleatorias $X$ e $Y$,
 \begin{equation*}
-E(X|Y=y) = \sum_{x} x P(X=x|Y=y)
+E(X) = E_Y\big(E(X|Y)\big)
 \end{equation*}
-
-\begin{equation*}
-E(Y) = \sum_{y} y P(y)
-\end{equation*}
-
-\subsection*{Lema esperanza total}
-
-\begin{equation*}
-E(X) = E_Y(E(X|Y))
-\end{equation*}
+}
 
 \textbf{Demostración:}
 
@@ -738,14 +814,14 @@ E_Y(E(X|Y)) &= E\left(\sum_x x \cdot P(X=x|Y)\right) \\
 &= E(X)
 \end{align*}
 
-\textbf{Lema:} Sean $X_1, X_2, \ldots$ i.i.d. con primer y segundo momento finito. Sea $N$ una v.a. independiente y discreta. Consideremos $S_N = \sum_{i=1}^{N} X_i$ con $S_0 = 0$.
-
-1) Si $E(N) < \infty$ entonces $E(S_N) = E(N) \cdot E(X_1)$.
-
-2) Si $E(N^2) < \infty$ entonces 
+\teorema{Sean $X_1, X_2, \ldots$ i.i.d. con primer y segundo momento finito. Sea $N$ una v.a. independiente y discreta. Consideremos $S_N = \sum_{i=1}^{N} X_i$ con $S_0 = 0$.
+\begin{enumerate}
+\item Si $E(N) < \infty$ entonces $E(S_N) = E(N) \cdot E(X_1)$.
+\item Si $E(N^2) < \infty$ entonces 
 \begin{equation*}
 \text{Var}(S_N) = E(N) \text{Var}(X_1) + \text{Var}(N) [E(X_1)]^2
 \end{equation*}
+\end{enumerate}}
 
 \textbf{Demostración:}
 
@@ -791,10 +867,10 @@ Finalmente:
 &= E(N)\text{Var}(X_1) + [E(X_1)]^2\text{Var}(N)
 \end{align*}
 
-\textbf{Obs:} Sea $N(t)$ un proceso de Poisson($\lambda$), entonces:
-
-Definimos $S_t = \sum_{i=1}^{N(t)} X_i$
-
+\textbf{Observación}: Sea $N(t)$ un proceso de Poisson($\lambda$), entonces definimos 
+\begin{equation*}
+S_t = \sum_{i=1}^{N(t)} X_i
+\end{equation*}
 que es llamado un proceso de Poisson compuesto.
 
 \begin{align*}
@@ -831,37 +907,43 @@ E(S_2) &= E(N(2)) \cdot E(X_1) \\
 &= 6(4 + 16) = 120 \text{ libras}^2
 \end{align*}
 
-\section*{Cadenas de Markov en tiempo continuo}
+\section{Cadenas de Markov en tiempo continuo}
 
-\textbf{Definición:} Un proceso en tiempo continuo $\{X_t\}_{t \geq 0}$ es una cadena de Markov. Si para cualquier $0 \leq S_0 \leq S_1 \leq S_n \leq S$ y estados $i_0, \ldots, i_n, i, j$ se tiene:
-
+\definicion{Un proceso en tiempo continuo $\{X_t\}_{t \geq 0}$ es una cadena de Markov si para cualquier $0 \leq S_0 \leq S_1 \leq S_n \leq S$ y estados $i_0, \ldots, i_n, i, j$ se tiene:
 \begin{equation*}
 P\left(X_{t+s} = j \mid X_s = i, X_{s_n} = i_n, \ldots, X_{s_0} = i_0\right) = P(X_{t+s} = j \mid X_s = i)
-\end{equation*}
+\end{equation*}}
 
-\textbf{Ejemplo:} Transformación de una cadena de Markov a tiempo continuo:
-
-Sea $N(t)$ un proceso de Poisson con intensidad $\lambda$ y sea $Y_n$ una C.M. con matriz de transición $U(i,j)$, $i \neq j$.
+\textbf{Ejemplo:} (Transformación de una cadena de Markov a tiempo continuo) Sea $N(t)$ un proceso de Poisson con intensidad $\lambda$ y sea $Y_n$ una cadena de Markov con matriz de transición $U(i,j)$, $i \neq j$.
 
 Entonces $X_t = Y_{N(t)}$ es una cadena de Markov en tiempo continuo.
 
 \begin{center}
-\begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=3cm,
-    semithick,state/.style={circle,draw,font=\bfseries\Large}]
+\begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=3cm,semithick]
+\tikzstyle{every state}=[fill=white,draw=black,text=black,minimum size=30pt,thick]
 
-  \node[state] (1) [above]        {1};
-  \node[state] (2) [below left]   {2};
-  \node[state] (3) [below right]  {3};
+% Posicionar nodos en triángulo equilátero
+\node[state] (1) at (0,2.5) {$1$};
+\node[state] (2) at (-2.2,0) {$2$};
+\node[state] (3) at (2.2,0) {$3$};
 
-  \path (1) edge [loop above] node {} (1)
-            edge [bend left] node {} (2)
-            edge [bend right] node {} (3);
-  \path (2) edge [bend left] node {} (1)
-            edge [loop below] node {} (2)
-            edge [bend left] node {} (3);
-  \path (3) edge [bend right] node {} (1)
-            edge [bend right] node {} (2)
-            edge [loop below] node {} (3);
+% Bucles en cada estado
+\path[thick]
+(1) edge[loop above] node{} (1)
+(2) edge[loop left] node{} (2)
+(3) edge[loop right] node{} (3);
+
+% Conexiones entre estados
+\path[thick]
+% De 1 a 2 y viceversa
+(1) edge[bend left=20] node{} (2)
+(2) edge[bend left=20] node{} (1)
+% De 1 a 3 y viceversa
+(1) edge[bend right=20] node{} (3)
+(3) edge[bend right=20] node{} (1)
+% De 2 a 3 y viceversa
+(2) edge[bend right=15, below] node{} (3)
+(3) edge[bend right=15, above] node{} (2);
 \end{tikzpicture}
 \end{center}
 
@@ -869,21 +951,20 @@ Entonces $X_t = Y_{N(t)}$ es una cadena de Markov en tiempo continuo.
 \begin{tikzpicture}
 \draw[->] (0,0) -- (8,0);
 \node[below] at (0,0) {0};
-\node[below] at (2,0) {$y$};
+\node[below] at (2,0) {$x$};
 \node[below] at (4,0) {$x$};
-\node[above] at (1,0) {$N(t)$};
+\node[above] at (0,0) {$N(t)$};
 \end{tikzpicture}
 \end{center}
 
-\textbf{Definición:} Para $t > 0$ la probabilidad de transición es definida por:
-
+\definicion{Para $t > 0$ la probabilidad de transición es definida por:
 \begin{equation*}
 P_t(i,j) = P(X_t = j | X_0 = i)
-\end{equation*}
+\end{equation*}}
 
 \textbf{Problema:} Calcule la probabilidad de transición del proceso $X_t = Y_{N(t)}$.
 
-\textbf{Sol:}
+\textbf{Solución:}
 
 \begin{align*}
 P_t(i,j) &= P(X_t = j | X_0 = i) \\
@@ -893,25 +974,23 @@ P_t(i,j) &= P(X_t = j | X_0 = i) \\
 &= \sum_{n=0}^{\infty} U^n(i,j) \frac{e^{-\lambda t}(\lambda t)^n}{n!}
 \end{align*}
 
-\textbf{Definición:} La tasa de saltos de una cadena de Markov con probabilidades de transición $P_t(i,j)$ está dada por:
-
+\definicion{La tasa de saltos de una cadena de Markov con probabilidades de transición $P_t(i,j)$ está dada por:
 \begin{equation*}
 q(i,j) = \lim_{\varepsilon \to 0} \frac{P_\varepsilon(i,j)}{\varepsilon}
 \end{equation*}
-
-Para $i \neq j$.
+para $i \neq j$.}
 
 \textbf{Problema:} Tasa de saltos de un proceso de Poisson
 
 Nota que:
 
-• $P_\varepsilon(i,j) = 0$ para $j \neq i$
-
-• $P_\varepsilon(i,j) = P(N(\varepsilon) \geq 1) = j > i+1$
-  $= O(\varepsilon)$
-
-• $P_\varepsilon(i, i+1) = P(N(\varepsilon) = 1)$
-  $= \lambda\varepsilon + O(\varepsilon)$
+\begin{itemize}
+    \item $P_\varepsilon(i,j) = 0$ para $j < i$
+    \item $P_\varepsilon(i,j) = P(N(\varepsilon) > 1)$ para $j > i+1$\\
+    \hspace{1.5em} $= O(\varepsilon)$
+    \item $P_\varepsilon(i, i+1) = P(N(\varepsilon) = 1)$\\
+    \hspace{1.5em} $= \lambda\varepsilon + O(\varepsilon)$
+\end{itemize}
 
 Si $j \neq i$:
 \begin{equation*}
