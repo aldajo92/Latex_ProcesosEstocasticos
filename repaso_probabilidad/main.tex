@@ -1,0 +1,224 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+
+\title{Repaso Conceptos de Probabilidad}
+\author{Alejandro Daniel José Gómez Flórez}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Espacio muestral}
+
+Consideremos el experimento de lanzar tres monedas. Cada moneda puede dar
+\textbf{cara} (1) o \textbf{sello} (0). Por lo tanto, el número total de
+resultados posibles es
+\begin{equation*}
+|\Omega| = 2^3 = 8.
+\end{equation*}
+
+El espacio muestral es:
+\begin{equation*}
+\Omega = \{(0,0,0), (0,0,1), (0,1,0), (0,1,1), (1,0,0), (1,0,1), (1,1,0), (1,1,1)\}.
+\end{equation*}
+
+\subsection{Eventos}
+
+Un \textbf{evento} es cualquier subconjunto del espacio muestral $\Omega$. En nuestro ejemplo:
+
+\begin{itemize}
+    \item \textbf{Evento elemental}: Un resultado específico, por ejemplo $A = \{(1,1,0)\}$
+    \item \textbf{Evento compuesto}: Múltiples resultados, por ejemplo $B = \{(1,0,0), (0,1,0), (0,0,1)\}$ (exactamente una cara)
+    \item \textbf{Evento seguro}: Todo el espacio muestral, $E = \Omega$
+    \item \textbf{Evento imposible}: El conjunto vacío, $F = \emptyset$
+\end{itemize}
+
+\section{$\sigma$-álgebra}
+
+Un $\sigma$-álgebra $\mathcal{F}$ sobre $\Omega$ es una colección de
+subconjuntos de $\Omega$ que cumple:
+\begin{itemize}
+    \item $\Omega \in \mathcal{F}$,
+    \item Si $A \in \mathcal{F}$, entonces $A^c \in \mathcal{F}$,
+    \item Si $A_1, A_2, \dots \in \mathcal{F}$, entonces $\bigcup_{i=1}^\infty A_i \in \mathcal{F}$.
+\end{itemize}
+
+En espacios finitos, el $\sigma$-álgebra más común es el conjunto de partes de
+$\Omega$:
+\begin{equation*}
+\mathcal{F} = \mathcal{P}(\Omega).
+\end{equation*}
+Como $|\Omega| = 8$, se tiene $|\mathcal{F}| = 2^8 = 256$.
+
+\section{Variable aleatoria}
+
+Una variable aleatoria es una función medible:
+\begin{equation*}
+X : \Omega \to \mathbb{R}.
+\end{equation*}
+
+Ejemplo: Definimos $X$ como el número de caras en los tres lanzamientos. Entonces:
+\begin{equation*}
+X(\omega) \in \{0,1,2,3\}.
+\end{equation*}
+
+\noindent Ejemplos de asignación:
+\begin{equation*}
+X(0,0,0) = 0, \quad X(1,0,0) = 1, \quad X(1,1,0) = 2, \quad X(1,1,1) = 3.
+\end{equation*}
+
+\subsection{¿Es una variable aleatoria válida?}
+
+Sí, porque:
+\begin{itemize}
+    \item El \textbf{dominio} es $\Omega$ (el espacio muestral de los tres lanzamientos).
+    \item El \textbf{rango} está en $\mathbb{R}$ (números enteros entre 0 y 3).
+    \item Para cualquier conjunto de valores $A \subseteq \{0,1,2,3\}$, la preimagen
+    \begin{equation*}
+        X^{-1}(A) = \{\omega \in \Omega : X(\omega) \in A\}
+    \end{equation*}
+    es un subconjunto de $\Omega$, por lo tanto pertenece a $\mathcal{P}(\Omega)$, el $\sigma$-álgebra.
+\end{itemize}
+
+Esta última propiedad garantiza que $X$ es una función medible, lo cual es requisito fundamental para ser una variable aleatoria.
+
+\section{Distribución de probabilidad de $X$}
+
+Cada resultado elemental tiene probabilidad $1/8$. El número de caras en tres
+lanzamientos sigue una \textbf{distribución binomial}:
+\begin{equation*}
+X \sim \text{Binomial}(n=3, p=0.5).
+\end{equation*}
+
+La función de probabilidad (pmf) es:
+\begin{equation*}
+\mathbb{P}(X = k) = \binom{3}{k}\left(\frac{1}{2}\right)^3, \quad k=0,1,2,3.
+\end{equation*}
+
+\noindent Valores explícitos:
+\begin{equation*}
+\mathbb{P}(X=0) = \tfrac{1}{8}, \quad
+\mathbb{P}(X=1) = \tfrac{3}{8}, \quad
+\mathbb{P}(X=2) = \tfrac{3}{8}, \quad
+\mathbb{P}(X=3) = \tfrac{1}{8}.
+\end{equation*}
+
+\section{Variable aleatoria: codificación}
+
+Podemos definir otra variable aleatoria $Y$ que codifica cada resultado como un
+número entre 0 y 7:
+\begin{equation*}
+(0,0,0) \mapsto 0, \quad (0,0,1) \mapsto 1, \quad \dots, \quad (1,1,1) \mapsto 7.
+\end{equation*}
+
+En este caso, estamos construyendo una función:
+\begin{equation*}
+Y : \Omega \to \{0,1,\dots,7\}.
+\end{equation*}
+
+\subsection{¿Es una variable aleatoria válida?}
+
+Sí, porque:
+\begin{itemize}
+    \item El \textbf{dominio} sigue siendo $\Omega$ (el espacio muestral original).
+    \item El \textbf{rango} está en $\mathbb{R}$ (en este caso, números enteros entre 0 y 7).
+    \item Para cualquier conjunto de valores $A \subseteq \{0,\ldots,7\}$, la preimagen
+    \begin{equation*}
+        Y^{-1}(A) = \{\omega \in \Omega : Y(\omega) \in A\}
+    \end{equation*}
+    es un subconjunto de $\Omega$, por lo tanto pertenece a $\mathcal{P}(\Omega)$, el $\sigma$-álgebra.
+\end{itemize}
+
+Esta última propiedad garantiza que $Y$ es una función medible, lo cual es requisito fundamental para ser una variable aleatoria.
+
+\subsection{Distribución de probabilidad}
+
+Como cada elemento de $\Omega$ es igualmente probable:
+\begin{equation*}
+\mathbb{P}(Y=k) = \tfrac{1}{8}, \quad k=0,\dots,7.
+\end{equation*}
+
+Esto corresponde a una \textbf{distribución uniforme discreta}.
+
+\section{Ejemplo de evento}
+
+Consideremos el evento ``$X=1$ y $X=2$''. Formalmente:
+\begin{equation*}
+\mathbb{P}(X=1 \; \text{y} \; X=2) = \mathbb{P}(\{\omega : X(\omega)=1\} \cap \{\omega : X(\omega)=2\}) = 0,
+\end{equation*}
+porque $X$ no puede tomar dos valores distintos en el mismo experimento.
+
+En cambio, la probabilidad ``$X=1$ o $X=2$'' es:
+\begin{equation*}
+\mathbb{P}(X=1 \; \text{o} \; X=2) = \mathbb{P}(X=1) + \mathbb{P}(X=2) = \tfrac{3}{8} + \tfrac{3}{8} = \tfrac{6}{8}.
+\end{equation*}
+
+\section{Variable aleatoria: primera moneda}
+
+Podemos definir otra variable aleatoria $Z$ como el resultado de la primera
+moneda:
+\begin{equation*}
+Z : \Omega \to \{0,1\}.
+\end{equation*}
+
+Su distribución es:
+\begin{equation*}
+\mathbb{P}(Z=0) = \tfrac{1}{2}, \quad \mathbb{P}(Z=1) = \tfrac{1}{2}.
+\end{equation*}
+
+Por lo tanto, $Z \sim \text{Bernoulli}(0.5)$.
+
+\section{Relación entre $\Omega$, $X$ y $X(\Omega)$}
+
+\begin{itemize}
+    \item $\Omega$: espacio muestral, definido independientemente de la variable aleatoria.
+    \item $X$: función que asigna a cada $\omega \in \Omega$ un número real.
+    \item $X(\Omega)$: conjunto de valores posibles de la variable aleatoria (espacio imagen).
+\end{itemize}
+
+\section{Proceso estocástico}
+
+Un \textbf{proceso estocástico} es una familia de variables aleatorias indexada por un conjunto
+de tiempos $T$:
+\begin{equation*}
+\{X_t : t \in T\}.
+\end{equation*}
+
+Cada $X_t$ es una variable aleatoria definida sobre el mismo espacio de probabilidad
+$(\Omega,\mathcal{F},\mathbb{P})$.
+
+\subsection{Ejemplo con tres monedas}
+
+Recordemos la variable aleatoria $Y$ que codifica cada resultado de los tres lanzamientos
+como un número entre 0 y 7:
+\begin{equation*}
+Y : \Omega \to \{0,1,2,3,4,5,6,7\}.
+\end{equation*}
+
+Si repetimos el experimento de lanzar tres monedas muchas veces, podemos definir
+una secuencia de variables aleatorias $\{X_n\}_{n \geq 1}$ como:
+\begin{equation*}
+X_n : \Omega \to \{0,1,\dots,7\}, \quad n = 1,2,3,\dots
+\end{equation*}
+donde $X_n$ corresponde a la codificación del $n$-ésimo experimento.
+
+\subsection{Distribución del proceso}
+
+Cada $X_n$ sigue una distribución uniforme discreta:
+\begin{equation*}
+\mathbb{P}(X_n = k) = \tfrac{1}{8}, \quad k=0,1,\dots,7.
+\end{equation*}
+
+Si suponemos independencia entre los experimentos, la colección
+$\{X_n\}_{n \geq 1}$ es una \textbf{secuencia de variables aleatorias i.i.d.}
+(independientes e idénticamente distribuidas).
+
+\subsection{Interpretación}
+
+\begin{itemize}
+    \item $\Omega$: espacio de todas las secuencias infinitas de lanzamientos de tres monedas.
+    \item $X_n$: resultado codificado del $n$-ésimo experimento.
+    \item $\{X_n\}_{n \geq 1}$: proceso estocástico que modela la repetición temporal del experimento.
+\end{itemize}
+
+\end{document}

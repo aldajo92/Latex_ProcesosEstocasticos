@@ -1,0 +1,108 @@
+\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{Modelo de Cadena de Markov en una Estación de Servicio}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Enunciado del Problema}
+
+Los clientes llegan a una estación de servicio con una bomba a una tasa de 20 automóviles por hora. Sin embargo, los clientes irán a otra estación si hay al menos dos autos en la estación, es decir, uno siendo servido y otro esperando. Supongamos que el tiempo de servicio para los clientes es exponencial con media de seis minutos.
+
+\begin{itemize}
+    \item[a)] Formule el modelo de cadena de Markov para el número de coches en la estación de servicio y encuentre su distribución estacionaria.
+    \item[b)] En promedio, ¿cuántos clientes reciben servicio por hora?
+    \item[c)] Resuelva el problema anterior para una estación de servicio de dos bombas bajo el supuesto que los clientes irán a otra estación si hay al menos cuatro coches en la estación, es decir, dos siendo servidos y dos esperando.
+\end{itemize}
+
+\section*{Solución}
+
+\subsection*{Parámetros del sistema}
+\begin{itemize}
+    \item Tasa de llegada: $\lambda = 20$ autos/hora
+    \item Tiempo medio de servicio: 6 minutos $\Rightarrow \mu = 10$ autos/hora
+\end{itemize}
+
+\subsection*{a) Modelo de una bomba (máx. 2 coches en sistema)}
+
+\textbf{Estados:}
+\begin{itemize}
+    \item $0$: estación vacía
+    \item $1$: un auto en servicio
+    \item $2$: un auto en servicio y uno esperando
+\end{itemize}
+
+\textbf{Matriz de transición $Q$ (tasas infinitesimales):}
+\[
+Q =
+\begin{bmatrix}
+-20 & 20 & 0 \\
+10 & -30 & 20 \\
+0 & 10 & -10
+\end{bmatrix}
+\]
+
+\textbf{Distribución estacionaria:} Usamos relaciones recursivas:
+\[
+\pi_1 = \frac{\lambda}{\mu} \pi_0 = 2\pi_0, \quad \pi_2 = \frac{\lambda}{\mu} \pi_1 = 2\pi_1 = 4\pi_0
+\]
+\[
+\pi_0 + \pi_1 + \pi_2 = 7\pi_0 = 1 \Rightarrow \pi_0 = \frac{1}{7}
+\]
+\[
+\boxed{\pi_0 = \frac{1}{7}, \quad \pi_1 = \frac{2}{7}, \quad \pi_2 = \frac{4}{7}}
+\]
+
+\subsection*{b) Clientes servidos por hora (una bomba)}
+
+\begin{align*}
+\mathbb{E}[\text{servidos}] &= \pi_1 \cdot 1 + \pi_2 \cdot 1 = \frac{2}{7} + \frac{4}{7} = \frac{6}{7} \\
+\text{Clientes/hora} &= \frac{6}{7} \cdot 10 = \boxed{\frac{60}{7} \approx 8.57}
+\end{align*}
+
+\subsection*{c) Modelo con dos bombas (máx. 4 autos en sistema)}
+
+\textbf{Estados:} $0, 1, 2, 3, 4$
+
+\textbf{Tasa de servicio:} $\mu_i = \min(i, 2) \cdot \mu$
+
+\textbf{Matriz de transición $Q$:}
+\[
+Q =
+\begin{bmatrix}
+-20 & 20 & 0 & 0 & 0 \\
+10 & -30 & 20 & 0 & 0 \\
+0 & 20 & -40 & 20 & 0 \\
+0 & 0 & 20 & -40 & 20 \\
+0 & 0 & 0 & 20 & -20
+\end{bmatrix}
+\]
+
+\textbf{Distribución estacionaria:}
+\[
+\pi_1 = 2\pi_0, \quad \pi_2 = 2\pi_0, \quad \pi_3 = 2\pi_0, \quad \pi_4 = 2\pi_0
+\]
+\[
+\pi_0 + 2\pi_0 + 2\pi_0 + 2\pi_0 + 2\pi_0 = 9\pi_0 = 1 \Rightarrow \pi_0 = \frac{1}{9}
+\]
+\[
+\boxed{\pi_0 = \frac{1}{9}, \quad \pi_1 = \pi_2 = \pi_3 = \pi_4 = \frac{2}{9}}
+\]
+
+\textbf{Clientes servidos por hora:}
+\begin{align*}
+\mathbb{E}[\text{servidos}] &= \pi_1(1) + (\pi_2 + \pi_3 + \pi_4)(2) = \frac{2}{9} + \frac{6}{9} \cdot 2 = \frac{14}{9} \\
+\text{Clientes/hora} &= \frac{14}{9} \cdot 10 = \boxed{\frac{140}{9} \approx 15.56}
+\end{align*}
+
+\end{document}

@@ -1,0 +1,488 @@
+\documentclass[12pt,a4paper]{article}
+
+% Paquetes básicos
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{Fundamentos de Probabilidad y Funciones de Distribución}
+\author{Notas de Probabilidad}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Teoría de Conjuntos en Probabilidad}
+La probabilidad se construye sobre la teoría de conjuntos. Algunos conceptos fundamentales:
+\begin{itemize}
+    \item \textbf{Espacio muestral} ($\Omega$): conjunto de todos los resultados posibles de un experimento aleatorio.
+    \item \textbf{Evento}: subconjunto de $\Omega$.
+    \item \textbf{Complemento}: $A^c = \Omega \setminus A$.
+    \item \textbf{Unión}: $A \cup B = \{x \in \Omega : x \in A \text{ o } x \in B\}$.
+    \item \textbf{Intersección}: $A \cap B = \{x \in \Omega : x \in A \text{ y } x \in B\}$.
+\end{itemize}
+
+\section{Conceptos Fundamentales de Probabilidad}
+
+\subsection{Experimento Aleatorio}
+
+Un \textbf{experimento aleatorio} es un proceso o procedimiento que:
+\begin{itemize}
+    \item Puede repetirse indefinidamente bajo las mismas condiciones
+    \item Tiene un conjunto bien definido de resultados posibles (espacio muestral)
+    \item No se puede predecir con certeza cuál será el resultado antes de realizarlo
+    \item Está sujeto a variabilidad aleatoria inherente
+\end{itemize}
+
+\textbf{Características fundamentales:}
+\begin{itemize}
+    \item \textbf{Reproducibilidad}: Se puede repetir en condiciones idénticas o similares
+    \item \textbf{Incertidumbre}: El resultado no es determinístico
+    \item \textbf{Regularidad estadística}: Aunque individual es impredecible, en muchas repeticiones emergen patrones
+\end{itemize}
+
+\textbf{Ejemplos de experimentos aleatorios:}
+\begin{itemize}
+    \item Lanzar una moneda o un dado
+    \item Medir el tiempo de vida de un componente electrónico
+    \item Seleccionar una muestra aleatoria de una población
+    \item Contar el número de llamadas a un centro de atención en una hora
+    \item Medir el error en una transmisión de datos
+\end{itemize}
+
+\textbf{Elementos de un experimento aleatorio:}
+\begin{enumerate}
+    \item \textbf{Espacio muestral} ($\Omega$): Conjunto de todos los resultados posibles
+    \item \textbf{Eventos}: Subconjuntos del espacio muestral de interés
+    \item \textbf{Probabilidad}: Medida de la posibilidad de ocurrencia de cada evento
+\end{enumerate}
+
+\textbf{Experimento determinístico vs. aleatorio:}
+\begin{itemize}
+    \item \textbf{Determinístico}: El resultado está completamente determinado por las condiciones iniciales (ej: caída libre en el vacío)
+    \item \textbf{Aleatorio}: Incluso conociendo todas las condiciones, existe incertidumbre en el resultado
+\end{itemize}
+
+La teoría de probabilidad proporciona el marco matemático para analizar y modelar experimentos aleatorios de manera rigurosa.
+
+\subsection{Variable Aleatoria}
+
+Una \textbf{variable aleatoria} es una función que asigna un valor numérico a cada resultado de un experimento aleatorio. Formalmente, es una función $X: \Omega \rightarrow \mathbb{R}$ que mapea el espacio muestral a los números reales.
+
+\textbf{Tipos de variables aleatorias:}
+\begin{itemize}
+    \item \textbf{Discretas}: Toman valores contables (finitos o infinitos numerables). Ejemplos: número de caras al lanzar monedas, número de clientes en una cola.
+    \item \textbf{Continuas}: Pueden tomar cualquier valor en un intervalo de números reales. Ejemplos: tiempo de espera, altura, temperatura.
+\end{itemize}
+
+\textbf{Interpretación:}
+Una variable aleatoria no es un número fijo, sino una función cuyo valor depende del resultado del experimento aleatorio. Antes de realizar el experimento, su valor es incierto; después, toma un valor específico llamado realización.
+
+\subsection{Eventos Independientes}
+
+Dos eventos $A$ y $B$ son \textbf{independientes} si la ocurrencia de uno no afecta la probabilidad de ocurrencia del otro. Matemáticamente:
+
+\begin{equation}
+    P(A \cap B) = P(A) \cdot P(B)
+\end{equation}
+
+Equivalentemente, si $P(B) > 0$:
+\begin{equation}
+    P(A|B) = P(A)
+\end{equation}
+
+\textbf{Independencia de variables aleatorias:}
+
+Dos variables aleatorias $X$ e $Y$ son independientes si:
+\begin{equation}
+    P(X \leq x, Y \leq y) = P(X \leq x) \cdot P(Y \leq y) \quad \forall x,y \in \mathbb{R}
+\end{equation}
+
+Para variables discretas: $P(X = x, Y = y) = P(X = x) \cdot P(Y = y)$
+
+Para variables continuas: $f_{X,Y}(x,y) = f_X(x) \cdot f_Y(y)$
+
+\textbf{Propiedades importantes:}
+\begin{itemize}
+    \item Si $X$ e $Y$ son independientes: $\mathbb{E}[XY] = \mathbb{E}[X] \cdot \mathbb{E}[Y]$
+    \item Para $n$ eventos independientes: $P(A_1 \cap A_2 \cap \cdots \cap A_n) = \prod_{i=1}^n P(A_i)$
+    \item La independencia es simétrica: si $A$ es independiente de $B$, entonces $B$ es independiente de $A$
+\end{itemize}
+
+\subsection{Proceso Estocástico}
+
+Un \textbf{proceso estocástico} (o proceso aleatorio) es una colección de variables aleatorias indexadas por un parámetro, típicamente el tiempo. Se denota como $\{X_t : t \in T\}$, donde $T$ es el conjunto de índices.
+
+\textbf{Clasificación según el conjunto de índices:}
+\begin{itemize}
+    \item \textbf{Tiempo discreto}: $T = \{0, 1, 2, \ldots\}$ o $\mathbb{Z}$. Ejemplo: $\{X_n\}_{n=0}^{\infty}$
+    \item \textbf{Tiempo continuo}: $T = [0, \infty)$ o $\mathbb{R}$. Ejemplo: $\{X(t)\}_{t \geq 0}$
+\end{itemize}
+
+\textbf{Clasificación según el espacio de estados:}
+\begin{itemize}
+    \item \textbf{Espacio de estados discreto}: Las variables toman valores en un conjunto contable
+    \item \textbf{Espacio de estados continuo}: Las variables toman valores en $\mathbb{R}$ o $\mathbb{R}^n$
+\end{itemize}
+
+\textbf{Ejemplos de procesos estocásticos:}
+\begin{itemize}
+    \item \textbf{Caminata aleatoria}: Suma acumulada de variables aleatorias independientes
+    \item \textbf{Proceso de Poisson}: Cuenta el número de eventos en intervalos de tiempo
+    \item \textbf{Movimiento Browniano}: Modelo de partículas en suspensión, fundamental en finanzas
+    \item \textbf{Cadenas de Markov}: Procesos donde el futuro depende solo del presente (propiedad de Markov)
+\end{itemize}
+
+\textbf{Interpretación:}
+Un proceso estocástico modela sistemas que evolucionan de manera aleatoria en el tiempo. Para cada instante $t$, $X_t$ es una variable aleatoria, y para cada resultado $\omega \in \Omega$, $X_t(\omega)$ describe una trayectoria o realización del proceso.
+
+\textbf{Caracterización:}
+Un proceso estocástico se caracteriza completamente por sus distribuciones finito-dimensionales:
+\begin{equation}
+    F_{t_1, t_2, \ldots, t_n}(x_1, x_2, \ldots, x_n) = P(X_{t_1} \leq x_1, X_{t_2} \leq x_2, \ldots, X_{t_n} \leq x_n)
+\end{equation}
+para cualquier colección finita de tiempos $t_1 < t_2 < \cdots < t_n$.
+
+\section{Función de Probabilidad}
+Una función de probabilidad asigna a cada evento un número real entre $0$ y $1$ que mide la posibilidad de que dicho evento ocurra. 
+
+\subsection{Funciones de Masa y Densidad}
+\begin{itemize}
+    \item \textbf{Función de Masa de Probabilidad (pmf)}: utilizada para variables aleatorias discretas. 
+    \begin{equation}
+        P(X = x_i) = p(x_i), \quad \sum_i p(x_i) = 1
+    \end{equation}
+    \item \textbf{Función de Densidad de Probabilidad (pdf)}: utilizada para variables aleatorias continuas. 
+    \begin{equation}
+        P(a \leq X \leq b) = \int_a^b f(x)\, dx, \quad \int_{-\infty}^{\infty} f(x)\, dx = 1
+    \end{equation}
+\end{itemize}
+
+\subsection{Función de Distribución Acumulada (CDF)}
+La función de distribución acumulada (CDF) es una función fundamental en probabilidad que proporciona la probabilidad de que una variable aleatoria $X$ tome un valor menor o igual a $x$:
+\begin{equation}
+    F(x) = P(X \leq x)
+\end{equation}
+
+\subsubsection{Propiedades de la CDF}
+\begin{itemize}
+    \item $\lim_{x \to -\infty} F(x) = 0$ y $\lim_{x \to \infty} F(x) = 1$
+    \item $F(x)$ es no decreciente: si $x_1 < x_2$, entonces $F(x_1) \leq F(x_2)$
+    \item $F(x)$ es continua por la derecha: $\lim_{h \to 0^+} F(x+h) = F(x)$
+    \item $P(a < X \leq b) = F(b) - F(a)$
+\end{itemize}
+
+\subsubsection{Relación con la PMF (Variables Discretas)}
+Para una variable aleatoria discreta con función de masa de probabilidad $p(x_i)$:
+\begin{equation}
+    F(x) = \sum_{x_i \leq x} p(x_i) = \sum_{x_i \leq x} P(X = x_i)
+\end{equation}
+La CDF es una función escalonada que presenta saltos en los puntos donde la variable aleatoria tiene masa de probabilidad. El tamaño del salto en $x_i$ es exactamente $p(x_i)$.
+
+Inversamente, podemos recuperar la pmf desde la CDF:
+\begin{equation}
+    p(x_i) = F(x_i) - \lim_{x \to x_i^-} F(x) = F(x_i) - F(x_i^-)
+\end{equation}
+
+\subsubsection{Relación con la PDF (Variables Continuas)}
+Para una variable aleatoria continua con función de densidad $f(x)$:
+\begin{equation}
+    F(x) = \int_{-\infty}^{x} f(t)\, dt
+\end{equation}
+
+La pdf se puede obtener derivando la CDF (cuando la derivada existe):
+\begin{equation}
+    f(x) = \frac{dF(x)}{dx} = F'(x)
+\end{equation}
+
+Esta relación es fundamental: la pdf es la derivada de la CDF, y la CDF es la integral de la pdf. Esto significa que:
+\begin{itemize}
+    \item La pdf nos da la "densidad" de probabilidad en cada punto
+    \item La CDF nos da la probabilidad acumulada hasta cada punto
+    \item El área bajo la curva de la pdf entre dos puntos $a$ y $b$ es igual a $F(b) - F(a)$
+\end{itemize}
+
+\subsubsection{Ejemplo Ilustrativo}
+Consideremos una variable aleatoria exponencial con parámetro $\lambda$:
+\begin{itemize}
+    \item PDF: $f(x) = \lambda e^{-\lambda x}$ para $x \geq 0$
+    \item CDF: $F(x) = 1 - e^{-\lambda x}$ para $x \geq 0$
+\end{itemize}
+Podemos verificar que $F'(x) = \lambda e^{-\lambda x} = f(x)$.
+
+La CDF caracteriza completamente la distribución de una variable aleatoria y es especialmente útil para:
+\begin{itemize}
+    \item Calcular probabilidades de intervalos
+    \item Generar números aleatorios mediante el método de la transformada inversa
+    \item Comparar distribuciones mediante pruebas estadísticas
+\end{itemize}
+
+\section{Medidas de Tendencia y Dispersión}
+
+Las medidas de tendencia central y dispersión son fundamentales para caracterizar el comportamiento de una variable aleatoria.
+
+\subsection{Esperanza Matemática}
+
+La \textbf{esperanza} o \textbf{valor esperado} de una variable aleatoria $X$, denotada como $\mathbb{E}[X]$ o $\mu$, representa el valor promedio que esperamos obtener si repetimos el experimento aleatorio un número infinito de veces. Es el "centro de masa" de la distribución de probabilidad.
+
+\textbf{Interpretación:}
+\begin{itemize}
+    \item Es el valor promedio ponderado por las probabilidades
+    \item Representa el punto de equilibrio de la distribución
+    \item En juegos de azar, indica la ganancia o pérdida promedio a largo plazo
+    \item No necesariamente es un valor que la variable pueda tomar (ej: esperanza de un dado es 3.5)
+\end{itemize}
+
+\textbf{Definición matemática:}
+\begin{equation}
+        \mathbb{E}[X] = \begin{cases}
+            \sum_i x_i \, p(x_i), & \text{si $X$ es discreta} \\
+            \int_{-\infty}^{\infty} x f(x)\, dx, & \text{si $X$ es continua}
+        \end{cases}
+    \end{equation}
+    
+    \textbf{Definición alternativa usando probabilidades de cola:}
+    
+    Para variables aleatorias no negativas ($X \geq 0$), la esperanza también se puede calcular como:
+    \begin{equation}
+        \mathbb{E}[X] = \int_0^{\infty} P(X > x)\, dx = \int_0^{\infty} [1 - F(x)]\, dx
+    \end{equation}
+    
+    Para el caso discreto con valores no negativos:
+    \begin{equation}
+        \mathbb{E}[X] = \sum_{k=0}^{\infty} P(X > k) = \sum_{k=1}^{\infty} P(X \geq k)
+    \end{equation}
+    
+    Para variables aleatorias que pueden tomar valores positivos y negativos:
+    \begin{equation}
+        \mathbb{E}[X] = \int_0^{\infty} P(X > x)\, dx - \int_{-\infty}^0 P(X < x)\, dx
+    \end{equation}
+    
+    Esta representación es particularmente útil cuando:
+    \begin{itemize}
+        \item Es más fácil calcular $P(X > x)$ que la densidad o masa de probabilidad
+        \item Se trabaja con tiempos de vida o tiempos de espera
+        \item Se analiza la función de supervivencia $S(x) = P(X > x)$
+    \end{itemize}
+
+\subsection{Varianza y Desviación Estándar}
+
+La \textbf{varianza} de una variable aleatoria $X$, denotada como $\mathrm{Var}(X)$ o $\sigma^2$, mide la dispersión de los valores de la variable alrededor de su esperanza. Cuantifica qué tan alejados están típicamente los valores de la media.
+
+\textbf{Interpretación:}
+\begin{itemize}
+    \item Mide el promedio de las desviaciones cuadradas respecto a la media
+    \item Una varianza pequeña indica que los valores están concentrados cerca de la media
+    \item Una varianza grande indica que los valores están dispersos
+    \item Siempre es no negativa: $\mathrm{Var}(X) \geq 0$
+    \item $\mathrm{Var}(X) = 0$ si y solo si $X$ es constante (no aleatoria)
+\end{itemize}
+
+\textbf{Definición matemática:}
+\begin{equation}
+    \mathrm{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] = \mathbb{E}[X^2] - (\mathbb{E}[X])^2
+\end{equation}
+
+La segunda igualdad es la fórmula computacional, a menudo más práctica para calcular.
+
+\textbf{Desviación estándar:}
+
+La desviación estándar $\sigma = \sqrt{\mathrm{Var}(X)}$ tiene las mismas unidades que la variable original, lo que la hace más interpretable que la varianza.
+
+\textbf{Propiedades importantes:}
+\begin{itemize}
+    \item $\mathrm{Var}(aX + b) = a^2 \mathrm{Var}(X)$ (la varianza no cambia con traslaciones)
+    \item $\mathbb{E}[aX + b] = a\mathbb{E}[X] + b$ (linealidad de la esperanza)
+    \item Para variables independientes: $\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y)$
+\end{itemize}
+
+\subsection{Covarianza y Correlación}
+
+\subsubsection{Covarianza}
+
+La \textbf{covarianza} entre dos variables aleatorias $X$ e $Y$ mide el grado de variación conjunta respecto a sus medias:
+
+\begin{equation}
+    \mathrm{Cov}(X,Y) = \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])] = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]
+\end{equation}
+
+\textbf{Interpretación:}
+\begin{itemize}
+    \item $\mathrm{Cov}(X,Y) > 0$: Las variables tienden a variar en la misma dirección
+    \item $\mathrm{Cov}(X,Y) < 0$: Las variables tienden a variar en direcciones opuestas
+    \item $\mathrm{Cov}(X,Y) = 0$: No hay relación lineal entre las variables
+\end{itemize}
+
+\textbf{Propiedades:}
+\begin{itemize}
+    \item $\mathrm{Cov}(X,X) = \mathrm{Var}(X)$
+    \item $\mathrm{Cov}(X,Y) = \mathrm{Cov}(Y,X)$ (simetría)
+    \item $\mathrm{Cov}(aX + b, cY + d) = ac \cdot \mathrm{Cov}(X,Y)$
+    \item $\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y) + 2\mathrm{Cov}(X,Y)$
+\end{itemize}
+
+\subsubsection{Coeficiente de Correlación}
+
+El \textbf{coeficiente de correlación de Pearson} es una versión normalizada de la covarianza:
+
+\begin{equation}
+    \rho_{X,Y} = \frac{\mathrm{Cov}(X,Y)}{\sigma_X \sigma_Y} = \frac{\mathrm{Cov}(X,Y)}{\sqrt{\mathrm{Var}(X)\mathrm{Var}(Y)}}
+\end{equation}
+
+\textbf{Propiedades:}
+\begin{itemize}
+    \item $-1 \leq \rho_{X,Y} \leq 1$ (acotado)
+    \item $|\rho_{X,Y}| = 1$ si y solo si existe una relación lineal perfecta: $Y = aX + b$
+    \item $\rho_{X,Y} = 1$: correlación lineal positiva perfecta
+    \item $\rho_{X,Y} = -1$: correlación lineal negativa perfecta
+    \item $\rho_{X,Y} = 0$: no hay correlación lineal (variables no correlacionadas)
+\end{itemize}
+
+\subsubsection{Relación entre Independencia y Correlación}
+
+La relación entre independencia y correlación es asimétrica:
+
+\textbf{Teorema fundamental:}
+\begin{equation}
+    X \text{ e } Y \text{ independientes} \Rightarrow \mathrm{Cov}(X,Y) = 0 \text{ y } \rho_{X,Y} = 0
+\end{equation}
+
+Pero la implicación inversa NO es cierta en general:
+\begin{equation}
+    \mathrm{Cov}(X,Y) = 0 \not\Rightarrow X \text{ e } Y \text{ independientes}
+\end{equation}
+
+\textbf{Explicación:}
+\begin{itemize}
+    \item La independencia es una condición más fuerte que implica que no hay \textbf{ningún tipo} de relación entre las variables
+    \item La correlación cero solo indica ausencia de relación \textbf{lineal}
+    \item Pueden existir relaciones no lineales fuertes con correlación cero
+\end{itemize}
+
+\textbf{Ejemplo clásico de correlación cero sin independencia:}
+
+Sea $X \sim \mathcal{U}(-1, 1)$ (uniforme) y $Y = X^2$. Entonces:
+\begin{itemize}
+    \item $Y$ está completamente determinada por $X$ (máxima dependencia)
+    \item Sin embargo, $\mathrm{Cov}(X,Y) = \mathbb{E}[X^3] - \mathbb{E}[X]\mathbb{E}[X^2] = 0 - 0 = 0$
+    \item Por tanto, $\rho_{X,Y} = 0$ a pesar de la dependencia perfecta
+\end{itemize}
+
+\textbf{Caso especial - Variables normales:}
+
+Para variables aleatorias con distribución normal conjunta:
+\begin{equation}
+    X, Y \text{ normales conjuntas: } \rho_{X,Y} = 0 \Leftrightarrow X \text{ e } Y \text{ independientes}
+\end{equation}
+
+Este es uno de los pocos casos donde correlación cero implica independencia.
+
+\textbf{Resumen de implicaciones:}
+\begin{itemize}
+    \item Independencia $\Rightarrow$ Incorrelación (siempre)
+    \item Incorrelación $\not\Rightarrow$ Independencia (en general)
+    \item Incorrelación $\Rightarrow$ Independencia (solo para normales conjuntas)
+    \item Correlación $\neq 0$ $\Rightarrow$ Dependencia (por contraposición)
+\end{itemize}
+
+\section{Teoremas Fundamentales}
+\subsection{Teorema de la Probabilidad Total}
+Si $\{B_1, B_2, \dots, B_n\}$ es una partición de $\Omega$, entonces:
+\begin{equation}
+    P(A) = \sum_{i=1}^n P(A \mid B_i) P(B_i)
+\end{equation}
+
+\subsection{Teorema de Bayes}
+\begin{equation}
+    P(B_j \mid A) = \frac{P(A \mid B_j) P(B_j)}{\sum_{i=1}^n P(A \mid B_i) P(B_i)}
+\end{equation}
+
+\section{Distribuciones Importantes}
+\subsection{Experimento de Bernoulli}
+Variable aleatoria que toma el valor $1$ con probabilidad $p$ y $0$ con probabilidad $1-p$.
+\begin{equation}
+    P(X=x) = p^x (1-p)^{1-x}, \quad x \in \{0,1\}
+\end{equation}
+\textbf{Parámetros:}
+\begin{itemize}
+    \item Esperanza: $\mathbb{E}[X] = p$
+    \item Varianza: $\mathrm{Var}(X) = p(1-p)$
+\end{itemize}
+
+\subsection{Distribución Binomial}
+Número de éxitos en $n$ ensayos de Bernoulli independientes.
+\begin{equation}
+    P(X=k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0, 1, 2, \ldots, n
+\end{equation}
+
+\textbf{Coeficiente binomial (combinatoria):}
+
+El coeficiente binomial $\binom{n}{k}$ representa el número de formas de elegir $k$ elementos de un conjunto de $n$ elementos, sin importar el orden:
+\begin{equation}
+    \binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n \cdot (n-1) \cdot (n-2) \cdots (n-k+1)}{k \cdot (k-1) \cdot (k-2) \cdots 1}
+\end{equation}
+
+Propiedades importantes:
+\begin{itemize}
+    \item $\binom{n}{0} = \binom{n}{n} = 1$
+    \item $\binom{n}{k} = \binom{n}{n-k}$ (simetría)
+    \item $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$ (identidad de Pascal)
+    \item $\sum_{k=0}^{n} \binom{n}{k} = 2^n$
+\end{itemize}
+
+\textbf{Parámetros:}
+\begin{itemize}
+    \item Esperanza: $\mathbb{E}[X] = np$
+    \item Varianza: $\mathrm{Var}(X) = np(1-p)$
+\end{itemize}
+
+\subsection{Distribución de Poisson}
+Modela el número de eventos que ocurren en un intervalo de tiempo o espacio.
+
+\textbf{Forma estándar:}
+\begin{equation}
+    P(X=k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k=0,1,2,\dots
+\end{equation}
+
+\textbf{Forma con tasa y tiempo:}
+
+Si $\lambda$ representa la tasa promedio de eventos por unidad de tiempo y $t$ es el intervalo de tiempo considerado:
+\begin{equation}
+    P(X(t)=k) = \frac{(\lambda t)^k e^{-\lambda t}}{k!}, \quad k=0,1,2,\dots
+\end{equation}
+
+donde $X(t)$ es el número de eventos en el intervalo $[0,t]$.
+
+\textbf{Parámetros:}
+\begin{itemize}
+    \item Tasa de eventos: $\lambda$ (eventos por unidad de tiempo)
+    \item Parámetro de la distribución: $\mu = \lambda t$ (número esperado de eventos en tiempo $t$)
+    \item Esperanza: $\mathbb{E}[X] = \lambda t$
+    \item Varianza: $\mathrm{Var}(X) = \lambda t$
+\end{itemize}
+
+Nota: En la distribución de Poisson, la media y la varianza son siempre iguales. Cuando el contexto es claro, se usa $\lambda$ directamente como el parámetro que representa el número esperado de eventos.
+
+\textbf{Notación:}
+\begin{itemize}
+    \item Para la forma estándar: $X \sim \text{Poisson}(\lambda)$ o $X \sim \mathcal{P}(\lambda)$
+    \item Para la forma con tasa y tiempo: $X(t) \sim \text{Poisson}(\lambda t)$ o $X(t) \sim \mathcal{P}(\lambda t)$
+\end{itemize}
+
+\subsection{Distribución Normal}
+Distribución continua simétrica alrededor de su media $\mu$.
+\begin{equation}
+    f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}, \quad x \in \mathbb{R}
+\end{equation}
+\textbf{Parámetros:}
+\begin{itemize}
+    \item Esperanza: $\mathbb{E}[X] = \mu$
+    \item Varianza: $\mathrm{Var}(X) = \sigma^2$
+    \item Desviación estándar: $\sigma$
+\end{itemize}
+La notación común es $X \sim N(\mu, \sigma^2)$.
+
+\end{document}
