@@ -51,30 +51,30 @@ Esta es la ecuación fundamental de Chapman-Kolmogorov que establece la propieda
 
 \textbf{Notación:} Sea $P_{ij}^{(n)}$ la probabilidad de transición del estado $i$ al estado $j$ en exactamente $n$ pasos, es decir:
 \begin{equation*}
-P_{ij}^{(n)} = \mathbb{P}(X_n = j \mid X_0 = i)
+P_{ij}^{(n)} = P(X_n = j \mid X_0 = i)
 \end{equation*}
 
 \textbf{Demostración de la ecuación de Chapman-Kolmogorov:}
 
 Para demostrar que $P^{(n)} = P^{(m)} \cdot P^{(n-m)}$ donde $0 \leq m \leq n$, consideremos el elemento $(i,j)$ de ambos lados.
 
-Lado izquierdo: $P_{ij}^{(n)} = \mathbb{P}(X_n = j \mid X_0 = i)$
+Lado izquierdo: $P_{ij}^{(n)} = P(X_n = j \mid X_0 = i)$
 
 Lado derecho: $[P^{(m)} \cdot P^{(n-m)}]_{ij} = \sum_{k \in S} P_{ik}^{(m)} P_{kj}^{(n-m)}$
 
 Usando la ley de probabilidad total condicionada en el estado en el tiempo $m$:
 
 \begin{align*}
-P_{ij}^{(n)} &= \mathbb{P}(X_n = j \mid X_0 = i) \\
-&= \sum_{k \in S} \mathbb{P}(X_n = j, X_m = k \mid X_0 = i) \\
-&= \sum_{k \in S} \mathbb{P}(X_n = j \mid X_m = k, X_0 = i) \cdot \mathbb{P}(X_m = k \mid X_0 = i)
+P_{ij}^{(n)} &= P(X_n = j \mid X_0 = i) \\
+&= \sum_{k \in S} P(X_n = j, X_m = k \mid X_0 = i) \\
+&= \sum_{k \in S} P(X_n = j \mid X_m = k, X_0 = i) \cdot P(X_m = k \mid X_0 = i)
 \end{align*}
 
-Por la propiedad de Markov, $\mathbb{P}(X_n = j \mid X_m = k, X_0 = i) = \mathbb{P}(X_n = j \mid X_m = k)$, ya que el futuro solo depende del estado presente, no del pasado.
+Por la propiedad de Markov, $P(X_n = j \mid X_m = k, X_0 = i) = P(X_n = j \mid X_m = k)$, ya que el futuro solo depende del estado presente, no del pasado.
 
 Por lo tanto:
 \begin{align*}
-P_{ij}^{(n)} &= \sum_{k \in S} \mathbb{P}(X_n = j \mid X_m = k) \cdot \mathbb{P}(X_m = k \mid X_0 = i) \\
+P_{ij}^{(n)} &= \sum_{k \in S} P(X_n = j \mid X_m = k) \cdot P(X_m = k \mid X_0 = i) \\
 &= \sum_{k \in S} P_{kj}^{(n-m)} \cdot P_{ik}^{(m)} \\
 &= \sum_{k \in S} P_{ik}^{(m)} P_{kj}^{(n-m)}
 \end{align*}
@@ -126,7 +126,7 @@ Tomando esperanza condicionada en $X_0 = i$:
 
 Si el estado $i$ es recurrente, entonces la probabilidad de regresar a $i$ partiendo de $i$ es 1:
 \begin{equation*}
-f_{ii} = \mathbb{P}_i(\text{regresar a } i \text{ alguna vez}) = 1
+f_{ii} = P_i(\text{regresar a } i \text{ alguna vez}) = 1
 \end{equation*}
 
 Esto implica que $\mathbb{E}_i[N_i] = \infty$ (visitamos $i$ infinitas veces con probabilidad 1), por lo tanto:
@@ -140,7 +140,7 @@ Si el estado $i$ es transitorio, entonces $f_{ii} < 1$. Sea $q = 1 - f_{ii} > 0$
 
 El número de visitas a $i$ sigue una distribución geométrica modificada. La probabilidad de visitar exactamente $k$ veces el estado $i$ es:
 \begin{equation*}
-\mathbb{P}_i(N_i = k) = f_{ii}^{k-1} \cdot q = f_{ii}^{k-1} \cdot (1 - f_{ii})
+P_i(N_i = k) = f_{ii}^{k-1} \cdot q = f_{ii}^{k-1} \cdot (1 - f_{ii})
 \end{equation*}
 
 Por lo tanto:
