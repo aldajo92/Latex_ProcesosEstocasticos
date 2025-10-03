@@ -47,59 +47,20 @@ P^{(n)} = P^{(m)} \cdot P^{(n-m)}, \quad \text{en particular } P^{(n)} = P \cdot
 
 \textbf{Demostración:}
 
-Esta es la ecuación fundamental de Chapman-Kolmogorov que establece la propiedad multiplicativa de las matrices de transición. La demostraremos usando la definición probabilística y las propiedades de la esperanza condicional.
-
-\textbf{Notación:} Sea $P_{ij}^{(n)}$ la probabilidad de transición del estado $i$ al estado $j$ en exactamente $n$ pasos, es decir:
-\begin{equation*}
-P_{ij}^{(n)} = P(X_n = j \mid X_0 = i)
-\end{equation*}
-
-\textbf{Demostración de la ecuación de Chapman-Kolmogorov:}
-
-Para demostrar que $P^{(n)} = P^{(m)} \cdot P^{(n-m)}$ donde $0 \leq m \leq n$, consideremos el elemento $(i,j)$ de ambos lados.
-
-Lado izquierdo: $P_{ij}^{(n)} = P(X_n = j \mid X_0 = i)$
-
-Lado derecho: $[P^{(m)} \cdot P^{(n-m)}]_{ij} = \sum_{k \in S} P_{ik}^{(m)} P_{kj}^{(n-m)}$
-
-Usando la ley de probabilidad total condicionada en el estado en el tiempo $m$:
+Sea $P_{ij}^{(n)} = P(X_n = j \mid X_0 = i)$. Para $0 \leq m \leq n$:
 
 \begin{align*}
 P_{ij}^{(n)} &= P(X_n = j \mid X_0 = i) \\
-&= \sum_{k \in S} P(X_n = j, X_m = k \mid X_0 = i) \\
-&= \sum_{k \in S} P(X_n = j \mid X_m = k, X_0 = i) \cdot P(X_m = k \mid X_0 = i)
-\end{align*}
-
-Por la propiedad de Markov, $P(X_n = j \mid X_m = k, X_0 = i) = P(X_n = j \mid X_m = k)$, ya que el futuro solo depende del estado presente, no del pasado.
-
-Por lo tanto:
-\begin{align*}
-P_{ij}^{(n)} &= \sum_{k \in S} P(X_n = j \mid X_m = k) \cdot P(X_m = k \mid X_0 = i) \\
+&= \sum_{k \in S} P(X_n = j, X_m = k \mid X_0 = i) \quad \text{(partición de la probabilidad total respecto a $X_m$)} \\
+&= \sum_{k \in S} P(X_n = j \mid X_m = k, X_0 = i) \cdot P(X_m = k \mid X_0 = i) \\
+&= \sum_{k \in S} P(X_n = j \mid X_m = k) \cdot P(X_m = k \mid X_0 = i) \quad \text{(propiedad de Markov)} \\
 &= \sum_{k \in S} P_{kj}^{(n-m)} \cdot P_{ik}^{(m)} \\
-&= \sum_{k \in S} P_{ik}^{(m)} P_{kj}^{(n-m)}
+&= \sum_{k \in S} P_{ik}^{(m)} P_{kj}^{(n-m)} = [P^{(m)} \cdot P^{(n-m)}]_{ij}
 \end{align*}
 
-Esto demuestra que $P_{ij}^{(n)} = [P^{(m)} \cdot P^{(n-m)}]_{ij}$ para todo $i,j$, por lo que:
-\begin{equation*}
-P^{(n)} = P^{(m)} \cdot P^{(n-m)}
-\end{equation*}
-
-\textbf{Caso particular:} Para $P^{(n)} = P^n$, aplicamos inducción sobre $n$.
-
-\textit{Caso base:} $n = 1$: $P^{(1)} = P = P^1$ (correcto por definición)
-
-\textit{Paso inductivo:} Supongamos que $P^{(k)} = P^k$ para todo $k \leq n$. Entonces:
-\begin{align*}
-P^{(n+1)} &= P^{(n)} \cdot P^{(1)} \quad \text{(Chapman-Kolmogorov con } m = n\text{)} \\
-&= P^n \cdot P \quad \text{(hipótesis inductiva)} \\
-&= P^{n+1}
-\end{align*}
-
-Por inducción, $P^{(n)} = P^n$ para todo $n \geq 1$.
+Por tanto $P^{(n)} = P^{(m)} \cdot P^{(n-m)}$.
 
 \qed
-
-\textbf{Interpretación:} La ecuación de Chapman-Kolmogorov nos dice que para ir del estado $i$ al estado $j$ en $n$ pasos, podemos "hacer escala" en cualquier estado intermedio $k$ en el tiempo $m$, y la probabilidad total es la suma sobre todos los posibles estados intermedios del producto de las probabilidades de los dos segmentos del viaje.
 
 
 \teorema{Para una cadena de Markov con matriz de transición $P = (P_{ij})$:
@@ -110,55 +71,28 @@ Por inducción, $P^{(n)} = P^n$ para todo $n \geq 1$.
 
 \textbf{Demostración:}
 
-Demostraremos ambas direcciones de la equivalencia.
+Sea $N_i = \sum_{n=0}^{\infty} \mathbf{1}_{\{X_n = i\}}$ el número de visitas al estado $i$.\\
+Sea $f^{(n)}_{ii} = P(X_n = i, X_{n-1} \neq i, \ldots, X_0 \neq i)$ la probabilidad retornar a $i$ en $n$ pasos.\\
+Sea $f_{i} = \sum_{n=0}^{\infty} f^{n}_{ii}$ la probabilidad regresar al estado $i$ eventualmente.
 
-\textbf{Parte 1: ($\Rightarrow$)} Si el estado $i$ es recurrente, entonces $\sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty$.
+El número de visitas $N_i$ sigue:
+\begin{itemize}
+\item Con probabilidad $(1-f_{i})$: exactamente 1 visita (no regresa)
+\item Con probabilidad $f_{i}(1-f_{i})$: exactamente 2 visitas (regresa una vez)
+\item Con probabilidad $f_{i}^2(1-f_{i})$: exactamente 3 visitas (regresa dos veces)
+\item $\vdots$
+\end{itemize}
 
-Sea $N_i$ el número de veces que la cadena visita el estado $i$. Por definición:
-\begin{equation*}
-N_i = \sum_{n=0}^{\infty} \mathbf{1}_{\{X_n = i\}}
-\end{equation*}
-
-Tomando esperanza condicionada en $X_0 = i$:
-\begin{equation*}
-\mathbb{E}_i[N_i] = \mathbb{E}_i\left[\sum_{n=0}^{\infty} \mathbf{1}_{\{X_n = i\}}\right] = \sum_{n=0}^{\infty} \mathbb{E}_i[\mathbf{1}_{\{X_n = i\}}] = \sum_{n=0}^{\infty} P_{ii}^{(n)}
-\end{equation*}
-
-Si el estado $i$ es recurrente, entonces la probabilidad de regresar a $i$ partiendo de $i$ es 1:
-\begin{equation*}
-f_{ii} = P_i(\text{regresar a } i \text{ alguna vez}) = 1
-\end{equation*}
-
-Esto implica que $\mathbb{E}_i[N_i] = \infty$ (visitamos $i$ infinitas veces con probabilidad 1), por lo tanto:
-\begin{equation*}
-\sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty
-\end{equation*}
-
-\textbf{Parte 2: ($\Leftarrow$)} Si el estado $i$ es transitorio, entonces $\sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty$.
-
-Si el estado $i$ es transitorio, entonces $f_{ii} < 1$. Sea $q = 1 - f_{ii} > 0$ la probabilidad de nunca regresar a $i$ partiendo de $i$.
-
-El número de visitas a $i$ sigue una distribución geométrica modificada. La probabilidad de visitar exactamente $k$ veces el estado $i$ es:
-\begin{equation*}
-P_i(N_i = k) = f_{ii}^{k-1} \cdot q = f_{ii}^{k-1} \cdot (1 - f_{ii})
-\end{equation*}
-
-Por lo tanto:
+Por tanto:
 \begin{align*}
-\mathbb{E}_i[N_i] &= \sum_{k=1}^{\infty} k \cdot f_{ii}^{k-1} \cdot (1 - f_{ii}) \\
-&= (1 - f_{ii}) \sum_{k=1}^{\infty} k \cdot f_{ii}^{k-1} \\
-&= (1 - f_{ii}) \cdot \frac{1}{(1 - f_{ii})^2} = \frac{1}{1 - f_{ii}} < \infty
+\mathbb{E}_i[N_i] &= 1(1-f_i) + f_i(1- f_i) + f^2_i(1-f_i) + \cdots \\
+&= \frac{1}{1-f_{i}} < \infty \quad (\text{serie geométrica})
 \end{align*}
 
-Como $\mathbb{E}_i[N_i] = \sum_{n=0}^{\infty} P_{ii}^{(n)}$ y $\mathbb{E}_i[N_i] < \infty$, concluimos que:
-\begin{equation*}
-\sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty
-\end{equation*}
-
-\textbf{Conclusión:} Hemos demostrado ambas direcciones:
+Como $\mathbb{E}_i[N_i] = \sum_{n=0}^{\infty} P_{ii}^{(n)}$, tenemos:
 \begin{itemize}
-\item Estado recurrente $\Leftrightarrow$ $\sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty$
-\item Estado transitorio $\Leftrightarrow$ $\sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty$
+\item Si $i$ es recurrente: $f_i = 1 \Rightarrow \mathbb{E}_i[N_i] = \infty \Rightarrow \sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty$
+\item Si $i$ es transitorio: $f_i < 1 \Rightarrow \mathbb{E}_i[N_i] = \frac{1}{1-f_i} < \infty \Rightarrow \sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty$
 \end{itemize}
 
 \qed
@@ -175,29 +109,25 @@ m_i = E_i[T_i] \quad (\text{esperanza del tiempo hasta regresar a $i$ partiendo 
 
 \textbf{Demostración:}
 
-Fijemos un estado $i \in S$. Consideremos los \emph{ciclos de retorno} a $i$, definidos como las trayectorias que comienzan en $i$ y terminan en la siguiente visita a $i$.
+Para una cadena irreducible y recurrente positiva, consideremos la fracción de tiempo que la cadena pasa en cada estado.
 
-\begin{itemize}
-\item La longitud de un ciclo tiene la misma distribución que $T_i$, por lo que la longitud media es $m_i$.
-\item En cada ciclo, el estado $i$ es visitado exactamente una vez más (la visita de cierre). Por tanto, el número medio de visitas a $i$ en un ciclo es $1$.
-\end{itemize}
-
-Sea $N_j$ el número de visitas al estado $j$ en un ciclo. Definimos
+La fracción de tiempo en el estado $j$ hasta el tiempo $n$ es:
 \begin{equation*}
-\pi_j = \frac{E_i[N_j]}{m_i}
+\frac{1}{n} \sum_{k=1}^{n} \mathbf{1}(X_k = j) \to E[\mathbf{1}(X_\infty = j)] = \pi(j) \quad \text{cuando } n \to \infty
 \end{equation*}
 
-Esta definición nos da la fracción de tiempo que la cadena pasa en el estado $j$ durante un ciclo típico que comienza en $i$.
+Por otro lado, si $N(j)$ es el número de visitas al estado $j$ hasta el tiempo $n$, entonces $\frac{n}{N(j)}$ converge al tiempo promedio entre visitas sucesivas a $j$, que es $m_j = E_j[T_j]$.
 
-Como la cadena es irreducible, todos los estados se comunican, y por tanto esta definición no depende del estado inicial $i$ elegido. Además, se puede demostrar que:
+Por tanto:
+\begin{equation*}
+\lim_{n \to \infty} \frac{N(j)}{n} = \lim_{n \to \infty} \frac{1}{n/N(j)} = \frac{1}{m_j}
+\end{equation*}
 
-\begin{enumerate}
-\item $\sum_{j \in S} \pi_j = 1$ (normalización)
-\item $\pi P = \pi$ (ecuación de balance)
-\item $\pi_i = \frac{1}{m_i}$ para todo $i \in S$
-\end{enumerate}
+Definimos $\pi_j = \frac{1}{m_j}$. Para verificar que $\pi$ satisface $\pi P = \pi$:
 
-La unicidad se sigue del hecho de que el sistema de ecuaciones $\pi P = \pi$ junto con la condición de normalización tiene una única solución cuando la cadena es irreducible y finita.
+Consideremos un ciclo de retorno al estado $i$. Durante este ciclo, el número esperado de visitas a cualquier estado $j$ es finito (pues la cadena es recurrente positiva). La suma de todas las visitas esperadas durante el ciclo debe ser igual a la longitud esperada del ciclo $m_i$.
+
+Por la propiedad de Markov y la irreducibilidad, la proporción de tiempo en cada estado es independiente del estado inicial, lo que garantiza que $\pi$ es la única distribución que satisface $\pi P = \pi$ con $\sum_{j} \pi_j = 1$.
 
 \qed
 
