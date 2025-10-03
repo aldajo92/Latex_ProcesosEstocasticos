@@ -129,10 +129,7 @@ son independientes.}
 \textbf{Ejemplo}: En cierto cruce, el número de infracciones que ocurren sigue un proceso de Poisson con tasa de $5$ accidentes/día.  
 Determine la probabilidad de que haya al menos $2$ infracciones en las siguientes $6$ horas.
 
-\textbf{Solución}:
-
-Sea $N(t)$: número de accidentes hasta el tiempo $t$. ¿Cómo obtener $P\big(N(1/4) \geq 2\big)$?
-
+\textbf{Solución}: Sea $N(t)$: número de accidentes hasta el tiempo $t$. ¿Cómo obtener $P\big(N(1/4) \geq 2\big)$?
 
 \begin{equation*}
 N(1/4) = N(1/4) - N(0) \sim \text{Poisson}\!\left( 5 \cdot \tfrac{1}{4} \right) 
@@ -170,9 +167,7 @@ P\big(N(1/4) \geq 2\big)
 
 Determine la probabilidad de que, después de que la taquilla abre, $5$ clientes lleguen durante el primer minuto y otros $5$ clientes lleguen durante el segundo minuto.
 
-\textbf{Solución}:
-
-Sea $N(t)$: número de clientes que llegan a la taquilla hasta el tiempo $t$.
+\textbf{Solución}: Sea $N(t)$: número de clientes que llegan a la taquilla hasta el tiempo $t$.
 
 \begin{equation*}
 P\big(N(60) = 5,\; N(120) - N(60) = 5\big)\; ?
@@ -195,7 +190,7 @@ Por independencia de incrementos:
 
 Además,
 \begin{equation*}
-N(60) - N(0) \sim \text{Poisson}(0.1 \times 60) = \text{Poisson}(6).
+N(60) - N(0) \sim \text{Poisson}(0.1 \times 60) = \text{Poisson}(6)
 \end{equation*}
 
 \begin{equation*}
@@ -204,9 +199,7 @@ N(60) - N(0) \sim \text{Poisson}(0.1 \times 60) = \text{Poisson}(6).
 
 \textbf{Ejemplo}: Suponga que por un punto de una autopista pasan en promedio $50$ carros cada $5$ minutos. ¿Cuál es la probabilidad de que pasen $20$ carros en el primer minuto y $30$ en los siguientes $4$ minutos?
 
-\textbf{Solución}:
-
-Sea $N(t)$ : Número de carros que pasan por un punto hasta el tiempo $t$.
+\textbf{Solución}: Sea $N(t)$ : Número de carros que pasan por un punto hasta el tiempo $t$.
 
 \begin{equation*}
 \lambda = 10 \; \text{carros/minuto}.
@@ -258,8 +251,7 @@ Si una función $f$ es $o(h)$, se escribe
 f(h) = o(h).
 \end{equation*}
 
-\textbf{Ejemplo}: Para $r > 1$, $f(x) = x^r$.  
-¿Es $f = o(h)$?
+\textbf{Ejemplo}: Para $r > 1$, $f(x) = x^r$. ¿Es $f = o(h)$?
 
 \begin{equation*}
 \lim_{h \to 0} \frac{h^r}{h} = \lim_{h \to 0} h^{r-1} = 0.
@@ -274,8 +266,7 @@ f(h) = o(h).
 \end{tikzpicture}
 \end{center}
 
-\textbf{Ejemplo}: Para $r \leq 1$, $f(x) = x^r$.  
-¿Es $f = o(h)$?
+\textbf{Ejemplo}: Para $r \leq 1$, $f(x) = x^r$. ¿Es $f = o(h)$?
 
 \definicion{(2) Se dice que un proceso de conteo $\{N(t)\}_{t \geq 0}$ es un \textbf{proceso de Poisson} con tasa $\lambda > 0$, si cumple:
 \begin{enumerate}
@@ -925,7 +916,7 @@ para cualquier $0 \leq s_0 \leq s_1 \leq \cdots \leq s_n \leq s$ y para cualquie
 \mathbb{P}\bigl(X_{t+s} = j \,\big|\, X_s = i \bigr).
 \end{equation*}}
 
-\textbf{Ejemplo:} (Transformación de una cadena de Markov a tiempo continuo) Sea $N(t)$ un proceso de Poisson con intensidad $\lambda$ y sea $Y_n$ una cadena de Markov con matriz de transición $U(i,j)$, $i \neq j$. Entonces $X_t = Y_{N(t)}$ es una cadena de Markov en tiempo continuo.
+\textbf{Ejemplo}: (Transformación de una cadena de Markov a tiempo continuo) Sea $N(t)$ un proceso de Poisson con intensidad $\lambda$ y sea $Y_n$ una cadena de Markov con matriz de transición $U(i,j)$, $i \neq j$. Entonces $X_t = Y_{N(t)}$ es una cadena de Markov en tiempo continuo.
 
 \begin{center}
 \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=3cm,semithick]
