@@ -202,13 +202,11 @@ N(60) - N(0) \sim \text{Poisson}(0.1 \times 60) = \text{Poisson}(6).
 = \left( \frac{e^{-6} \, 6^5}{5!} \right)^2 = 0.026
 \end{equation*}
 
-\textbf{Ejemplo}: Suponga que por un punto de una autopista pasan en promedio $50$ carros cada $5$ minutos.  
-
-¿Cuál es la probabilidad de que pasen $20$ carros en el primer minuto y $30$ en los siguientes $4$ minutos?
+\textbf{Ejemplo}: Suponga que por un punto de una autopista pasan en promedio $50$ carros cada $5$ minutos. ¿Cuál es la probabilidad de que pasen $20$ carros en el primer minuto y $30$ en los siguientes $4$ minutos?
 
 \textbf{Solución}:
 
-Sea $N(t) := \#$ de carros que pasan por un punto hasta el tiempo $t$.
+Sea $N(t)$ : Número de carros que pasan por un punto hasta el tiempo $t$.
 
 \begin{equation*}
 \lambda = 10 \; \text{carros/minuto}.
@@ -333,7 +331,7 @@ X_n \xrightarrow{d} \text{Poisson}(\lambda)
 empezamos por demostrar que (2) $= >$ (1)
 
 \begin{equation*}
-P_n(t) = P(N(t) = n) \quad \longleftarrow \quad \text{distribución Poisson}(t\lambda)
+P_n(t) = P(N(t) = n) \quad \longleftarrow \quad \text{distribución Poisson}(\lambda t)
 \end{equation*}
 
 \begin{equation*}
@@ -781,7 +779,7 @@ P(t_1, \ldots, t_n \mid n) = \frac{e^{-\lambda t_1} \lambda t_1 \cdot e^{-\lambd
 = \frac{n! (t_1(t_2-t_1)\cdots(t_n-t_{n-1}))}{t^n}
 \end{equation*}
 
-Luego:
+Tarea:
 \begin{equation*}
 \frac{\partial^n F}{\partial t_1 \partial t_2 \cdots \partial t_n} = \frac{n!}{t^n}
 \end{equation*}
@@ -829,11 +827,8 @@ E_Y(E(X|Y)) &= E\left(\sum_x x \cdot P(X=x|Y)\right) \\
 
 \teorema{Sean $X_1, X_2, \ldots$ i.i.d. con primer y segundo momento finito. Sea $N$ una v.a. independiente y discreta. Consideremos $S_N = \sum_{i=1}^{N} X_i$ con $S_0 = 0$.
 \begin{enumerate}
-\item Si $E(N) < \infty$ entonces $E(S_N) = E(N) \cdot E(X_1)$.
-\item Si $E(N^2) < \infty$ entonces 
-\begin{equation*}
-\text{Var}(S_N) = E(N) \text{Var}(X_1) + \text{Var}(N) [E(X_1)]^2
-\end{equation*}
+\item Si $E(N) < \infty$ entonces $E(S_N) = E(N) \cdot E(X_1)$
+\item Si $E(N^2) < \infty$ entonces $\text{Var}(S_N) = E(N) \text{Var}(X_1) + \text{Var}(N) [E(X_1)]^2$
 \end{enumerate}}
 
 \textbf{Demostración:}
@@ -930,9 +925,7 @@ para cualquier $0 \leq s_0 \leq s_1 \leq \cdots \leq s_n \leq s$ y para cualquie
 \mathbb{P}\bigl(X_{t+s} = j \,\big|\, X_s = i \bigr).
 \end{equation*}}
 
-\textbf{Ejemplo:} (Transformación de una cadena de Markov a tiempo continuo) Sea $N(t)$ un proceso de Poisson con intensidad $\lambda$ y sea $Y_n$ una cadena de Markov con matriz de transición $U(i,j)$, $i \neq j$.
-
-Entonces $X_t = Y_{N(t)}$ es una cadena de Markov en tiempo continuo.
+\textbf{Ejemplo:} (Transformación de una cadena de Markov a tiempo continuo) Sea $N(t)$ un proceso de Poisson con intensidad $\lambda$ y sea $Y_n$ una cadena de Markov con matriz de transición $U(i,j)$, $i \neq j$. Entonces $X_t = Y_{N(t)}$ es una cadena de Markov en tiempo continuo.
 
 \begin{center}
 \begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=3cm,semithick]
@@ -1493,7 +1486,7 @@ Q = \begin{pmatrix}
 q(i, i+1) &= \lambda_i \\
 q(i, i-1) &= \mu_i
 \end{align*}
-para todo $i$. $X_t =$ "\# de partículas en un sistema en un tiempo $t$".}
+para todo $i$. $X_t :$ Número de partículas en un sistema en un tiempo $t$.}
 
 \begin{itemize}
 \item \textbf{Proceso de nacimiento puro:}
