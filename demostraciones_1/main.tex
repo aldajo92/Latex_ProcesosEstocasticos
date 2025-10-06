@@ -9,7 +9,7 @@
 % Eliminar sangría de párrafos
 \setlength{\parindent}{0pt}
 
-\title{Procesos Estocásticos: Seccion 1}
+\title{Procesos Estocásticos: Demostraciones Capitulo 1}
 \author{Alejandro Daniel José Gómez Flórez}
 \date{}
 
@@ -36,9 +36,6 @@
 \begin{document}
 
 \maketitle
-
-\section{Demostraciones}
-
 
 \teorema{
 \begin{equation*}
@@ -136,144 +133,29 @@ Por la propiedad de Markov y la irreducibilidad, la proporción de tiempo en cad
 
 \textbf{Demostración}:
 
-La demostración se basa en el análisis del comportamiento asintótico de las potencias de la matriz de transición. Procederemos en varios pasos.
+Por ser la cadena irreducible y recurrente positiva, existe una única distribución estacionaria $\pi$ tal que $\pi P = \pi$ y $\sum_{y} \pi(y) = 1$.
 
-\textbf{Paso 1: Existencia y unicidad de la distribución estacionaria}
+Sea $\mu_n^{(x)}$ la distribución de $X_n$ dado $X_0 = x$, entonces $\mu_n^{(x)}(y) = P^n(x,y)$.
 
-Por ser la cadena irreducible y recurrente positiva, sabemos del teorema anterior que existe una única distribución estacionaria $\pi$ tal que $\pi P = \pi$ y $\sum_{y} \pi(y) = 1$.
-
-\textbf{Paso 2: Uso de la aperiodicidad}
-
-Como los estados son aperiódicos, para cada estado $x$ existe un entero $N_x$ tal que para todo $n \geq N_x$, se tiene $P^n(x,x) > 0$. Esto significa que es posible regresar al estado $x$ en cualquier número suficientemente grande de pasos.
-
-\textbf{Paso 3: Acoplamiento y tiempo de mezcla}
-
-Definimos el \emph{tiempo de acoplamiento} $\tau$ como el primer momento en que dos copias independientes de la cadena, iniciando desde estados diferentes, se encuentran en el mismo estado.
-
-Para estados irreducibles, recurrentes positivos y aperiódicos, se puede demostrar que:
-\begin{equation*}
-\mathbb{E}[\tau] < \infty
-\end{equation*}
-
-\textbf{Paso 4: Convergencia en variación total}
-
-Sea $\mu_n^{(x)}$ la distribución de $X_n$ dado $X_0 = x$. Entonces:
-\begin{equation*}
-\mu_n^{(x)}(y) = P^n(x,y)
-\end{equation*}
-
-La distancia en variación total entre $\mu_n^{(x)}$ y $\pi$ está dada por:
+La distancia en variación total:
 \begin{equation*}
 \|\mu_n^{(x)} - \pi\|_{TV} = \frac{1}{2}\sum_{y \in S} |P^n(x,y) - \pi(y)|
 \end{equation*}
 
-\textbf{Paso 5: Demostración de la convergencia}
+Por la aperiodicidad, existe $N$ tal que para todo $n \geq N$ se tiene $P^n(x,x) > 0$ para todo $x$.
 
-Usando la técnica de acoplamiento, se puede demostrar que existe una constante $\rho < 1$ tal que:
+Usando acoplamiento, para cadenas irreducibles, recurrentes positivas y aperiódicas, existe $\rho < 1$ tal que:
 \begin{equation*}
 \|\mu_n^{(x)} - \pi\|_{TV} \leq C \rho^n
 \end{equation*}
 
-para alguna constante $C > 0$. Esto implica convergencia exponencial.
-
-En particular, para cada estado $y$:
+Por tanto:
 \begin{equation*}
-|P^n(x,y) - \pi(y)| \leq 2\|\mu_n^{(x)} - \pi\|_{TV} \leq 2C \rho^n \to 0 \text{ cuando } n \to \infty
+|P^n(x,y) - \pi(y)| \leq 2\|\mu_n^{(x)} - \pi\|_{TV} \leq 2C \rho^n \to 0 
 \end{equation*}
 
-Por lo tanto:
-\begin{equation*}
-\lim_{n \to \infty} P^n(x,y) = \pi(y)
-\end{equation*}
-
-\textbf{Paso 6: Interpretación del resultado}
-
-Este teorema nos dice que, independientemente del estado inicial $x$, la probabilidad de estar en el estado $y$ después de $n$ pasos converge a $\pi(y)$ cuando $n \to \infty$. Esto significa que la cadena "olvida" su condición inicial y converge a su distribución de equilibrio.
-
-La velocidad de convergencia es exponencial con tasa $\rho$, lo que hace que la convergencia sea relativamente rápida en la práctica.
+Así: $\lim_{n \to \infty} P^n(x,y) = \pi(y)$.
 
 \qed
-
-\textbf{Corolario:} Si además la cadena es finita, entonces la convergencia es uniforme en el estado inicial:
-\begin{equation*}
-\lim_{n \to \infty} \max_{x,y \in S} |P^n(x,y) - \pi(y)| = 0
-\end{equation*}
-
-\section{Ejercicios}
-
-\textbf{Problema:} Una molécula de hemoglobina puede transportar una molécula de oxígeno (+) o una molécula de monóxido de carbono (-).
-
-Supongamos que los dos tipos de gases llegan con tasa 1 y 2, y el tiempo hasta conectar con tasa 3 y 4, respectivamente. Considerando el estado 0 cuando la molécula de hemoglobina está libre.
-
-Determine en el largo plazo: la fracción de tiempo que la molécula de hemoglobina está en cada uno de sus tres posibles estados: $\{-, 0, +\}$.
-
-\textbf{Sol:}
-
-\textbf{Solución:}
-
-Este es un problema de cadena de Markov continua que podemos modelar como un proceso de nacimiento y muerte.
-
-\textbf{Estados:}
-\begin{itemize}
-\item Estado 0: Hemoglobina libre (sin gas)
-\item Estado +: Hemoglobina con oxígeno
-\item Estado -: Hemoglobina con monóxido de carbono
-\end{itemize}
-
-\textbf{Tasas de transición:}
-\begin{itemize}
-\item De estado 0 a estado +: tasa $\lambda_+ = 1$ (llegada de oxígeno)
-\item De estado 0 a estado -: tasa $\lambda_- = 2$ (llegada de monóxido de carbono)
-\item De estado + a estado 0: tasa $\mu_+ = 3$ (desconexión del oxígeno)
-\item De estado - a estado 0: tasa $\mu_- = 4$ (desconexión del monóxido de carbono)
-\end{itemize}
-
-\textbf{Matriz generador infinitesimal:}
-\begin{equation*}
-Q = \begin{pmatrix}
--(1+2) & 1 & 2 \\
-3 & -3 & 0 \\
-4 & 0 & -4
-\end{pmatrix} = \begin{pmatrix}
--3 & 1 & 2 \\
-3 & -3 & 0 \\
-4 & 0 & -4
-\end{pmatrix}
-\end{equation*}
-
-\textbf{Ecuaciones de balance para la distribución estacionaria:}
-
-Para encontrar la distribución estacionaria $\pi = (\pi_-, \pi_0, \pi_+)$, resolvemos $\pi Q = 0$ con $\pi_- + \pi_0 + \pi_+ = 1$.
-
-Las ecuaciones de balance detallado son:
-\begin{align}
--3\pi_0 + 3\pi_+ + 4\pi_- &= 0 \quad \text{(balance para estado 0)} \\
-\pi_0 - 3\pi_+ &= 0 \quad \text{(balance para estado +)} \\
-2\pi_0 - 4\pi_- &= 0 \quad \text{(balance para estado -)}
-\end{align}
-
-De la ecuación (2): $\pi_+ = \frac{\pi_0}{3}$
-
-De la ecuación (3): $\pi_- = \frac{2\pi_0}{4} = \frac{\pi_0}{2}$
-
-Sustituyendo en la condición de normalización:
-\begin{equation*}
-\pi_- + \pi_0 + \pi_+ = \frac{\pi_0}{2} + \pi_0 + \frac{\pi_0}{3} = 1
-\end{equation*}
-
-\begin{equation*}
-\pi_0\left(\frac{1}{2} + 1 + \frac{1}{3}\right) = \pi_0\left(\frac{3 + 6 + 2}{6}\right) = \pi_0\left(\frac{11}{6}\right) = 1
-\end{equation*}
-
-Por lo tanto: $\pi_0 = \frac{6}{11}$
-
-\textbf{Distribución estacionaria:}
-\begin{align}
-\pi_0 &= \frac{6}{11} \quad \text{(fracción de tiempo libre)} \\
-\pi_+ &= \frac{1}{3} \cdot \frac{6}{11} = \frac{2}{11} \quad \text{(fracción de tiempo con oxígeno)} \\
-\pi_- &= \frac{1}{2} \cdot \frac{6}{11} = \frac{3}{11} \quad \text{(fracción de tiempo con monóxido de carbono)}
-\end{align}
-
-\textbf{Verificación:} $\frac{6}{11} + \frac{2}{11} + \frac{3}{11} = \frac{11}{11} = 1$ (correcto)
 
 \end{document}
