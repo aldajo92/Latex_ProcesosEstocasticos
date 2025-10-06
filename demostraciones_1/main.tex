@@ -71,7 +71,7 @@ Por tanto $P^{(n)} = P^{(m)} \cdot P^{(n-m)}$.
 
 \textbf{Demostración:}
 
-Sea $N_i = \sum_{n=0}^{\infty} \mathbf{1}_{\{X_n = i\}}$ el número de visitas al estado $i$.\\
+Sea $N_i = \sum_{n=0}^{\infty} \mathbf{1}_{\{X_n = i\}}$ el número de visitas al estado $i$ y $\mathbf{1}_{\{X_n = i\}}$ la función indicadora de que el estado $X_n$ es $i$. \\
 Sea $f^{(n)}_{ii} = P(X_n = i, X_{n-1} \neq i, \ldots, X_0 \neq i)$ la probabilidad retornar a $i$ en $n$ pasos.\\
 Sea $f_{i} = \sum_{n=0}^{\infty} f^{n}_{ii}$ la probabilidad regresar al estado $i$ eventualmente.
 
@@ -109,14 +109,12 @@ m_i = E_i[T_i] \quad (\text{esperanza del tiempo hasta regresar a $i$ partiendo 
 
 \textbf{Demostración:}
 
-Para una cadena irreducible y recurrente positiva, consideremos la fracción de tiempo que la cadena pasa en cada estado.
-
-La fracción de tiempo en el estado $j$ hasta el tiempo $n$ es:
+Para una cadena irreducible y recurrente positiva, consideremos la fracción de tiempo que la cadena pasa en cada estado. La fracción de tiempo en el estado $j$ hasta el tiempo $n$ es:
 \begin{equation*}
-\frac{1}{n} \sum_{k=1}^{n} \mathbf{1}(X_k = j) \to E[\mathbf{1}(X_\infty = j)] = \pi(j) \quad \text{cuando } n \to \infty
+\frac{1}{n} \sum_{k=1}^{n} \mathbf{1}_{\{X_k = j\}} \to \pi(j) \quad \text{cuando } n \to \infty
 \end{equation*}
 
-Por otro lado, si $N(j)$ es el número de visitas al estado $j$ hasta el tiempo $n$, entonces $\frac{n}{N(j)}$ converge al tiempo promedio entre visitas sucesivas a $j$, que es $m_j = E_j[T_j]$.
+Por otro lado, si $N(j) = \sum_{k=1}^{n} \mathbf{1}_{\{X_k = j\}}$ es el número de visitas al estado $j$ hasta el tiempo $n$, entonces $\frac{n}{N(j)}$ converge al tiempo promedio entre visitas sucesivas a $j$, que es $m_j = E_j[T_j]$.
 
 Por tanto:
 \begin{equation*}
