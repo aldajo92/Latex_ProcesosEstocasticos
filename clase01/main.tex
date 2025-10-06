@@ -15,6 +15,7 @@
 \geometry{margin=1in}
 \usepackage{enumitem}
 \usepackage[framemethod=tikz]{mdframed}
+\usepackage{blkarray}
 
 % Eliminar sangría de párrafos
 \setlength{\parindent}{0pt}
@@ -60,8 +61,7 @@
 }
 
 \title{Apuntes de Procesos Estocásticos: Parte 1}
-\author{Nicolás Moreno (Docente)}
-\author{Alejandro Daniel José Gómez Flórez (Estudiante)}
+\author{Nicolás Moreno (Docente) | Alejandro Daniel José Gómez Flórez (Estudiante)}
 \date{}
 
 \begin{document}
@@ -1802,6 +1802,245 @@ E_{\pi}(r(X)) &= \sum_{x=0}^{5} r(x) \pi(x) \\
 Ganancia diaria:
 \begin{equation*}
 \text{Ganancia} = 12.92 - 5.20 = 7.72\,\text{mil pesos}
+\end{equation*}
+
+\section*{Probabilidades y tiempos de Absorción}
+
+Considere una carrera de 2 años:
+\begin{itemize}
+    \item A: Primer año
+    \item 2: Segundo año  
+    \item G: Graduado
+    \item E: Expulsado
+\end{itemize}
+
+La matriz de transición es:
+
+\begin{equation*}
+P = \begin{blockarray}{ccccc}
+& 1 & 2 & G & E \\
+\begin{block}{c(cccc)}
+1 & 0.25 & 0.6 & 0 & 0.15 \\
+2 & 0 & 0.2 & 0.7 & 0.1 \\
+G & 0 & 0 & 1 & 0 \\
+E & 0 & 0 & 0 & 1 \\
+\end{block}
+\end{blockarray}
+\end{equation*}
+
+\begin{center}
+\begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=3cm,semithick]
+\tikzstyle{every state}=[fill=white,draw=black,text=black,minimum size=25pt]
+
+  % Estados: 1 y 2 arriba, E y G abajo
+  \node[state,dashed] (1) at (0,0) {1};
+  \node[state,dashed] (2) at (4,0) {2};
+  \node[state] (E) at (0,-3) {E};
+  \node[state] (G) at (4,-3) {G};
+
+  % Transiciones desde estado 1
+  \path (1) edge[loop above] node{$0.25$} (1)
+            edge node[above]{$0.6$} (2)
+            edge node[right, pos=0.7]{$0.15$} (E);
+  
+  % Transiciones desde estado 2
+  \path (2) edge[loop above] node{$0.2$} (2)
+            edge node[left, pos=0.7]{$0.7$} (G)
+            edge node[right]{$0.1$} (E);
+        
+  % Auto-loops en estados absorbentes
+  \path (G) edge[loop below] node{$1$} (G);
+  \path (E) edge[loop below] node{$1$} (E);
+
+\end{tikzpicture}
+\end{center}
+
+Preguntas:
+\begin{enumerate}[label=\alph*)]
+    \item ¿Cuál es la probabilidad de que un estudiante eventualmente se gradúe?
+    \item ¿Y de que eventualmente sea expulsado?
+\end{enumerate}
+
+\textbf{Solución:}
+
+Estados transitorios: $T = \{1, 2\}$
+
+Estados absorbentes: $A = \{G, E\}$
+
+La matriz se puede reorganizar como:
+
+\begin{equation*}
+P = \begin{pmatrix}
+Q & R \\
+0 & I
+\end{pmatrix}
+\end{equation*}
+
+donde:
+\begin{equation*}
+Q = \begin{pmatrix}
+0.25 & 0.6 \\
+0 & 0.2
+\end{pmatrix}, \quad
+R = \begin{pmatrix}
+0 & 0.15 \\
+0.7 & 0.1
+\end{pmatrix}
+\end{equation*}
+
+Calculamos:
+\begin{equation*}
+I - Q = \begin{pmatrix}
+1 & 0 \\
+0 & 1
+\end{pmatrix} - \begin{pmatrix}
+0.25 & 0.6 \\
+0 & 0.2
+\end{pmatrix} = \begin{pmatrix}
+0.75 & -0.6 \\
+0 & 0.8
+\end{pmatrix}
+\end{equation*}
+
+Sea $h(x)$ la probabilidad de que el estudiante estando en $x$ eventualmente se gradúe y $e(x)$ la probabilidad de que eventualmente sea expulsado estando en $x$.
+
+Probabilidades a un paso:
+\begin{align*}
+h(1) &= P(1,1)h(1) + P(1,2)h(2) + P(1,G)h(G) + P(1,E)h(E) \\
+h(2) &= P(2,1)h(1) + P(2,2)h(2) + P(2,G)h(G) + P(2,E)h(E)
+\end{align*}
+
+\begin{align*}
+h(1) &= 0.25h(1) + 0.6h(2) + 0 \cdot 1 + 0.15 \cdot 0 = 0.25h(1) + 0.6h(2) \\
+h(2) &= 0 \cdot h(1) + 0.2h(2) + 0.7 \cdot 1 + 0.1 \cdot 0 = 0.2h(2) + 0.7
+\end{align*}
+
+Por otro lado:
+\begin{align*}
+e(1) &= P(1,1)e(1) + P(1,2)e(2) + P(1,G)e(G) + P(1,E)e(E) \\
+e(2) &= P(2,1)e(1) + P(2,2)e(2) + P(2,G)e(G) + P(2,E)e(E)
+\end{align*}
+
+Esto da:
+\begin{align*}
+e(1) &= 0.25e(1) + 0.6e(2) + 0 \cdot 0 + 0.15 \cdot 1 = 0.25e(1) + 0.6e(2) + 0.15 \\
+e(2) &= 0 \cdot e(1) + 0.2e(2) + 0.7 \cdot 0 + 0.1 \cdot 1 = 0.2e(2) + 0.1
+\end{align*}
+
+Resolviendo el sistema:
+\begin{align*}
+h(1) &= 0.25h(1) + 0.6h(2) \Rightarrow (1-0.25)h(1) - 0.6h(2) = 0 \\
+h(2) &= 0.2h(2) + 0.7 \Rightarrow (1-0.2)h(2) = 0.7
+\end{align*}
+
+De la segunda ecuación:
+\begin{equation*}
+e(1) = 0.25e(1) + 0.6e(2) + 0.15 \Rightarrow (1-0.25)e(1) - 0.6e(2) = 0.15
+\end{equation*}
+
+\begin{equation*}
+e(2) = 0.2e(2) + 0.1 \qquad \Rightarrow (1-0.2)e(2) = 0.1
+\end{equation*}
+
+% Continuación de la solución
+\begin{equation*}
+\left(\begin{pmatrix}
+1 & 0 \\
+0 & 1
+\end{pmatrix} - \begin{pmatrix}
+0.25 & 0.6 \\
+0 & 0.2
+\end{pmatrix}\right) \begin{pmatrix}
+h(1) & e(1) \\
+h(2) & e(2)
+\end{pmatrix} = \begin{pmatrix}
+0 & 0.15 \\
+0.7 & 0.1
+\end{pmatrix}
+\end{equation*}
+
+\begin{equation*}
+P = \begin{pmatrix}
+Q & R \\
+0 & I_{M \times M}
+\end{pmatrix}
+\end{equation*}
+
+\begin{equation*}
+(I-Q) \begin{pmatrix}
+h(1) & e(1) \\
+h(2) & e(2)
+\end{pmatrix} = R
+\end{equation*}
+
+\begin{equation*}
+\Rightarrow \begin{pmatrix}
+h(1) & e(1) \\
+h(2) & e(2)
+\end{pmatrix} = (I-Q)^{-1} R
+\end{equation*}
+
+La matriz $(I-Q)^{-1} = (N-M) \times (N-M)$
+
+La entrada $(i,j)$ de la matriz $(I-Q)^{-1} R$ es la probabilidad de que comenzando en el estado $i$ sea absorbido por el estado $j$.
+
+\textbf{En general:} Sea $P$ una matriz de transición con $N$ estados, de los cuales $M$ son absorbentes y $N-M$ son transitorios, entonces siempre la matriz $P$ se puede arreglar de tal manera que:
+
+\begin{equation*}
+P = \begin{pmatrix}
+Q_{(N-M) \times (N-M)} & R_{(N-M) \times M} \\
+0_{M \times (N-M)} & I_{M \times M}
+\end{pmatrix}
+\end{equation*}
+
+La entrada $(i,j)$ de la matriz $(I-Q)^{-1} R$ es la probabilidad de que comenzando en el estado $i$ sea absorbido por el estado $j$.
+
+% Continuación del ejemplo
+Sea $g(x)$ el tiempo esperado que un estudiante se gradúe o sea expulsado estando en el estado $x$.
+
+Adelantando un paso:
+\begin{align*}
+g(1) &= P(1,1)g(1) + P(1,2)g(2) + P(1,G)g(G) + 1 \\
+g(2) &= P(2,2)g(2) + P(2,G)g(G) + P(2,E)g(E) + 1
+\end{align*}
+
+\begin{equation*}
+\begin{pmatrix}
+1-0.25 & -0.6 \\
+0 & -0.2
+\end{pmatrix} \begin{pmatrix}
+g(1) \\
+g(2)
+\end{pmatrix} = \begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\end{equation*}
+
+\begin{equation*}
+\begin{pmatrix}
+1 & 0 \\
+0 & 1
+\end{pmatrix} - \begin{pmatrix}
+0.25 & 0.6 \\
+0 & 0.2
+\end{pmatrix} \begin{pmatrix}
+g(1) \\
+g(2)
+\end{pmatrix} = \begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\end{equation*}
+
+\begin{equation*}
+\begin{pmatrix}
+g(1) \\
+g(2)
+\end{pmatrix} = (I-Q)^{-1} \begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
 \end{equation*}
 
 \end{document}
