@@ -1,0 +1,165 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{hyperref}
+\geometry{margin=1in}
+
+% Eliminar sangría de párrafos
+\setlength{\parindent}{0pt}
+
+\title{Procesos Estocásticos: Demostraciones Capitulo 1}
+\author{Alejandro Daniel José Gómez Flórez}
+\date{}
+
+% Macro para teoremas
+\newmdenv[
+    backgroundcolor=green!5,
+    linecolor=green!50,
+    linewidth=1.5pt,
+    roundcorner=5pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+    leftmargin=0pt,
+    rightmargin=0pt
+]{teoremabox}
+
+\newcommand{\teorema}[1]{%
+\begin{teoremabox}
+\textbf{Teorema}: #1
+\end{teoremabox}
+}
+
+\begin{document}
+
+\maketitle
+
+Este documento y más se encuentra disponible en: \\
+\url{https://github.com/aldajo92/NotasProcesosEstocasticos}
+
+\teorema{
+\begin{equation*}
+P^{(n)} = P^{(m)} \cdot P^{(n-m)}, \quad \text{en particular } P^{(n)} = P \cdot P \cdots P \ (\text{$n$ veces}) = P^n.
+\end{equation*}}
+
+\textbf{Demostración:}
+
+Sea $P_{ij}^{(n)} = P(X_n = j \mid X_0 = i)$. Para $0 \leq m \leq n$:
+
+\begin{align*}
+P_{ij}^{(n)} &= P(X_n = j \mid X_0 = i) \\
+&= \sum_{k \in S} P(X_n = j, X_m = k \mid X_0 = i) \quad \text{(partición de la probabilidad total respecto a $X_m$)} \\
+&= \sum_{k \in S} P(X_n = j \mid X_m = k, X_0 = i) \cdot P(X_m = k \mid X_0 = i) \\
+&= \sum_{k \in S} P(X_n = j \mid X_m = k) \cdot P(X_m = k \mid X_0 = i) \quad \text{(propiedad de Markov)} \\
+&= \sum_{k \in S} P_{kj}^{(n-m)} \cdot P_{ik}^{(m)} \\
+&= \sum_{k \in S} P_{ik}^{(m)} P_{kj}^{(n-m)} = [P^{(m)} \cdot P^{(n-m)}]_{ij}
+\end{align*}
+
+Por tanto $P^{(n)} = P^{(m)} \cdot P^{(n-m)}$.
+
+\qed
+
+
+\teorema{Para una cadena de Markov con matriz de transición $P = (P_{ij})$:
+\begin{itemize}
+    \item $\sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty$ si, y solo si el estado $i$ es recurrente
+    \item $\sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty$ si, y solo si el estado $i$ es transitorio
+\end{itemize}}
+
+\textbf{Demostración:}
+
+Sea $N_i = \sum_{n=0}^{\infty} \mathbf{1}_{\{X_n = i\}}$ el número de visitas al estado $i$ y $\mathbf{1}_{\{X_n = i\}}$ la función indicadora de que el estado $X_n$ es $i$. \\
+Sea $f^{(n)}_{ii} = P(X_n = i, X_{n-1} \neq i, \ldots, X_0 \neq i)$ la probabilidad retornar a $i$ en $n$ pasos.\\
+Sea $f_{i} = \sum_{n=0}^{\infty} f^{n}_{ii}$ la probabilidad regresar al estado $i$ eventualmente.
+
+El número de visitas $N_i$ sigue:
+\begin{itemize}
+\item Con probabilidad $(1-f_{i})$: exactamente 1 visita (no regresa)
+\item Con probabilidad $f_{i}(1-f_{i})$: exactamente 2 visitas (regresa una vez)
+\item Con probabilidad $f_{i}^2(1-f_{i})$: exactamente 3 visitas (regresa dos veces)
+\item $\vdots$
+\end{itemize}
+
+Por tanto:
+\begin{align*}
+\mathbb{E}_i[N_i] &= 1(1-f_i) + f_i(1- f_i) + f^2_i(1-f_i) + \cdots \\
+&= \frac{1}{1-f_{i}} < \infty \quad (\text{serie geométrica})
+\end{align*}
+
+Como $\mathbb{E}_i[N_i] = \sum_{n=0}^{\infty} P_{ii}^{(n)}$, tenemos:
+\begin{itemize}
+\item Si $i$ es recurrente: $f_i = 1 \Rightarrow \mathbb{E}_i[N_i] = \infty \Rightarrow \sum_{n=0}^{\infty} P_{ii}^{(n)} = \infty$
+\item Si $i$ es transitorio: $f_i < 1 \Rightarrow \mathbb{E}_i[N_i] = \frac{1}{1-f_i} < \infty \Rightarrow \sum_{n=0}^{\infty} P_{ii}^{(n)} < \infty$
+\end{itemize}
+
+\qed
+
+\teorema{Si la cadena de Markov es irreducible y sus estados son recurrentes positivos, entonces la medida estacionaria $\pi$ existe y es única. Además:
+\begin{equation*}
+\pi_i = \frac{1}{m_i}, \quad i \in S
+\end{equation*}
+donde $m_i$ es el \textbf{tiempo medio de retorno} al estado $i$, es decir,
+\begin{equation*}
+m_i = E_i[T_i] \quad (\text{esperanza del tiempo hasta regresar a $i$ partiendo de $i$})
+\end{equation*}
+}
+
+\textbf{Demostración:}
+
+Para una cadena irreducible y recurrente positiva, consideremos la fracción de tiempo que la cadena pasa en cada estado. La fracción de tiempo en el estado $j$ hasta el tiempo $n$ es:
+\begin{equation*}
+\frac{1}{n} \sum_{k=1}^{n} \mathbf{1}_{\{X_k = j\}} \to \pi(j) \quad \text{cuando } n \to \infty
+\end{equation*}
+
+Por otro lado, si $N(j) = \sum_{k=1}^{n} \mathbf{1}_{\{X_k = j\}}$ es el número de visitas al estado $j$ hasta el tiempo $n$, entonces $\frac{n}{N(j)}$ converge al tiempo promedio entre visitas sucesivas a $j$, que es $m_j = E_j[T_j]$.
+
+Por tanto:
+\begin{equation*}
+\lim_{n \to \infty} \frac{N(j)}{n} = \lim_{n \to \infty} \frac{1}{n/N(j)} = \frac{1}{m_j}
+\end{equation*}
+
+Definimos $\pi_j = \frac{1}{m_j}$. Para verificar que $\pi$ satisface $\pi P = \pi$:
+
+Consideremos un ciclo de retorno al estado $i$. Durante este ciclo, el número esperado de visitas a cualquier estado $j$ es finito (pues la cadena es recurrente positiva). La suma de todas las visitas esperadas durante el ciclo debe ser igual a la longitud esperada del ciclo $m_i$.
+
+Por la propiedad de Markov y la irreducibilidad, la proporción de tiempo en cada estado es independiente del estado inicial, lo que garantiza que $\pi$ es la única distribución que satisface $\pi P = \pi$ con $\sum_{j} \pi_j = 1$.
+
+\qed
+
+\teorema{Sea $X_n$ una cadena de Markov $\{X_n\}_{n \geq 0}$ cuyos estados son irreducibles; recurrentes positivos y aperiódicos. Entonces:
+\begin{equation*}
+\lim_{n \to \infty} P^n(x,y) = \pi(y)
+\end{equation*}}
+
+\textbf{Demostración}:
+
+Por ser la cadena irreducible y recurrente positiva, existe una única distribución estacionaria $\pi$ tal que $\pi P = \pi$ y $\sum_{y} \pi(y) = 1$.
+
+Sea $\mu_n^{(x)}$ la distribución de $X_n$ dado $X_0 = x$, entonces $\mu_n^{(x)}(y) = P^n(x,y)$.
+
+La distancia en variación total:
+\begin{equation*}
+\|\mu_n^{(x)} - \pi\|_{TV} = \frac{1}{2}\sum_{y \in S} |P^n(x,y) - \pi(y)|
+\end{equation*}
+
+Por la aperiodicidad, existe $N$ tal que para todo $n \geq N$ se tiene $P^n(x,x) > 0$ para todo $x$.
+
+Usando acoplamiento, para cadenas irreducibles, recurrentes positivas y aperiódicas, existe $\rho < 1$ tal que:
+\begin{equation*}
+\|\mu_n^{(x)} - \pi\|_{TV} \leq C \rho^n
+\end{equation*}
+
+Por tanto:
+\begin{equation*}
+|P^n(x,y) - \pi(y)| \leq 2\|\mu_n^{(x)} - \pi\|_{TV} \leq 2C \rho^n \to 0 
+\end{equation*}
+
+Así: $\lim_{n \to \infty} P^n(x,y) = \pi(y)$.
+
+\qed
+
+\end{document}

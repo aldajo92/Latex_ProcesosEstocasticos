@@ -1,0 +1,216 @@
+\documentclass[12pt,a4paper]{article}
+
+% Paquetes necesarios
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+
+% Configurar punto decimal en lugar de coma
+\decimalpoint
+
+% Configuración de página
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Procesos Estocásticos}
+\fancyhead[R]{Entregable 01}
+\fancyfoot[C]{\thepage}
+
+% Ajustar altura del encabezado para evitar warning de fancyhdr
+\setlength{\headheight}{14.5pt}
+
+% Eliminar sangría de párrafos
+\setlength{\parindent}{0pt}
+
+% Título del documento
+\title{Entregable 01 - Procesos Estocásticos}
+\author{Nombre del Estudiante}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problema 1}
+
+\begin{center}
+\fbox{\begin{minipage}{\textwidth}
+Los métodos de Cadenas de Markov Monte Carlo (MCMC) son utilizados para simular valores de cierta densidad objetivo $f$ cuya forma cerrada no sea conocida o simplemente no la podemos simular fácilmente. La estrategia de muestreo detrás del MCMC, es construir una cadena de Markov irreducible y aperiódica cuya distribución estacionaria sea la función objetivo $f$. Esto es, para un $t$ suficientemente grande, una realización $X_t$ de esta cadena tendrá una distribución cercana a $f$ y además
+\begin{equation*}
+\lim_{n \to \infty} \frac{1}{n} \sum_{i=1}^{n} h(X_i) = \mathbf{E}_f(h(X))
+\end{equation*}
+lo cual obviamente nos permite aproximar integrales (por eso Monte Carlo en el nombre del método).
+
+\vspace{0.5cm}
+
+Para ejemplificar esto, defina la siguiente cadena de Markov $x_t = \beta x_{t-1} + \varepsilon_t$, donde $\varepsilon_t$ es una secuencia iid con distribución normal$(0,1)$. Realice simulaciones de $x_t$ con $\beta = 0.1$ para obtener que la distribución estacionaria es normal$(0, 1/(1-\beta^2))$. Justifique muy bien la conclusión anterior, utilizando métodos gráficos y test.
+\end{minipage}}
+\end{center}
+
+\textbf{Solución:}
+
+Se considera la cadena de Markov definida por
+\begin{equation*}
+    X_t = \beta X_{t-1} + \varepsilon_t, \qquad \varepsilon_t \sim \mathcal{N}(0,1), \quad \beta = 0.1
+\end{equation*}
+
+En primer lugar se estudia la media. Si se define $m_t$ como la esperanza de $X_t$ en el tiempo $t$, entonces $m_t = \mathbb{E}[X_t]$. Al aplicar la esperanza a la ecuación de la cadena se tiene
+\begin{align*}
+    m_t &= \mathbb{E}[X_t] = \mathbb{E}[\beta X_{t-1} + \varepsilon_t] = \beta \mathbb{E}[X_{t-1}] = \beta m_{t-1} \\
+    m_{t-1} &= \mathbb{E}[X_{t-1}] = \mathbb{E}[\beta X_{t-2} + \varepsilon_{t-1}] = \beta m_{t-2}
+\end{align*}
+
+Reemplazando:
+
+\begin{equation*}
+    m_{t} = \beta^2 m_{t-2}
+\end{equation*}
+
+Repitiendo la relación se obtiene $m_t = \beta^t m_0$. Como $|\beta| < 1$, el producto $\beta^t$ tiende a cero cuando $t \to \infty$, por lo que la media de la cadena converge a 0 independientemente de la condición inicial.
+
+En segundo lugar se analiza la varianza $v_t = \mathrm{Var}(X_t)$. Usando la independencia de $X_{t-1}$ y $\varepsilon_t$, se cumple
+\begin{equation*}
+    v_t = \mathrm{Var}(\beta X_{t-1} + \varepsilon_t) = \beta^2 v_{t-1} + 1,
+\end{equation*}
+ya que la varianza del ruido es igual a 1. Si la varianza se estabiliza en un valor $v$, entonces debe cumplirse
+\begin{equation*}
+    v = \beta^2 v + 1 \quad \Longrightarrow \quad v = \frac{1}{1-\beta^2}.
+\end{equation*}
+Sustituyendo $\beta = 0.1$, resulta
+\begin{equation*}
+    v = \frac{1}{1-0.01} = \frac{1}{0.99} \approx 1.0101.
+\end{equation*}
+
+Finalmente, al expandir recursivamente la definición de $X_t$ se obtiene
+\begin{equation*}
+    X_t = \beta^t X_0 + \varepsilon_t + \beta \varepsilon_{t-1} + \beta^2 \varepsilon_{t-2} + \cdots + \beta^{t-1}\varepsilon_{1}.
+\end{equation*}
+Esto corresponde a una suma de variables normales independientes, y por lo tanto $X_t$ es también normal. Considerando los resultados anteriores, se concluye que para $t$ grande
+\begin{equation*}
+    X_t \sim \mathcal{N}\left(0, \frac{1}{1-\beta^2}\right).
+\end{equation*}
+
+En consecuencia, para el caso $\beta = 0.1$, la cadena converge a una distribución normal con media 0 y varianza aproximadamente $1.01$.
+
+\subsection*{Verificación mediante simulación}
+
+Para verificar los resultados teóricos, se realizó una simulación de la cadena de Markov con los siguientes parámetros:
+\begin{itemize}
+    \item $\beta = 0.1$
+    \item $n_{total} = 50,000$ pasos
+    \item Período transitorio descartado: 1,000 pasos iniciales
+    \item Muestra efectiva analizada: 49,000 valores
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{images/image_1.png}
+\caption{Histograma de la cadena simulada vs. curva teórica $\mathcal{N}(0, 1/(1-\beta^2))$}
+\label{fig:histograma}
+\end{figure}
+
+La Figura \ref{fig:histograma} muestra un excelente ajuste entre la distribución empírica de los datos simulados (barras azules) y la curva teórica normal (línea roja). La coincidencia visual confirma que la cadena ha convergido a la distribución estacionaria esperada. \\
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{images/image_2.png}
+\caption{Q-Q plot de los datos escalados por la desviación teórica}
+\label{fig:qqplot}
+\end{figure}
+
+El gráfico Q-Q (Figura \ref{fig:qqplot}) muestra que los puntos se alinean casi perfectamente con la recta diagonal, indicando que los datos siguen una distribución normal. Las pequeñas desviaciones en los extremos son esperables en muestras finitas. \\
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{images/image_3.png}
+\caption{Función de autocorrelación muestral (ACF) para lags 0 a 10}
+\label{fig:acf}
+\end{figure}
+
+La función de autocorrelación (Figura \ref{fig:acf}) muestra:
+\begin{itemize}
+    \item ACF(1) $\approx 0.1 = \beta$, confirmando la estructura de dependencia de primer orden
+    \item ACF(k) $\approx \beta^k$ para $k > 1$, mostrando el decaimiento exponencial esperado
+    \item La dependencia temporal se vuelve despreciable después de pocos lags
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{images/image_4.png}
+\caption{Evolución temporal de la cadena (últimos 1000 valores)}
+\label{fig:evolucion}
+\end{figure}
+
+La trayectoria de la cadena (Figura \ref{fig:evolucion}) muestra el comportamiento típico de un proceso estacionario:
+\begin{itemize}
+    \item Fluctuaciones alrededor de la media cero
+    \item Variabilidad constante a lo largo del tiempo
+    \item Ausencia de tendencias o cambios estructurales
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Estadístico} & \textbf{Valor teórico} & \textbf{Valor muestral} \\
+\hline
+Media & 0.0000 & -0.0023 \\
+Varianza & 1.0101 & 1.0099 \\
+Desviación estándar & 1.0050 & 1.0049 \\
+Correlación lag 1 & 0.1000 & 0.0966 \\
+\hline
+\end{tabular}
+\end{center}
+
+Se aplicaron tres tests estadísticos para verificar la normalidad:
+\begin{itemize}
+    \item Test de Shapiro-Wilk: $p$-valor = 0.3396
+    \item Test de Kolmogorov-Smirnov: $p$-valor = 0.9535
+    \item Test de Anderson-Darling: $p$-valor = 0.8627
+\end{itemize}
+
+Todos los $p$-valores son suficientemente altos (mayores a 0.05), por lo que no se rechaza la hipótesis de normalidad. \\
+
+La simulación confirma que:
+\begin{enumerate}
+    \item La cadena de Markov $X_t = \beta X_{t-1} + \varepsilon_t$ con $\beta = 0.1$ converge a una distribución estacionaria
+    \item Esta distribución es $\mathcal{N}(0, 1/(1-\beta^2)) = \mathcal{N}(0, 1.0101)$
+    \item Los métodos gráficos (histograma, Q-Q plot, ACF) validan visualmente la convergencia
+    \item Los tests estadísticos confirman formalmente la normalidad
+    \item La estructura de dependencia temporal coincide con la esperada teóricamente
+\end{enumerate}
+
+\section*{Problema 2}
+
+\begin{center}
+\fbox{\begin{minipage}{\textwidth}
+Existen varias estrategias para construir la cadena de Markov cuya distribución estacionaria coincida con $f$, una de ellas es el algoritmo de Metropolis-Hasting. Dada una función objetivo $f$, se le asocia una densidad $q(x|y)$ la cual, en la práctica, sea más fácil de simular. El soporte de la función $q(\cdot|y)$ debe contener el soporte de $f$.
+\end{minipage}}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|p{\textwidth}|}
+\hline
+\textbf{Algoritmo 1:} Metropolis-Hasting \\
+\hline
+1. Simule $Y_t \sim q(y|x_t)$ \\[0.5em]
+2. Tome 
+\begin{equation*}
+X_{t+1} = \begin{cases}
+Y_t & \text{con probabilidad} \quad \rho(x_t, Y_t) \\
+x_t & \text{con probabilidad} \quad 1 - \rho(x_t, Y_t)
+\end{cases}
+\end{equation*}
+donde $\rho(x, y) = \min\left\{\frac{f(y)q(x|y)}{f(x)q(y|x)}, 1\right\}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{Solución:}
+
+\end{document}
