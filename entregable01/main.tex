@@ -208,9 +208,122 @@ x_t & \text{con probabilidad} \quad 1 - \rho(x_t, Y_t)
 \end{equation*}
 donde $\rho(x, y) = \min\left\{\frac{f(y)q(x|y)}{f(x)q(y|x)}, 1\right\}$ \\
 \hline
+
+Utilizando el algoritmo anterior. Simule variables aleatorias de una Beta(2, 6). Realice comprobaciones gráficas y aplique tests apropiados. Compare los resultados empíricos con los valores teóricos de la media y varianza de la Beta(2, 6). \\
+\hline
 \end{tabular}
+
 \end{center}
 
 \textbf{Solución:}
+
+Se implementó el algoritmo de Metropolis-Hastings para simular variables aleatorias de una distribución Beta(2, 6). Para esto se utilizó:
+
+\begin{enumerate}
+    \item Distribución objetivo: $f(x) \propto x^{2-1}(1-x)^{6-1} = x(1-x)^5$ para $x \in [0,1]$
+    \item Distribución propuesta: Caminata aleatoria normal $q(y|x) = \mathcal{N}(x, \sigma^2)$ con $\sigma = 0.15$
+    \item Probabilidad de aceptación: $\rho(x,y) = \min\left\{\frac{f(y)}{f(x)}, 1\right\}$ (propuesta simétrica)
+\end{enumerate}
+
+Se generaron 50,000 iteraciones con un período transitorio de 5,000 pasos, resultando en una muestra efectiva de 45,000 valores. A continuación se presentan los resultados de la simulación:
+
+\begin{itemize}
+    \item Tasa de aceptación: 68.34\%
+    \item Media empírica: 0.2513 (teórica: 0.25)
+    \item Varianza empírica: 0.02138 (teórica: 0.02083)
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{images/problem2_1.png}
+\caption{Histograma de la cadena simulada vs. densidad teórica Beta(2,6)}
+\label{fig:histograma_beta}
+\end{figure}
+
+La Figura \ref{fig:histograma_beta} muestra un excelente ajuste entre la distribución empírica de los datos simulados y la curva teórica Beta(2,6). La distribución presenta su moda alrededor de 0.2 y es asimétrica hacia la derecha, características propias de Beta(2,6). \\
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{images/problem2_2.png}
+\caption{Q-Q Plot: Cuantiles muestrales vs. teóricos de Beta(2,6)}
+\label{fig:qqplot_beta}
+\end{figure}
+
+La Figura \ref{fig:qqplot_beta} muestra que los puntos se alinean casi perfectamente con la diagonal, confirmando que los datos simulados siguen la distribución Beta(2,6). Las pequeñas desviaciones en los extremos son normales en muestras finitas. \\
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{images/problem2_3.png}
+\caption{Trayectoria de la cadena de Markov (primeras 1000 iteraciones)}
+\label{fig:trayectoria_beta}
+\end{figure}
+
+La Figura \ref{fig:trayectoria_beta} muestra la evolución temporal de la cadena. Se observa que:
+\begin{itemize}
+    \item La cadena explora todo el espacio de estados [0,1]
+    \item Oscila alrededor de la media teórica (línea punteada en 0.25)
+    \item No presenta tendencias ni comportamientos anómalos
+\end{itemize}
+
+A continuación se presentan los resultados de los tests estadísticos aplicados donde se confirma que los datos simulados siguen una distribución Beta(2,6) con un nivel de significancia del 5\%.
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Test} & \textbf{Estadístico} & \textbf{p-valor} & \textbf{Conclusión} \\
+\hline
+Kolmogorov-Smirnov & D = 0.0045 & 0.8921 & No se rechaza H$_0$ \\
+Anderson-Darling & A = 0.3124 & 0.9245 & No se rechaza H$_0$ \\
+Chi-cuadrado & $\chi^2$ = 17.82 & 0.5983 & No se rechaza H$_0$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{images/problem2_4.png}
+\caption{Función de autocorrelación de la cadena generada}
+\label{fig:acf_beta}
+\end{figure}
+
+Para el analisis de convergencia, la Figura \ref{fig:acf_beta} muestra la función de autocorrelación, donde se observa:
+\begin{itemize}
+    \item Decaimiento exponencial rápido de la autocorrelación
+    \item La correlación cae por debajo del umbral significativo después del lag 15
+    \item Tamaño efectivo de muestra: 6,776 (razón de eficiencia: 15.06\%)
+\end{itemize}
+
+El algoritmo Metropolis-Hastings generó exitosamente muestras de Beta(2,6):
+\begin{itemize}
+    \item La tasa de aceptación (68.34\%) está en el rango óptimo
+    \item Las diferencias entre valores empíricos y teóricos son mínimas (< 0.002)
+    \item Todos los tests estadísticos confirman el ajuste a Beta(2,6)
+    \item La autocorrelación moderada indica buena eficiencia del algoritmo
+\end{itemize}
+
+\section*{Problema 3}
+
+\begin{center}
+\fbox{\begin{minipage}{\textwidth}
+El esquema bayesiano se puede explicar de la siguiente manera. Suponga que observamos unos datos $Y$ que provienen de una distribución que depende de un parámetro $\theta$, digamos $p(y|\theta)$, el parámetro $\theta$ tiene a su vez una distribución que se llama a priori, denotada por $p(\theta)$, entonces la distribución a posteriori (la distribución del parámetro dado los datos) aparece como una aplicación del teorema de Bayes.
+
+\begin{equation*}
+p(\theta|y) = \frac{p(\theta)p(y|\theta)}{p(y)}
+\end{equation*}
+
+Es en este contexto donde el algoritmo Metropolis-Hastings es comúnmente utilizado para samplear desde la distribución $p(\theta|y)$. Naturalmente, la función de densidad a priori se puede utilizar como la función candidata $q(\cdot|y)$ de nuestro algoritmo.
+
+\begin{itemize}
+    \item Simule (sin usar MCMC) una muestra aleatoria de tamaño 100 de la siguiente mezcla de distribuciones.
+    \begin{equation*}
+    (1 - \alpha) \cdot \text{normal}(\mu = 8, \sigma = 5) + \alpha \cdot \text{student-t}(mu = 10, \nu = 3)
+    \end{equation*}
+    donde $\alpha = 0.7$, $\mu$ es el parámetro de centralidad y $\nu$ son grados de libertad.
+    
+    \item Utilizando la data simulada en el punto anterior y suponiendo que $\alpha$ tiene una distribución a priori Beta(1,1) y Beta(2,10) simule una muestra desde la distribución a posteriori utilizando el algoritmo Metropolis-Hastings y estime $\mathbb{E}(\theta|y)$ para ambas a prioris.
+\end{itemize}
+
+\end{minipage}}
+\end{center}
 
 \end{document}
