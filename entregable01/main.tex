@@ -30,7 +30,7 @@
 
 % Título del documento
 \title{Entregable 01 - Procesos Estocásticos}
-\author{Nombre del Estudiante}
+\author{Alejandro Daniel José Gómez Flórez}
 \date{\today}
 
 \begin{document}
@@ -325,5 +325,98 @@ Es en este contexto donde el algoritmo Metropolis-Hastings es comúnmente utiliz
 
 \end{minipage}}
 \end{center}
+
+\textbf{Solución:}
+
+Para la primera parte, se generaron 100 observaciones de la mezcla:
+\begin{equation*}
+(1 - \alpha) \cdot \mathcal{N}(8, 5^2) + \alpha \cdot t_3(10)
+\end{equation*}
+con $\alpha = 0.7$.
+
+Resultados de la muestra simulada:
+\begin{itemize}
+    \item Media muestral: 9.72
+    \item Desviación estándar muestral: 2.63
+    \item Rango: [-1.76, 17.91]
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/Problem3_1.png}
+\caption{Histograma de datos simulados con densidades teóricas}
+\label{fig:datos_problema3}
+\end{figure}
+
+La Figura \ref{fig:datos_problema3} muestra el histograma de los datos simulados junto con las densidades teóricas de las componentes Normal y t-Student. \\
+
+Se implementó el algoritmo Metropolis-Hastings para estimar $\alpha$ utilizando dos distribuciones a priori diferentes:
+
+\textbf{Prior Beta(1,1) (Uniforme):}
+\begin{itemize}
+    \item $\mathbb{E}[\alpha|y] = 0.781$
+    \item Desviación estándar posterior: 0.073
+    \item Intervalo de credibilidad 95\%: [0.626, 0.912]
+    \item Tasa de aceptación: 78.66\%
+\end{itemize}
+
+\textbf{Prior Beta(2,10):}
+\begin{itemize}
+    \item $\mathbb{E}[\alpha|y] = 0.631$
+    \item Desviación estándar posterior: 0.073
+    \item Intervalo de credibilidad 95\%: [0.485, 0.767]
+    \item Tasa de aceptación: 71.01\%
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/Problem3_2.png}
+\caption{Trayectorias y distribuciones posteriori para ambas prioris}
+\label{fig:trayectorias_problema3}
+\end{figure}
+
+La Figura \ref{fig:trayectorias_problema3} muestra las trayectorias de las cadenas de Markov y las distribuciones posteriori obtenidas con cada prior. Se observa que:
+\begin{itemize}
+    \item La prior Beta(1,1) (uniforme) produce una estimación cercana al valor verdadero (0.7)
+    \item La prior Beta(2,10) (informativa) sesga la estimación hacia valores menores
+    \item Ambas posteriori muestran buena convergencia
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/Problem3_3.png}
+\caption{Comparación de distribuciones posteriori}
+\label{fig:densidades_problema3}
+\end{figure}
+
+La Figura \ref{fig:densidades_problema3} muestra la comparación directa de las dos distribuciones posteriori. La prior informativa Beta(2,10) favorece valores más pequeños de $\alpha$, mientras que la prior uniforme produce una distribución más centrada alrededor del valor verdadero.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/Problem3_4.png}
+\caption{Análisis de convergencia: ACF y medias acumuladas}
+\label{fig:convergencia_problema3}
+\end{figure}
+
+La Figura \ref{fig:convergencia_problema3} muestra el análisis de convergencia. Los gráficos ACF indican autocorrelación moderada, mientras que las medias acumuladas muestran estabilización rápida hacia los valores finales.
+
+A partir de los resultados y análisis previos, se pueden destacar los siguientes puntos clave:
+
+\begin{enumerate}
+    \item La elección del prior influye significativamente en la estimación posterior:
+    \begin{itemize}
+        \item Prior uniforme: estimación más cercana al valor verdadero
+        \item Prior informativa: sesga la estimación según la información previa
+    \end{itemize}
+    
+    \item Ambas cadenas muestran buena convergencia:
+    \begin{itemize}
+        \item Tasas de aceptación apropiadas (70-80\%)
+        \item Medias acumuladas estables
+        \item Autocorrelación decreciente
+    \end{itemize}
+    
+    \item El algoritmo permite actualizar creencias previas con información de los datos mediante el teorema de Bayes
+\end{enumerate}
 
 \end{document}
